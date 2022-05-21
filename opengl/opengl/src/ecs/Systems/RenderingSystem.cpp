@@ -225,7 +225,7 @@ unsigned int RenderingSystem::CreateShader(const std::string& vertexShader, cons
 
 void RenderingSystem::Start(glm::mat4 vpMatrix)
 {
-	std::cout << "Starting rendering system ...\n";
+	ENGINE_PROFILE("ShadowCastSystem::Start");
 	vbuffer.total_size = (entities.size() * 4) + (Shadow.size() * 12);
 
 	vbuffer.Initialize(vbuffer.total_size);
@@ -257,7 +257,7 @@ void VertexBuffer::Fill_Buffer(glm::vec2 position, glm::vec4 color, glm::vec2 te
 	index++;
 }
 
-void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transform tr)
+void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transform& tr)
 {
 	// TODO: add transformation matrix for rotation here
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), tr.position)
@@ -304,7 +304,7 @@ void VertexBuffer::Update_Position_On_Quad(unsigned int indx, glm::vec2 p0, glm:
 	indx++;
 }
 
-void VertexBuffer::Update_PositionX_On_Quad(unsigned int indx, Component::Transform tr)
+void VertexBuffer::Update_PositionX_On_Quad(unsigned int indx, Component::Transform& tr)
 {
 	buffer[indx].position.x = tr.position.x - tr.scale.x / 2.0f;
 	indx++;
@@ -316,7 +316,7 @@ void VertexBuffer::Update_PositionX_On_Quad(unsigned int indx, Component::Transf
 	indx++;
 }
 
-void VertexBuffer::Update_PositionY_On_Quad(unsigned int indx, Component::Transform tr)
+void VertexBuffer::Update_PositionY_On_Quad(unsigned int indx, Component::Transform& tr)
 {
 	buffer[indx].position.y = tr.position.y + tr.scale.y / 2.0f;
 	indx++;
@@ -328,8 +328,10 @@ void VertexBuffer::Update_PositionY_On_Quad(unsigned int indx, Component::Transf
 	indx++;
 }
 
-void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id)
+void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4& color, float tex_id)
 {
+	//ENGINE_PROFILE("VertexBuffer::Update_Material_On_Quad");
+
 	buffer[indx].color = color;
 	buffer[indx].tex_coord = { 0.0f, 1.0f };
 	buffer[indx].tex_id = tex_id;
@@ -348,7 +350,7 @@ void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4 color, f
 	indx++;
 }
 
-void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id, glm::vec2 coords, glm::vec2 sheet_size, glm::vec2 sp_size)
+void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4& color, float tex_id, glm::vec2& coords, glm::vec2& sheet_size, glm::vec2& sp_size)
 {
 	buffer[indx].color = color;
 	buffer[indx].tex_coord = { (coords.x * sp_size.x) / sheet_size.x, ((coords.y + 1) * sp_size.y) / sheet_size.y };

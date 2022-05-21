@@ -1,5 +1,6 @@
 #pragma once
 #include "../Header.h"
+#include "../Utilities.h"
 
 class ScriptingSystem {
 public:

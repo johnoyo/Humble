@@ -2,6 +2,7 @@
 
 #include "../../Renderer.h"
 #include "../Header.h"
+#include "../Utilities.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -21,12 +22,12 @@ public:
 
 	void Initialize(int total_buffer_size);
 
-	void Update_Position_On_Quad(unsigned int indx, Component::Transform tr);
+	void Update_Position_On_Quad(unsigned int indx, Component::Transform& tr);
 	void Update_Position_On_Quad(unsigned int indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3);
-	void Update_PositionX_On_Quad(unsigned int indx, Component::Transform tr);
-	void Update_PositionY_On_Quad(unsigned int indx, Component::Transform tr);
-	void Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id);
-	void Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id, glm::vec2 coords, glm::vec2 sheet_size, glm::vec2 sp_size);
+	void Update_PositionX_On_Quad(unsigned int indx, Component::Transform& tr);
+	void Update_PositionY_On_Quad(unsigned int indx, Component::Transform& tr);
+	void Update_Material_On_Quad(unsigned int indx, glm::vec4& color, float tex_id);
+	void Update_Material_On_Quad(unsigned int indx, glm::vec4& color, float tex_id, glm::vec2& coords, glm::vec2& sheet_size, glm::vec2& sp_size);
 
 
 	void Set_Buffer(struct Vertex_Array* new_buffer);

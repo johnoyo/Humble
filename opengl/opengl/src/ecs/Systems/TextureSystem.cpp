@@ -57,6 +57,7 @@ float TextureSystem::Find(const std::string& path)
 
 void TextureSystem::Start()
 {
+	ENGINE_PROFILE("TextureSystem::Start");
 	Init_Transparent_Texture();
 
 	for (unsigned int i = 0; i < Material.size(); i++) {
@@ -64,15 +65,22 @@ void TextureSystem::Start()
 	}
 }
 
-void TextureSystem::Run(RenderingSystem& rend)
+void TextureSystem::Run(VertexBuffer& buffer)
 {
-	unsigned int indx = 0;
-	for (unsigned int i = 0; i < Material.size(); i++) {
-		if (Material.at(i).Enabled) {
-			if (Material.at(i).subTexture.path == "-") {
-				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, Material.at(i).color, Find(Material.at(i).texture));
+	//ENGINE_PROFILE("TextureSystem::Run");
+
+	uint32_t indx = 0;
+	for (uint32_t i = 0; i < Material.size(); i++) {
+		Component::Material& material = Material.at(i);
+		if (material.Enabled) {
+			if (material.subTexture.path == "-") {
+				if (material.old_texture != material.texture) {
+					material.old_texture = material.texture;
+					buffer.Update_Material_On_Quad(indx, material.color, Find(material.texture));
+				}
 			} else {
-				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, Material.at(i).color, Find(Material.at(i).subTexture.path), Material.at(i).subTexture.coords, size.at(Find(Material.at(i).subTexture.path)), Material.at(i).subTexture.sprite_size);
+				float id = Find(material.subTexture.path);
+				buffer.Update_Material_On_Quad(indx, material.color, id, material.subTexture.coords, size.at(id), material.subTexture.sprite_size);
 			}
 			indx += 4;
 		}

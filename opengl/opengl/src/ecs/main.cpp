@@ -169,7 +169,6 @@ int main() {
 	int frames = 0, updates = 0;
 
 	while (!windowSystem.Window_Should_Close()) {
-
 		// - Measure time
 		nowTime = glfwGetTime();
 		deltaTime += (nowTime - lastTime) / limitFPS;
@@ -179,7 +178,7 @@ int main() {
 		while (deltaTime >= 1.0) {			
 /* ------------------------------------ Run Systems ------------------------------------ */
 			scriptingSystem.Run(levelSystem.GetCurrentLevel());
-			textureSystem.Run(renderingSystem);
+			textureSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			gravitySystem.Run();
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());

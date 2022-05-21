@@ -11,7 +11,7 @@ public:
 	void Run(VertexBuffer& buffer);
 	void Clear();
 
-	bool CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer);
+	bool CollisionBetween(Entity::BaseEntity& e0, Entity::BaseEntity& e1, VertexBuffer& buffer);
 	std::vector<int> entities_to_be_updated;
 
 private:

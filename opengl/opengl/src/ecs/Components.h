@@ -24,6 +24,7 @@ namespace Component {
 
 	struct Material {
 		std::string texture = "-";
+		std::string old_texture = "--";
 		struct SubTexture {
 			glm::vec2 coords = { -1.0f, -1.0f };
 			glm::vec2 sprite_size = { -1.0f, -1.0f };

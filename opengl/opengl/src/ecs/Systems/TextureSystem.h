@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Renderer.h"
 #include "../Header.h"
+#include "../Utilities.h"
 #include "RenderingSystem.h"
 #include <vector>
 #include <iostream>
@@ -10,7 +11,7 @@
 class TextureSystem {
 public:
 	void Start();
-	void Run(RenderingSystem &rend);
+	void Run(VertexBuffer& buffer);
 	void Clear();
 
 private:

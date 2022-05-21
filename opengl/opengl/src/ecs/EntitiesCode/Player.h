@@ -13,13 +13,13 @@ namespace Player {
 			//GET_COMPONENT(Transform, player).position.y = 100.0f;
 			//GET_COMPONENT(Transform, player).scale.x = 25.0f;
 			//GET_COMPONENT(Transform, player).scale.y = 25.0f;
-			//GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
+			GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
 
-			GET_COMPONENT(Material, sps).texture = "res/textures/super_mario_tiles.png";
+			/*GET_COMPONENT(Material, sps).texture = "res/textures/super_mario_tiles.png";
 
 			GET_COMPONENT(Material, player).subTexture.coords = { 6.0f, 1.0f };
 			GET_COMPONENT(Material, player).subTexture.sprite_size = { 16.0f, 16.0f };
-			GET_COMPONENT(Material, player).subTexture.path = GET_COMPONENT(Material, sps).texture;
+			GET_COMPONENT(Material, player).subTexture.path = GET_COMPONENT(Material, sps).texture;*/
 
 		}
 
@@ -33,14 +33,18 @@ namespace Player {
 			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));
 
 			// Player movement
-			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS))
+			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS)) {
+				GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
 				GET_COMPONENT(Transform, player).position.x += 6.0f;
+			}
 
 			if (inputSystem.GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_SPACE))
 				soundSystem.PlaySound("res/audio/bleep.mp3");
 
-			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS))
+			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS)) {
+				GET_COMPONENT(Material, player).texture = "res/textures/player_l.png";
 				GET_COMPONENT(Transform, player).position.x -= 6.0f;
+			}
 
 			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_S, GLFW_PRESS)) 
 				GET_COMPONENT(Transform, player).position.y -= 6.0f;

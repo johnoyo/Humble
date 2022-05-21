@@ -2,6 +2,8 @@
 
 void CollisionSystem::Start()
 {
+	ENGINE_PROFILE("CollisionSystem::Start");
+
 	unsigned int i = 0;
 	for (i = 0; i < entities.size(); i++) {
 		if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i)) && TRY_FIND_COMPONENT(Transform, entities.at(i))) {
@@ -22,10 +24,12 @@ void CollisionSystem::Start()
 
 void CollisionSystem::Run0(VertexBuffer& buffer)
 {
+	//ENGINE_PROFILE("CollisionSystem::Run0");
+
 	// update collision boxes and move the Transform of non-static objects
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {
-			Entity::BaseEntity entt = entities.at(i);
+			Entity::BaseEntity& entt = entities.at(i);
 
 			glm::vec3 tr = Transform.at(entt.Transform).position;
 			glm::vec3 sc = Transform.at(entt.Transform).scale;
@@ -68,10 +72,10 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 	// update collision boxes of non-static objects
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {
-			Entity::BaseEntity entt = entities.at(i);
+			Entity::BaseEntity& entt = entities.at(i);
 
-			glm::vec3 tr = Transform.at(entt.Transform).position;
-			glm::vec3 sc = Transform.at(entt.Transform).scale;
+			glm::vec3& tr = Transform.at(entt.Transform).position;
+			glm::vec3& sc = Transform.at(entt.Transform).scale;
 
 			// update collision box on x-axis
 			if (entities.at(i).CollisionBox != -1) {
@@ -103,7 +107,7 @@ void CollisionSystem::Clear()
 {
 }
 
-bool CollisionSystem::CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer)
+bool CollisionSystem::CollisionBetween(Entity::BaseEntity& e0, Entity::BaseEntity& e1, VertexBuffer& buffer)
 {
 	bool collision = false;
 

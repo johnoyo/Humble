@@ -2,6 +2,8 @@
 
 void ScriptingSystem::Start(int current_level)
 {
+	ENGINE_PROFILE("ScriptingSystem::Start");
+
 	for (unsigned int i = 0; i < Script.size(); i++) {
 		if (Script.at(i).Enabled) {
 			if (current_level == 0) {
@@ -20,6 +22,8 @@ void ScriptingSystem::Start(int current_level)
 
 void ScriptingSystem::Run(int current_level)
 {
+	//ENGINE_PROFILE("ScriptingSystem::Run");
+
 	for (unsigned int i = 0; i < Script.size(); i++) {
 		if (Script.at(i).Enabled) {
 			int size = Script.at(i).update.size();

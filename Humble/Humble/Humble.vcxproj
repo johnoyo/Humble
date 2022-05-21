@@ -141,16 +141,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ecs\main.cpp" />
+    <ClCompile Include="src\ecs\Managers\InputManager.cpp" />
+    <ClCompile Include="src\ecs\Managers\LevelManager.cpp" />
+    <ClCompile Include="src\ecs\Managers\SoundManager.cpp" />
     <ClCompile Include="src\ecs\System.cpp" />
     <ClCompile Include="src\ecs\Systems\CameraSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\GravitySystem.cpp" />
-    <ClCompile Include="src\ecs\Systems\InputSystem.cpp" />
-    <ClCompile Include="src\ecs\Systems\LevelSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\RenderingSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\ShadowCastSystem.cpp" />
-    <ClCompile Include="src\ecs\Systems\SoundSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\TextureSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\TransformSystem.cpp" />
     <ClCompile Include="src\ecs\Systems\WindowSystem.cpp" />
@@ -299,16 +299,19 @@
     <ClInclude Include="src\ecs\EntitiesCode\LevelHandler.h" />
     <ClInclude Include="src\ecs\EntitiesCode\Player.h" />
     <ClInclude Include="src\ecs\Header.h" />
+    <ClInclude Include="src\ecs\Managers\InputManager.h" />
+    <ClInclude Include="src\ecs\Managers\LevelManager.h" />
+    <ClInclude Include="src\ecs\Managers\SoundManager.h" />
     <ClInclude Include="src\ecs\System.h" />
     <ClInclude Include="src\ecs\Systems\CameraSystem.h" />
     <ClInclude Include="src\ecs\Systems\CollisionSystem.h" />
     <ClInclude Include="src\ecs\Systems\GravitySystem.h" />
     <ClInclude Include="src\ecs\Systems\InputSystem.h" />
-    <ClInclude Include="src\ecs\Systems\LevelSystem.h" />
+    <ClInclude Include="src\ecs\Systems\LevelManager.h" />
     <ClInclude Include="src\ecs\Systems\RenderingSystem.h" />
     <ClInclude Include="src\ecs\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\ecs\Systems\ShadowCastSystem.h" />
-    <ClInclude Include="src\ecs\Systems\SoundSystem.h" />
+    <ClInclude Include="src\ecs\Systems\SoundManager.h" />
     <ClInclude Include="src\ecs\Systems\TextureSystem.h" />
     <ClInclude Include="src\ecs\Systems\TransformSystem.h" />
     <ClInclude Include="src\ecs\Systems\WindowSystem.h" />

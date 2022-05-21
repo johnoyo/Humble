@@ -1,7 +1,7 @@
 #pragma once
 #include "../Header.h"
 #include "../Utilities.h"
-#include "InputSystem.h"
+#include "../Managers/InputManager.h"
 
 class GravitySystem {
 public:

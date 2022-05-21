@@ -1,6 +1,6 @@
-#include "LevelSystem.h"
+#include "LevelManager.h"
 
-void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background)
+void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background)
 {
 	std::ifstream is(level_path);
 
@@ -186,9 +186,9 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 
 	rend.Init_Vertex_Buffer();
 
-	current_level++;
+	m_current_level++;
 
 	grav.ResetGravity(6.0f, -6.0f);
-	scr.Start(current_level);
+	scr.Start(m_current_level);
 
 }

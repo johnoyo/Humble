@@ -33,23 +33,23 @@ namespace Player {
 			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));
 
 			// Player movement
-			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS)) {
+			if (InputManager::GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS)) {
 				GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
 				GET_COMPONENT(Transform, player).position.x += 6.0f;
 			}
 
-			if (inputSystem.GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_SPACE))
-				soundSystem.PlaySound("res/audio/bleep.mp3");
+			if (InputManager::GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_SPACE))
+				SoundManager::PlaySound("res/audio/bleep.mp3");
 
-			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS)) {
+			if (InputManager::GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS)) {
 				GET_COMPONENT(Material, player).texture = "res/textures/player_l.png";
 				GET_COMPONENT(Transform, player).position.x -= 6.0f;
 			}
 
-			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_S, GLFW_PRESS)) 
+			if (InputManager::GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_S, GLFW_PRESS))
 				GET_COMPONENT(Transform, player).position.y -= 6.0f;
 
-			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS)) 
+			if (InputManager::GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS))
 				GET_COMPONENT(Transform, player).position.y += 6.0f;
 
 			if (collisionSystem.CollisionBetween(player, enemy, renderingSystem.Get_Vertex_Buffer()))

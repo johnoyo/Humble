@@ -6,13 +6,14 @@
 #include "Systems\WindowSystem.h"
 #include "Systems\TextureSystem.h"
 #include "Systems\ScriptingSystem.h"
-#include "Systems\InputSystem.h"
 #include "Systems\CollisionSystem.h"
 #include "Systems\GravitySystem.h"
-#include "Systems\LevelSystem.h"
-#include "Systems\SoundSystem.h"
+#include "Managers\SoundManager.h"
 #include "Systems\TransformSystem.h"
 #include "Systems\ShadowCastSystem.h"
+
+#include "Managers\InputManager.h"
+#include "Managers\LevelManager.h"
 
 System ecs = System();
 
@@ -45,11 +46,8 @@ static TextureSystem textureSystem;
 static RenderingSystem renderingSystem;
 static CameraSystem cameraSystem = CameraSystem(0.0f, windowSystem.Get_Width(), 0.0f, windowSystem.Get_Height());
 static ScriptingSystem scriptingSystem;
-static InputSystem inputSystem;
 static CollisionSystem collisionSystem;
 static GravitySystem gravitySystem;
-static LevelSystem levelSystem;
-static SoundSystem soundSystem;
 static TransformSystem transformSystem;
 static ShadowCastSystem shadowSystem;
 /* --------------------------------------------------------------------------------- */
@@ -166,13 +164,14 @@ int main() {
 	windowSystem.Start(0);
 	textureSystem.Start();
 	renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
-	scriptingSystem.Start(levelSystem.GetCurrentLevel());
+	scriptingSystem.Start(LevelManager::GetCurrentLevel());
 	collisionSystem.Start();
 	gravitySystem.Start(6.0f, -6.0f);
 	cameraSystem.Start();
-	soundSystem.Start();
 	transformSystem.Start();
 	shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+
+	SoundManager::Start();
 /* --------------------------------------------------------------------------------------- */
 
 	static double limitFPS = 1.0 / 60.0;
@@ -191,7 +190,7 @@ int main() {
 		// - Only update at 60 frames / s
 		while (deltaTime >= 1.0) {			
 /* ------------------------------------ Run Systems ------------------------------------ */
-			scriptingSystem.Run(levelSystem.GetCurrentLevel());
+			scriptingSystem.Run(LevelManager::GetCurrentLevel());
 			textureSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			gravitySystem.Run();
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());

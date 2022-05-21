@@ -60,8 +60,10 @@ static ShadowCastSystem shadowSystem;
 
 #include "Utilities.h"
 
-/* Uncomment this to get rid of the console when the application is running */
-// #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+/* Get rid of the console when the application is running on release mode */
+#ifndef _DEBUG
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif
 
 #define WIN32
 
@@ -125,7 +127,7 @@ int main() {
 
 	for (uint32_t i = 0; i < 10000; i++) {
 		ADD_COMPONENT(Transform, level[i]);
-		//ADD_COMPONENT(CollisionBox, level[i]);
+		ADD_COMPONENT(CollisionBox, level[i]);
 		ADD_COMPONENT(Material, level[i]);
 	}
 

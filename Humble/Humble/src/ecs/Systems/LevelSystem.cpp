@@ -116,6 +116,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 			ecs.GetComponent<Component::Transform>(level[level_index].Transform, Transform).Enabled = true;
 			ecs.GetComponent<Component::Material>(level[level_index].Material, Material).Enabled = true;
 			ecs.GetComponent<Component::Material>(level[level_index].Material, Material).texture = "res/textures/coinA.png";
+			//GET_COMPONENT(CollisionBox, level[level_index]).Enabled = true;
 
 			level_index++;
 		} 

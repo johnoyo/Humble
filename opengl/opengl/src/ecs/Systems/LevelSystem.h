@@ -13,7 +13,7 @@ public:
 	void Clear();
 
 	void LoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background);
-	inline unsigned int GetCurrentLevel() { return current_level; }
+	inline uint32_t GetCurrentLevel() { return current_level; }
 private:
-	unsigned int current_level = 0;
+	uint32_t current_level = 0;
 };

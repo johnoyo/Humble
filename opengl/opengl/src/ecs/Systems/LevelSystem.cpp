@@ -69,7 +69,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	int collectible_index = 0;
 
 	// Reset all component properties of entities
-	for (unsigned int i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		Entity::BaseEntity entt = entities.at(i);
 		if (entt.Transform != -1) {
 			Transform.at(entt.Transform).Static = true;
@@ -105,7 +105,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	ecs.GetComponent<Component::Script>(lvlHandler.Script, Script).Enabled = true;
 
 	// Update the position of the entities
-	for (unsigned int i = 0; i < p.size(); i++) {
+	for (uint32_t i = 0; i < p.size(); i++) {
 		if (i == s) continue;
 		if (p.at(i).k == 1.0f) {
 			ecs.GetComponent<Component::Transform>(level[level_index].Transform, Transform).scale.x = 30.0f;
@@ -163,7 +163,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	ecs.GetComponent<Component::Material>(player.Material, Material).Enabled = true;
 
 	// Recalculate all collision boxes
-	for (unsigned int i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		if (entities.at(i).CollisionBox != -1 && entities.at(i).Transform != -1) {
 			if (CollisionBox.at(entities.at(i).CollisionBox).Enabled) {
 				CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;

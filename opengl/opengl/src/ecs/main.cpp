@@ -63,15 +63,14 @@ static ShadowCastSystem shadowSystem;
 /* Uncomment this to get rid of the console when the application is running */
 // #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
-// Force discrete GPU on Laptops
 #define WIN32
 
 #ifdef WIN32
 #include <windows.h>
 extern "C"
 {
-	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
-	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+    __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+    __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 #endif //def WIN32
 
@@ -85,10 +84,10 @@ int main() {
 	ENROLL_ENTITY(lvlHandler);
 	ENROLL_ENTITY(sps);
 
-	for (unsigned int i = 0; i < 400; i++)
+	for (uint32_t i = 0; i < 400; i++)
 		ENROLL_ENTITY(wall[i]);
 
-	for (unsigned int i = 0; i < 10000; i++)
+	for (uint32_t i = 0; i < 10000; i++)
 		ENROLL_ENTITY(level[i]);
 
 /* ----------------------------------------------------------------------------------------- */
@@ -117,14 +116,14 @@ int main() {
 
 	ADD_COMPONENT(Material, sps);
 	
-	for (unsigned int i = 0; i < 400; i++) {
+	for (uint32_t i = 0; i < 400; i++) {
 		ADD_COMPONENT(Transform, wall[i]);
 		ADD_COMPONENT(CollisionBox, wall[i]);
 		ADD_COMPONENT(Material, wall[i]);
 		//ADD_COMPONENT(Shadow, wall[i]);
 	}
 
-	for (unsigned int i = 0; i < 10000; i++) {
+	for (uint32_t i = 0; i < 10000; i++) {
 		ADD_COMPONENT(Transform, level[i]);
 		//ADD_COMPONENT(CollisionBox, level[i]);
 		ADD_COMPONENT(Material, level[i]);
@@ -153,10 +152,10 @@ int main() {
 	GET_COMPONENT(Transform, enemy).Static = false;
 	GET_COMPONENT(Transform, background).Static = false;
 
-	for (unsigned int i = 0; i < 400; i++)
+	for (uint32_t i = 0; i < 400; i++)
 		GET_COMPONENT(Transform, wall[i]).Static = true;
 
-	for (unsigned int i = 0; i < 10000; i++)
+	for (uint32_t i = 0; i < 10000; i++)
 		GET_COMPONENT(Transform, level[i]).Static = true;
 
 /* ----------------------------------------------------------------------------------------------------- */

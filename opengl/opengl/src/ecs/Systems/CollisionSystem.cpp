@@ -4,7 +4,7 @@ void CollisionSystem::Start()
 {
 	ENGINE_PROFILE("CollisionSystem::Start");
 
-	unsigned int i = 0;
+	uint32_t i = 0;
 	for (i = 0; i < entities.size(); i++) {
 		if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i)) && TRY_FIND_COMPONENT(Transform, entities.at(i))) {
 			CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
@@ -27,7 +27,7 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 	//ENGINE_PROFILE("CollisionSystem::Run0");
 
 	// update collision boxes and move the Transform of non-static objects
-	for (unsigned int i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {
 			Entity::BaseEntity& entt = entities.at(i);
 
@@ -70,7 +70,7 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 	//ENGINE_PROFILE("CollisionSystem::Run");
 
 	// update collision boxes of non-static objects
-	for (unsigned int i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {
 			Entity::BaseEntity& entt = entities.at(i);
 
@@ -311,7 +311,7 @@ bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, Entity::BaseEntity& p
 
 void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, VertexBuffer& buffer, int axis)
 {
-	unsigned int i = 0;
+	uint32_t i = 0;
 	if (p.Gravity != -1/* && axis == Y_AXIS*/) {
 		Gravity.at(p.Gravity).collides = true;
 		Gravity.at(p.Gravity).isGrounded = false;

@@ -6,9 +6,9 @@ void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, 
 {
 	ENGINE_PROFILE("ShadowCastSystem::Start");
 
-	int offset = 0;
+	uint32_t offset = 0;
 	// Init shadow cast component info
-	for (int i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && entities.at(i).Shadow != -1) {
 			if (Shadow.at(entities.at(i).Shadow).Enabled) {
 				Shadow.at(entities.at(i).Shadow).parentBufferIndex = Transform.at(entities.at(i).Transform).bufferIndex;
@@ -22,7 +22,7 @@ void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, 
 	// Init shadow cast positions
 	glm::vec3 O = player_position;
 
-	for (int i = 0; i < Shadow.size(); i++) {
+	for (uint32_t i = 0; i < Shadow.size(); i++) {
 		if (Shadow.at(i).Enabled) {
 
 			std::vector<glm::vec2> shadow_points;
@@ -70,7 +70,7 @@ void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, Rend
 	//ENGINE_PROFILE("ShadowCastSystem::Run");
 	glm::vec3 O = player_position;
 
-	for (int i = 0; i < Shadow.size(); i++) {
+	for (uint32_t i = 0; i < Shadow.size(); i++) {
 		if (Shadow.at(i).Enabled) {
 			std::vector<glm::vec2> shadow_points;
 			std::vector<glm::vec2> edge_points;

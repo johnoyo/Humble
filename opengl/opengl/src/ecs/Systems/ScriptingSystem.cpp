@@ -4,7 +4,7 @@ void ScriptingSystem::Start(int current_level)
 {
 	ENGINE_PROFILE("ScriptingSystem::Start");
 
-	for (unsigned int i = 0; i < Script.size(); i++) {
+	for (uint32_t i = 0; i < Script.size(); i++) {
 		if (Script.at(i).Enabled) {
 			if (current_level == 0) {
 				Script.at(i).init[0](1.0f);
@@ -24,7 +24,7 @@ void ScriptingSystem::Run(int current_level)
 {
 	//ENGINE_PROFILE("ScriptingSystem::Run");
 
-	for (unsigned int i = 0; i < Script.size(); i++) {
+	for (uint32_t i = 0; i < Script.size(); i++) {
 		if (Script.at(i).Enabled) {
 			int size = Script.at(i).update.size();
 			if (current_level <= size)

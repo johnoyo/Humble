@@ -2,7 +2,7 @@
 
 void TextureSystem::Init_Transparent_Texture()
 {
-	unsigned int white_texture_id;
+	uint32_t white_texture_id;
 
 	GLCall(glCreateTextures(GL_TEXTURE_2D, 1, &white_texture_id));
 	GLCall(glBindTexture(GL_TEXTURE_2D, white_texture_id));
@@ -26,7 +26,7 @@ void TextureSystem::Load_Texture(const std::string& path)
 	stbi_set_flip_vertically_on_load(1);
 	auto* pixels = stbi_load(path.c_str(), &w, &h, &bits, STBI_rgb_alpha);
 	assert(pixels);
-	unsigned int tex_id;
+	uint32_t tex_id;
 
 	GLCall(glCreateTextures(GL_TEXTURE_2D, 1, &tex_id));
 	GLCall(glBindTexture(GL_TEXTURE_2D, tex_id));
@@ -60,7 +60,7 @@ void TextureSystem::Start()
 	ENGINE_PROFILE("TextureSystem::Start");
 	Init_Transparent_Texture();
 
-	for (unsigned int i = 0; i < Material.size(); i++) {
+	for (uint32_t i = 0; i < Material.size(); i++) {
 		if (Material.at(i).texture != "-") Load_Texture(Material.at(i).texture);
 	}
 }
@@ -86,7 +86,7 @@ void TextureSystem::Run(VertexBuffer& buffer)
 		}
 	}
 
-	for (unsigned int i = 0; i < current_index; i++) {
+	for (uint32_t i = 0; i < current_index; i++) {
 		GLCall(glBindTextureUnit(i, texture_slot[i]));
 	}
 }

@@ -33,7 +33,7 @@ void RenderingSystem::Initialize(glm::mat4 m_Camera_vp)
 	/* index buffer */
 	GLCall(glGenBuffers(1, &ib));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (vbuffer.Get_Size() / 4) * 6 * sizeof(unsigned int), ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (vbuffer.Get_Size() / 4) * 6 * sizeof(uint32_t), ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
 
 	/* shaders */
 	ShaderProgramSource shaderSource = ParseShader("res/shaders/Basic.shader");
@@ -42,7 +42,7 @@ void RenderingSystem::Initialize(glm::mat4 m_Camera_vp)
 
 	GLCall(auto loc = glGetUniformLocation(shader, "u_textures"));
 	int samplers[32];
-	for (unsigned int i = 0; i < 32; i++)
+	for (uint32_t i = 0; i < 32; i++)
 		samplers[i] = i;
 	GLCall(glUniform1iv(loc, 32, samplers));
 
@@ -79,9 +79,9 @@ void RenderingSystem::Clear()
 	ibuffer.Clean();
 }
 
-void RenderingSystem::Upadte_Index_Buffer(unsigned int size)
+void RenderingSystem::Upadte_Index_Buffer(uint32_t size)
 {
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(unsigned int), ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
 }
 
 void RenderingSystem::Init_Vertex_Buffer()
@@ -89,7 +89,7 @@ void RenderingSystem::Init_Vertex_Buffer()
 	vbuffer.Reset();
 	std::cout << "Transform size: " << Transform.size() << "\n";
 
-	for (unsigned int i = 0; i < Transform.size(); i++) {
+	for (uint32_t i = 0; i < Transform.size(); i++) {
 		if (Transform.at(i).Enabled) {
 			Transform.at(i).bufferIndex = vbuffer.index;
 			Draw_Quad(i);
@@ -104,8 +104,8 @@ void RenderingSystem::Init_Vertex_Buffer()
 
 void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
 {
-	unsigned int indx = 0;
-	for (unsigned int i = 0; i < Transform.size() - 1; i++) {
+	uint32_t indx = 0;
+	for (uint32_t i = 0; i < Transform.size() - 1; i++) {
 		if(i != playerTransformID && Transform.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, Transform.at(i));
 		indx += 4;
 	}
@@ -181,9 +181,9 @@ ShaderProgramSource RenderingSystem::ParseShader(const std::string& filepath)
 	return { ss[0].str(), ss[1].str() };
 }
 
-unsigned int RenderingSystem::CompileShader(unsigned int type, const std::string& source)
+uint32_t RenderingSystem::CompileShader(uint32_t type, const std::string& source)
 {
-	GLCall(unsigned int id = glCreateShader(type));
+	GLCall(uint32_t id = glCreateShader(type));
 	const char* src = source.c_str();
 	GLCall(glShaderSource(id, 1, &src, nullptr));
 	GLCall(glCompileShader(id));
@@ -205,11 +205,11 @@ unsigned int RenderingSystem::CompileShader(unsigned int type, const std::string
 	return id;
 }
 
-unsigned int RenderingSystem::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+uint32_t RenderingSystem::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
-	GLCall(unsigned int program = glCreateProgram());
-	GLCall(unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader));
-	GLCall(unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader));
+	GLCall(uint32_t program = glCreateProgram());
+	GLCall(uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader));
+	GLCall(uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader));
 
 	GLCall(glAttachShader(program, vs));
 	GLCall(glAttachShader(program, fs));
@@ -257,7 +257,7 @@ void VertexBuffer::Fill_Buffer(glm::vec2 position, glm::vec4 color, glm::vec2 te
 	index++;
 }
 
-void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transform& tr)
+void VertexBuffer::Update_Position_On_Quad(uint32_t indx, Component::Transform& tr)
 {
 	// TODO: add transformation matrix for rotation here
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), tr.position)
@@ -292,7 +292,7 @@ void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transfo
 	indx++;
 }
 
-void VertexBuffer::Update_Position_On_Quad(unsigned int indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
+void VertexBuffer::Update_Position_On_Quad(uint32_t indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
 {
 	buffer[indx].position = p0;
 	indx++;
@@ -304,7 +304,7 @@ void VertexBuffer::Update_Position_On_Quad(unsigned int indx, glm::vec2 p0, glm:
 	indx++;
 }
 
-void VertexBuffer::Update_PositionX_On_Quad(unsigned int indx, Component::Transform& tr)
+void VertexBuffer::Update_PositionX_On_Quad(uint32_t indx, Component::Transform& tr)
 {
 	buffer[indx].position.x = tr.position.x - tr.scale.x / 2.0f;
 	indx++;
@@ -316,7 +316,7 @@ void VertexBuffer::Update_PositionX_On_Quad(unsigned int indx, Component::Transf
 	indx++;
 }
 
-void VertexBuffer::Update_PositionY_On_Quad(unsigned int indx, Component::Transform& tr)
+void VertexBuffer::Update_PositionY_On_Quad(uint32_t indx, Component::Transform& tr)
 {
 	buffer[indx].position.y = tr.position.y + tr.scale.y / 2.0f;
 	indx++;
@@ -328,7 +328,7 @@ void VertexBuffer::Update_PositionY_On_Quad(unsigned int indx, Component::Transf
 	indx++;
 }
 
-void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4& color, float tex_id)
+void VertexBuffer::Update_Material_On_Quad(uint32_t indx, glm::vec4& color, float tex_id)
 {
 	//ENGINE_PROFILE("VertexBuffer::Update_Material_On_Quad");
 
@@ -350,7 +350,7 @@ void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4& color, 
 	indx++;
 }
 
-void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4& color, float tex_id, glm::vec2& coords, glm::vec2& sheet_size, glm::vec2& sp_size)
+void VertexBuffer::Update_Material_On_Quad(uint32_t indx, glm::vec4& color, float tex_id, glm::vec2& coords, glm::vec2& sheet_size, glm::vec2& sp_size)
 {
 	buffer[indx].color = color;
 	buffer[indx].tex_coord = { (coords.x * sp_size.x) / sheet_size.x, ((coords.y + 1) * sp_size.y) / sheet_size.y };
@@ -380,17 +380,17 @@ void VertexBuffer::Set_Buffer(Vertex_Array* new_buffer)
 	buffer = new_buffer;
 }
 
-unsigned int VertexBuffer::Get_Size()
+uint32_t VertexBuffer::Get_Size()
 {
 	return index;
 }
 
-void VertexBuffer::Set_Size(unsigned int size)
+void VertexBuffer::Set_Size(uint32_t size)
 {
 	index = size;
 }
 
-unsigned int VertexBuffer::Get_Total_Size()
+uint32_t VertexBuffer::Get_Total_Size()
 {
 	return total_size;
 }
@@ -409,9 +409,9 @@ void VertexBuffer::Clean()
 
 /* ------------------------------------------------------------------- Index Buffer ---------------------------------------------------------------------- */
 
-void IndexBuffer::Make_Indecies(unsigned int size)
+void IndexBuffer::Make_Indecies(uint32_t size)
 {
-	index_buffer = (unsigned int*)malloc((size / 4) * 6 * sizeof(unsigned int));
+	index_buffer = (uint32_t*)malloc((size / 4) * 6 * sizeof(uint32_t));
 	int w = 0;
 	for (int k = 0; k < (size / 4) * 6; k += 6) {
 		index_buffer[index++] = 0 + w;
@@ -431,7 +431,7 @@ void IndexBuffer::Clean()
 	index = 0;
 }
 
-unsigned int* IndexBuffer::Get_Index_Buffer()
+uint32_t* IndexBuffer::Get_Index_Buffer()
 {
 	return index_buffer;
 }

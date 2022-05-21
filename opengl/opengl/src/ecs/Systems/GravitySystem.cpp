@@ -14,7 +14,7 @@ void GravitySystem::ResetGravity(float GravityForce, float thres)
 	force = GravityForce;
 	threshold = thres;
 
-	for (unsigned int i = 0; i < Gravity.size(); i++) {
+	for (uint32_t i = 0; i < Gravity.size(); i++) {
 			Gravity.at(i).appliedForce = 0.0f;
 	}
 }
@@ -23,7 +23,7 @@ void GravitySystem::Run()
 {
 	//ENGINE_PROFILE("GravitySystem::Run");
 
-	for (unsigned int i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		Entity::BaseEntity entt = entities.at(i);
 		if (entt.Gravity != -1 && Gravity.at(entt.Gravity).Enabled && !Gravity.at(entt.Gravity).isGrounded) {
 

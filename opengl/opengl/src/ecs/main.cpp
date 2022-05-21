@@ -63,6 +63,19 @@ static ShadowCastSystem shadowSystem;
 /* Uncomment this to get rid of the console when the application is running */
 // #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
+// Force discrete GPU on Laptops
+#define WIN32
+
+#ifdef WIN32
+#include <windows.h>
+extern "C"
+{
+	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+#endif //def WIN32
+
+
 int main() {
 /* ------------------------------------ Enroll Entities ------------------------------------ */
 	ENROLL_ENTITY(background);

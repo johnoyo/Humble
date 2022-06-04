@@ -1,6 +1,6 @@
 #include "LevelManager.h"
 
-void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background)
+void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first)
 {
 	std::ifstream is(level_path);
 
@@ -143,6 +143,7 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 			ecs.GetComponent<Component::CollisionBox>(enemy.CollisionBox, CollisionBox).Enabled = true;
 			ecs.GetComponent<Component::Script>(enemy.Script, Script).Enabled = true;
 			ecs.GetComponent<Component::Material>(enemy.Material, Material).Enabled = true;
+			ecs.GetComponent<Component::Material>(enemy.Material, Material).texture = "res/textures/enemy.png";
 			GET_COMPONENT(Shadow, enemy).Enabled = true;
 			enemy_index++;
 		}
@@ -162,6 +163,8 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 	ecs.GetComponent<Component::CollisionBox>(player.CollisionBox, CollisionBox).Enabled = true;
 	ecs.GetComponent<Component::Script>(player.Script, Script).Enabled = true;
 	ecs.GetComponent<Component::Material>(player.Material, Material).Enabled = true;
+	ecs.GetComponent<Component::Material>(player.Material, Material).texture = "res/textures/player_r.png";
+
 
 	// Recalculate all collision boxes
 	for (uint32_t i = 0; i < entities.size(); i++) {
@@ -186,9 +189,10 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 
 	rend.Init_Vertex_Buffer();
 
-	m_current_level++;
+	if (!first)
+		m_current_level++;
 
 	grav.ResetGravity(6.0f, -6.0f);
-	scr.Start(m_current_level);
+	//scr.Start(m_current_level);
 
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Renderer.h"
+#include "../Core.h"
 #include <string>
 
 class WindowSystem {

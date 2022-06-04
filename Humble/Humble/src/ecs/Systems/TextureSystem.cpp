@@ -74,10 +74,10 @@ void TextureSystem::Run(VertexBuffer& buffer)
 		Component::Material& material = Material.at(i);
 		if (material.Enabled) {
 			if (material.subTexture.path == "-") {
-				if (material.old_texture != material.texture) {
-					material.old_texture = material.texture;
+				//if (material.old_texture != material.texture) {
+					//material.old_texture = material.texture;
 					buffer.Update_Material_On_Quad(indx, material.color, Find(material.texture));
-				}
+				//}
 			} else {
 				float id = Find(material.subTexture.path);
 				buffer.Update_Material_On_Quad(indx, material.color, id, material.subTexture.coords, size.at(id), material.subTexture.sprite_size);

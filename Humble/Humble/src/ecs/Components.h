@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include "glm/glm.hpp"
+#include "ScriptFunction.h"
 
 namespace Component {
 
@@ -58,14 +59,13 @@ namespace Component {
 	};
 
 	struct Script {
-		std::vector<std::function<void(float)>> init;
-		std::vector<std::function<void(float)>> update;
+		std::vector<HBL::ScriptFunction *> script;
 		bool Enabled = true;
 	};
 
 	struct Shadow {
 		glm::vec4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
-		float shadowDistance = 2000.0f;
+		float shadowDistance = 200000.0f;
 		int parentBufferIndex;
 		int bufferIndex;
 		bool Enabled = true;

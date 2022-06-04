@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Renderer.h"
+#include "../../Core.h"
 #include "../Header.h"
 #include <irrKlang.h>
 

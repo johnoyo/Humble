@@ -92,8 +92,8 @@ void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, Rend
 
 				float base_ang = atan2f(rdy, rdx);
 
-				rdx = Shadow.at(i).shadowDistance * cosf(base_ang);
-				rdy = Shadow.at(i).shadowDistance * sinf(base_ang);
+				rdx = (Shadow.at(i).shadowDistance) * cosf(base_ang);
+				rdy = (Shadow.at(i).shadowDistance) * sinf(base_ang);
 
 				shadow_points.push_back({ rdx, rdy });
 

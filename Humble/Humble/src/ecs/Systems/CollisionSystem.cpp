@@ -4,8 +4,7 @@ void CollisionSystem::Start()
 {
 	ENGINE_PROFILE("CollisionSystem::Start");
 
-	uint32_t i = 0;
-	for (i = 0; i < entities.size(); i++) {
+	for (uint32_t i = 0; i < entities.size(); i++) {
 		if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i)) && TRY_FIND_COMPONENT(Transform, entities.at(i))) {
 			CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
 			CollisionBox.at(entities.at(i).CollisionBox).tl.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y / 2.0f;
@@ -28,7 +27,7 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 
 	// update collision boxes and move the Transform of non-static objects
 	for (uint32_t i = 0; i < entities.size(); i++) {
-		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {
+		if (TRY_FIND_COMPONENT(Transform, entities.at(i)) && Transform.at(entities.at(i).Transform).Static == false) {
 			Entity::BaseEntity& entt = entities.at(i);
 
 			glm::vec3 tr = Transform.at(entt.Transform).position;
@@ -38,7 +37,7 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 			buffer.Update_PositionX_On_Quad(Transform.at(entt.Transform).bufferIndex, Transform.at(entt.Transform));
 
 			// update collision box on x-axis
-			if (entities.at(i).CollisionBox != -1) {
+			if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
 				CollisionBox.at(entt.CollisionBox).tl.x = tr.x - sc.x / 2.0f;
 				CollisionBox.at(entt.CollisionBox).tr.x = tr.x + sc.x / 2.0f;
 				CollisionBox.at(entt.CollisionBox).br.x = tr.x + sc.x / 2.0f;
@@ -52,7 +51,7 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 			buffer.Update_PositionY_On_Quad(Transform.at(entt.Transform).bufferIndex, Transform.at(entt.Transform));
 
 			// update collision box on y-axis
-			if (entities.at(i).CollisionBox != -1) {
+			if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
 				CollisionBox.at(entt.CollisionBox).tl.y = tr.y + sc.y / 2.0f;
 				CollisionBox.at(entt.CollisionBox).tr.y = tr.y + sc.y / 2.0f;
 				CollisionBox.at(entt.CollisionBox).br.y = tr.y - sc.y / 2.0f;
@@ -71,14 +70,14 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 
 	// update collision boxes of non-static objects
 	for (uint32_t i = 0; i < entities.size(); i++) {
-		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {
+		if (TRY_FIND_COMPONENT(Transform, entities.at(i)) && Transform.at(entities.at(i).Transform).Static == false) {
 			Entity::BaseEntity& entt = entities.at(i);
 
 			glm::vec3& tr = Transform.at(entt.Transform).position;
 			glm::vec3& sc = Transform.at(entt.Transform).scale;
 
 			// update collision box on x-axis
-			if (entities.at(i).CollisionBox != -1) {
+			if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
 				CollisionBox.at(entt.CollisionBox).tl.x = tr.x - sc.x / 2.0f;
 				CollisionBox.at(entt.CollisionBox).tr.x = tr.x + sc.x / 2.0f;
 				CollisionBox.at(entt.CollisionBox).br.x = tr.x + sc.x / 2.0f;
@@ -89,7 +88,7 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 			if (entities.at(i).CollisionBox != -1) Check_For_Collisions(entt, entt.CollisionBox, buffer, X_AXIS);
 			
 			// update collision box on y-axis
-			if (entities.at(i).CollisionBox != -1) {
+			if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
 				CollisionBox.at(entt.CollisionBox).tl.y = tr.y + sc.y / 2.0f;
 				CollisionBox.at(entt.CollisionBox).tr.y = tr.y + sc.y / 2.0f;
 				CollisionBox.at(entt.CollisionBox).br.y = tr.y - sc.y / 2.0f;
@@ -97,7 +96,7 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 			}
 
 			// collision check on y-axis
-			if (entities.at(i).CollisionBox != -1) Check_For_Collisions(entt, entt.CollisionBox, buffer, Y_AXIS);
+			if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) Check_For_Collisions(entt, entt.CollisionBox, buffer, Y_AXIS);
 			
 		}
 	}

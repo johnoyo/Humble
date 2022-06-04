@@ -140,6 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Application\app.cpp" />
+    <ClCompile Include="src\ecs\Application.cpp" />
     <ClCompile Include="src\ecs\main.cpp" />
     <ClCompile Include="src\ecs\Managers\InputManager.cpp" />
     <ClCompile Include="src\ecs\Managers\LevelManager.cpp" />
@@ -293,16 +295,22 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Application\Scripts\EnemyScript.h" />
+    <ClInclude Include="src\Application\Levels\Level0.h" />
+    <ClInclude Include="src\Application\Levels\Level1.h" />
+    <ClInclude Include="src\Application\Scripts\LevelHandlerScript.h" />
+    <ClInclude Include="src\Application\Scripts\PlayerScript.h" />
+    <ClInclude Include="src\ecs\Application.h" />
     <ClInclude Include="src\ecs\Components.h" />
     <ClInclude Include="src\ecs\Entities.h" />
-    <ClInclude Include="src\ecs\EntitiesCode\Enemy.h" />
-    <ClInclude Include="src\ecs\EntitiesCode\LevelHandler.h" />
-    <ClInclude Include="src\ecs\EntitiesCode\Player.h" />
     <ClInclude Include="src\ecs\Header.h" />
     <ClInclude Include="src\ecs\Managers\InputManager.h" />
     <ClInclude Include="src\ecs\Managers\LevelManager.h" />
     <ClInclude Include="src\ecs\Managers\SoundManager.h" />
+    <ClInclude Include="src\ecs\Scene.h" />
+    <ClInclude Include="src\ecs\ScriptFunction.h" />
     <ClInclude Include="src\ecs\System.h" />
+    <ClInclude Include="src\Application\SystemsHeader.h" />
     <ClInclude Include="src\ecs\Systems\CameraSystem.h" />
     <ClInclude Include="src\ecs\Systems\CollisionSystem.h" />
     <ClInclude Include="src\ecs\Systems\GravitySystem.h" />
@@ -316,8 +324,9 @@
     <ClInclude Include="src\ecs\Systems\TransformSystem.h" />
     <ClInclude Include="src\ecs\Systems\WindowSystem.h" />
     <ClInclude Include="src\ecs\Utilities.h" />
+    <ClInclude Include="src\Humble.h" />
     <ClInclude Include="src\ProfilerScope.h" />
-    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_vector_relational.hpp" />

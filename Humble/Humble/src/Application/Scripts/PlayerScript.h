@@ -1,29 +1,27 @@
 #pragma once
-#include <iostream>
-#include "../Header.h"
-#include "../Utilities.h"
 
-namespace Player {
+#include "SystemsHeader.h"
+#include "../ecs/Managers/InputManager.h"
+#include "../ecs/Managers/LevelManager.h"
+#include "../ecs/Managers/SoundManager.h"
+#include "../ecs/Utilities.h"
+#include "../ecs/ScriptFunction.h"
 
-	namespace Level_0 {
+namespace HBL {
 
-		void init(float dt) {
+	class PlayerScript : public ScriptFunction
+	{
+	public:
+		PlayerScript() {}
+		~PlayerScript() {}
 
-			//GET_COMPONENT(Transform, player).position.x = 15.0f;
-			//GET_COMPONENT(Transform, player).position.y = 100.0f;
-			//GET_COMPONENT(Transform, player).scale.x = 25.0f;
-			//GET_COMPONENT(Transform, player).scale.y = 25.0f;
+		virtual void Init() override {
+
 			GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
-
-			/*GET_COMPONENT(Material, sps).texture = "res/textures/super_mario_tiles.png";
-
-			GET_COMPONENT(Material, player).subTexture.coords = { 6.0f, 1.0f };
-			GET_COMPONENT(Material, player).subTexture.sprite_size = { 16.0f, 16.0f };
-			GET_COMPONENT(Material, player).subTexture.path = GET_COMPONENT(Material, sps).texture;*/
 
 		}
 
-		void update(float dt) {
+		virtual void Update() override {
 
 			// Background follow player
 			GET_COMPONENT(Transform, background).position.x = GET_COMPONENT(Transform, player).position.x; /*+(-windowSystem.Get_Width() / 2.0f);*/
@@ -55,17 +53,7 @@ namespace Player {
 			if (collisionSystem.CollisionBetween(player, enemy, renderingSystem.Get_Vertex_Buffer()))
 				ENGINE_LOG("Player collided with enemy!!!");
 
-			// NOTE: Maybe move this inside the gravity system??? 
-
-			// Player movement with gravity enabled
-			//if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS) && GET_COMPONENT(Gravity, player).isGrounded)
-			//	GET_COMPONENT(Gravity, player).appliedForce = 10.0f;
-
-			//GET_COMPONENT(Transform, player).position.y += GET_COMPONENT(Gravity, player).appliedForce;
-			//std::cout << GET_COMPONENT(Gravity, player).appliedForce << "\n";
 		}
-
-	}
+	};
 
 }
-

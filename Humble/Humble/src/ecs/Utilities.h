@@ -17,5 +17,5 @@
 #define ENGINE_PROFILE(...) ProfilerScope profile = ProfilerScope(__VA_ARGS__);
 #else
 #define ENGINE_LOG(f_, ...)
-#define ENGINE_PROFILE()
+#define ENGINE_PROFILE(...)
 #endif // _DEBUG

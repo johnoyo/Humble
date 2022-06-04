@@ -13,7 +13,7 @@ namespace HBL {
 
 		void Add_Scene(Scene* scene);
 
-		void Load_New_Scene(int level)
+		void Manage_Scenes(int level)
 		{
 			if (level != current) {
 				current = level;
@@ -37,7 +37,7 @@ namespace HBL {
 				// - Only update at 60 frames / s
 				while (deltaTime >= 1.0) {
 
-					Load_New_Scene(LevelManager::GetCurrentLevel());
+					Manage_Scenes(LevelManager::GetCurrentLevel());
 					scenes[current]->Update();
 
 					updates++;

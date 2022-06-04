@@ -120,28 +120,40 @@ void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
 	GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 }
 
-void RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec4 color)
+uint32_t RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec4 color)
 {
+	uint32_t index = vbuffer.Get_Size();
+
 	vbuffer.Fill_Buffer(p0, color, glm::vec2(0.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p1, color, glm::vec2(1.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p2, color, glm::vec2(1.0f, 0.0f), 0);
 	vbuffer.Fill_Buffer(p3, color, glm::vec2(0.0f, 0.0f), 0);
+
+	return index;
 }
 
-void RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
+uint32_t RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
 {
+	uint32_t index = vbuffer.Get_Size();
+	
 	vbuffer.Fill_Buffer(p0, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p1, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p2, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 	vbuffer.Fill_Buffer(p3, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+
+	return index;
 }
 
-void RenderingSystem::Draw_Quad(int index)
+uint32_t RenderingSystem::Draw_Quad(int index)
 {
+	uint32_t index = vbuffer.Get_Size();
+
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+
+	return index;
 }
 
 void RenderingSystem::Invalidate()

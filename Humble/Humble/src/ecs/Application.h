@@ -22,9 +22,9 @@ namespace HBL {
 				Clear();
 
 				// Initialize Systems
-				scenes[current]->Enroll();
-				scenes[current]->Add();
-				scenes[current]->Init();
+				scenes[current]->Enroll_Entities();
+				scenes[current]->Add_Components();
+				scenes[current]->Init_Components();
 
 				// Initialize Systems
 				Restart_Systems();
@@ -32,9 +32,9 @@ namespace HBL {
 		}
 
 		void Start() {
-			scenes[current]->Enroll();
-			scenes[current]->Add();
-			scenes[current]->Init();
+			scenes[current]->Enroll_Entities();
+			scenes[current]->Add_Components();
+			scenes[current]->Init_Components();
 
 			// Initialize Systems
 			Initialize();
@@ -52,9 +52,6 @@ namespace HBL {
 
 					// Update Systems
 					Update();
-
-					// Update Entities
-					scenes[current]->Update();
 
 					updates++;
 					deltaTime--;

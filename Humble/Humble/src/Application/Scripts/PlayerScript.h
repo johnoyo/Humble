@@ -54,6 +54,7 @@ namespace HBL {
 				ENGINE_LOG("Player collided with enemy!!!");
 
 		}
+
 	};
 
 }

@@ -6,27 +6,27 @@
 #include <vector>
 #include <string>
 
-extern System ecs;
+extern HBL::System ecs;
 
-extern std::vector<Entity::BaseEntity> entities;
+extern std::vector<HBL::Entity::BaseEntity> entities;
 
 /* ------------------------------- Entities Declaration ---------------------------- */
-extern Entity::BaseEntity background;
-extern Entity::BaseEntity player;
-extern Entity::BaseEntity enemy;
-extern Entity::BaseEntity wall[400];
-extern Entity::BaseEntity level[10000];
-extern Entity::BaseEntity lvlHandler;
-extern Entity::BaseEntity camera;
-extern Entity::BaseEntity sps;
+extern HBL::Entity::BaseEntity background;
+extern HBL::Entity::BaseEntity player;
+extern HBL::Entity::BaseEntity enemy;
+extern HBL::Entity::BaseEntity wall[400];
+extern HBL::Entity::BaseEntity level[10000];
+extern HBL::Entity::BaseEntity lvlHandler;
+extern HBL::Entity::BaseEntity camera;
+extern HBL::Entity::BaseEntity sps;
 /* --------------------------------------------------------------------------------- */
 
 /* ------------------------- Component Vector Declaration -------------------------- */
-extern std::vector<Component::Transform> Transform;
-extern std::vector<Component::CollisionBox> CollisionBox;
-extern std::vector<Component::Material> Material;
-extern std::vector<Component::Health> Health;
-extern std::vector<Component::Script> Script;
-extern std::vector<Component::Gravity> Gravity;
-extern std::vector<Component::Shadow> Shadow;
+extern std::vector<HBL::Component::Transform> Transform;
+extern std::vector<HBL::Component::CollisionBox> CollisionBox;
+extern std::vector<HBL::Component::Material> Material;
+extern std::vector<HBL::Component::Health> Health;
+extern std::vector<HBL::Component::Script> Script;
+extern std::vector<HBL::Component::Gravity> Gravity;
+extern std::vector<HBL::Component::Shadow> Shadow;
 /* --------------------------------------------------------------------------------- */

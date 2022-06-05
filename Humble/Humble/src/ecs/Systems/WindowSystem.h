@@ -2,32 +2,36 @@
 #include "../Core.h"
 #include <string>
 
-class WindowSystem {
-public:
-	WindowSystem(float w, float h, const std::string &name, bool full_screen);
-	WindowSystem() { }
+namespace HBL {
 
-	void Start(int Vsync);
-	void Run();
+	class WindowSystem {
+	public:
+		WindowSystem(float w, float h, const std::string& name, bool full_screen);
+		WindowSystem() { }
 
-	void Make_Context_Current(int Vsync);
-	int Window_Should_Close();
-	void Swap_Buffers();
-	void Poll_For_Events();
-	void Terminate();
+		void Start(int Vsync);
+		void Run();
 
-	GLFWwindow* Get_Window();
-	float Get_Width();
-	float Get_Height();
-	float Get_RefreshRate();
+		void Make_Context_Current(int Vsync);
+		int Window_Should_Close();
+		void Swap_Buffers();
+		void Poll_For_Events();
+		void Terminate();
 
-private:
-	void Init();
+		GLFWwindow* Get_Window();
+		float Get_Width();
+		float Get_Height();
+		float Get_RefreshRate();
 
-	GLFWwindow* window;
-	std::string title;
-	float refresh_rate;
-	float width;
-	float height;
-	bool fullscreen;
-};
+	private:
+		void Init();
+
+		GLFWwindow* window;
+		std::string title;
+		float refresh_rate;
+		float width;
+		float height;
+		bool fullscreen;
+	};
+
+}

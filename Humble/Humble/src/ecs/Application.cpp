@@ -1,7 +1,10 @@
 #include "Application.h"
 
-void HBL::Application::Add_Scene(Scene* scene)
-{
-	scenes.push_back(scene);
-}
+namespace HBL {
 
+	void Application::Add_Scene(Scene* scene)
+	{
+		scenes.push_back(scene);
+	}
+
+}

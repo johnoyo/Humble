@@ -6,34 +6,38 @@
 #include "../Systems/ScriptingSystem.h"
 #include <string>
 
-class LevelManager {
-public:
-	LevelManager(const LevelManager&) = delete;
+namespace HBL {
 
-	static LevelManager& Get() {
-		static LevelManager instance;
-		return instance;
-	}
+	class LevelManager {
+	public:
+		LevelManager(const LevelManager&) = delete;
 
-	static void Load_Level(const std::string& level_path) {
-		Get().m_current_level++;
-		Get().m_level_path = level_path;
-	}
+		static LevelManager& Get() {
+			static LevelManager instance;
+			return instance;
+		}
 
-	static void Load_Level(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first) {
-		return Get().ILoadLevel(level_path, scr, grav, rend, vertex_buffer, index_buffer, background, first);
-	}
+		static void Load_Level(const std::string& level_path) {
+			Get().m_current_level++;
+			Get().m_level_path = level_path;
+		}
 
-	inline static uint32_t GetCurrentLevel() { return Get().IGetCurrentLevel(); }
-	inline static const std::string& GetLevelPath() { return Get().IGetCurrentPath(); }
+		static void Load_Level(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first) {
+			return Get().ILoadLevel(level_path, scr, grav, rend, vertex_buffer, index_buffer, background, first);
+		}
 
-private:
-	LevelManager() {}
+		inline static uint32_t GetCurrentLevel() { return Get().IGetCurrentLevel(); }
+		inline static const std::string& GetLevelPath() { return Get().IGetCurrentPath(); }
 
-	void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first);
-	inline uint32_t IGetCurrentLevel() { return m_current_level; }
-	inline const std::string& IGetCurrentPath() { return m_level_path; }
+	private:
+		LevelManager() {}
 
-	std::string m_level_path;
-	uint32_t m_current_level = -1;
-};
+		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first);
+		inline uint32_t IGetCurrentLevel() { return m_current_level; }
+		inline const std::string& IGetCurrentPath() { return m_level_path; }
+
+		std::string m_level_path;
+		uint32_t m_current_level = -1;
+	};
+
+}

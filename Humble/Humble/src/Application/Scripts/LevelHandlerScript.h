@@ -15,8 +15,6 @@ namespace HBL {
 		LevelHandlerScript() {}
 		~LevelHandlerScript() {}
 
-		bool once = true;
-
 		virtual void Init() override {
 			std::cout << "Calling level init 0\n";
 			LevelManager::Load_Level("res/levels/test1.txt");

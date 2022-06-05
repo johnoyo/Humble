@@ -12,9 +12,13 @@
   *
  */
 
-class ShadowCastSystem {
-public:
-    void Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
-    void Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
-    void Clear();
-};
+namespace HBL {
+
+    class ShadowCastSystem {
+    public:
+        void Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
+        void Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
+        void Clear();
+    };
+
+}

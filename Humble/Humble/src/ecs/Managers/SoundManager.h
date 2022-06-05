@@ -3,22 +3,26 @@
 #include "../Header.h"
 #include <irrKlang.h>
 
-class SoundManager {
-public:
-	SoundManager(const SoundManager&) = delete;
+namespace HBL {
 
-	static SoundManager& Get() {
-		static SoundManager instance;
-		return instance;
-	}
+	class SoundManager {
+	public:
+		SoundManager(const SoundManager&) = delete;
 
-	static void Start() { Get().IStart(); }
-	static void PlaySound(const std::string& source, bool playLooped = false, bool startPaused = false) { Get().IPlaySound(source, playLooped, startPaused); }
+		static SoundManager& Get() {
+			static SoundManager instance;
+			return instance;
+		}
 
-private:
-	SoundManager() {}
+		static void Start() { Get().IStart(); }
+		static void PlaySound(const std::string& source, bool playLooped = false, bool startPaused = false) { Get().IPlaySound(source, playLooped, startPaused); }
 
-	void IStart();
-	void IPlaySound(const std::string& source, bool playLooped = false, bool startPaused = false);
-	irrklang::ISoundEngine* m_SoundEngine = nullptr;
-};
+	private:
+		SoundManager() {}
+
+		void IStart();
+		void IPlaySound(const std::string& source, bool playLooped = false, bool startPaused = false);
+		irrklang::ISoundEngine* m_SoundEngine = nullptr;
+	};
+
+}

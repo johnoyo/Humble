@@ -3,26 +3,30 @@
 #include <chrono>
 #include <iostream>
 
-class ProfilerScope {
-public:
-	std::chrono::time_point<std::chrono::system_clock> _timeStart;
-	std::string _name;
+namespace HBL {
 
-	ProfilerScope(std::string name) {
-		_timeStart = std::chrono::system_clock::now();
-		_name = name;
-	}
+	class ProfilerScope {
+	public:
+		std::chrono::time_point<std::chrono::system_clock> _timeStart;
+		std::string _name;
 
-	ProfilerScope() {
-		_timeStart = std::chrono::system_clock::now();
-		_name = "scope";
-	}
+		ProfilerScope(std::string name) {
+			_timeStart = std::chrono::system_clock::now();
+			_name = name;
+		}
 
-	~ProfilerScope() {
-		auto _timeEnd = std::chrono::system_clock::now();
+		ProfilerScope() {
+			_timeStart = std::chrono::system_clock::now();
+			_name = "scope";
+		}
 
-		std::chrono::duration<double> elapsed_seconds = _timeEnd - _timeStart;
+		~ProfilerScope() {
+			auto _timeEnd = std::chrono::system_clock::now();
 
-		std::cout  << "ENGINE PROFILE["<< __TIME__ <<"]: Elapsed time of " << _name << " : " << elapsed_seconds.count() * 1000.0 << "ms" << std::endl;
-	}
-};
+			std::chrono::duration<double> elapsed_seconds = _timeEnd - _timeStart;
+
+			std::cout << "ENGINE PROFILE[" << __TIME__ << "]: Elapsed time of " << _name << " : " << elapsed_seconds.count() * 1000.0 << "ms" << std::endl;
+		}
+	};
+
+}

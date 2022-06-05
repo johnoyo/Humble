@@ -142,7 +142,6 @@
   <ItemGroup>
     <ClCompile Include="src\Application\app.cpp" />
     <ClCompile Include="src\ecs\Application.cpp" />
-    <ClCompile Include="src\ecs\main.cpp" />
     <ClCompile Include="src\ecs\Managers\InputManager.cpp" />
     <ClCompile Include="src\ecs\Managers\LevelManager.cpp" />
     <ClCompile Include="src\ecs\Managers\SoundManager.cpp" />

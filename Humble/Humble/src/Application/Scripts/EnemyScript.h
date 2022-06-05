@@ -31,6 +31,7 @@ namespace HBL {
 			GET_COMPONENT(Gravity, enemy).Enabled = false;
 
 		}
+
 	};
 
 }

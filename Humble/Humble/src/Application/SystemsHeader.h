@@ -10,12 +10,12 @@
 #include "..\ecs\Systems\TransformSystem.h"
 #include "..\ecs\Systems\ShadowCastSystem.h"
 
-extern WindowSystem windowSystem;
-extern TextureSystem textureSystem;
-extern RenderingSystem renderingSystem;
-extern CameraSystem cameraSystem;
-extern ScriptingSystem scriptingSystem;
-extern CollisionSystem collisionSystem;
-extern GravitySystem gravitySystem;
-extern TransformSystem transformSystem;
-extern ShadowCastSystem shadowSystem;
+extern HBL::WindowSystem windowSystem;
+extern HBL::TextureSystem textureSystem;
+extern HBL::RenderingSystem renderingSystem;
+extern HBL::CameraSystem cameraSystem;
+extern HBL::ScriptingSystem scriptingSystem;
+extern HBL::CollisionSystem collisionSystem;
+extern HBL::GravitySystem gravitySystem;
+extern HBL::TransformSystem transformSystem;
+extern HBL::ShadowCastSystem shadowSystem;

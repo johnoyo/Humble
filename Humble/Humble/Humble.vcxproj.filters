@@ -24,9 +24,6 @@
     <ClCompile Include="src\ecs\System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ecs\Systems\CameraSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

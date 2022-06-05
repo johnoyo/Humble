@@ -8,7 +8,7 @@ namespace HBL {
 	class Level1 : public Scene
 	{
 	public:
-		void Enroll() override
+		void Enroll_Entities() override
 		{
 			ENROLL_ENTITY(background);
 			ENROLL_ENTITY(player);
@@ -22,7 +22,8 @@ namespace HBL {
 			for (uint32_t i = 0; i < 100; i++)
 				ENROLL_ENTITY(level[i]);
 		}
-		void Add() override
+
+		void Add_Components() override
 		{
 			ADD_COMPONENT(Transform, background);
 			ADD_COMPONENT(Material, background);
@@ -58,9 +59,9 @@ namespace HBL {
 				ADD_COMPONENT(Material, level[i]);
 			}
 		}
-		void Init() override
-		{
 
+		void Init_Components() override
+		{
 			GET_COMPONENT(Script, player).script.push_back(new PlayerScript());
 			GET_COMPONENT(Script, enemy).script.push_back(new EnemyScript());
 
@@ -75,10 +76,6 @@ namespace HBL {
 				GET_COMPONENT(Transform, level[i]).Static = true;
 		}
 
-		void Update() override
-		{
-			
-		}
 	};
 
 }

@@ -5,36 +5,36 @@
 #include "Levels/Level0.h"
 #include "Levels/Level1.h"
 
-System ecs = System();
+HBL::System ecs = HBL::System();
 
-std::vector<Entity::BaseEntity> entities;
+std::vector<HBL::Entity::BaseEntity> entities;
 
-Entity::BaseEntity background;
-Entity::BaseEntity player;
-Entity::BaseEntity enemy;
-Entity::BaseEntity wall[400];
-Entity::BaseEntity level[10000];
-Entity::BaseEntity camera;
-Entity::BaseEntity lvlHandler;
-Entity::BaseEntity sps;
+HBL::Entity::BaseEntity background;
+HBL::Entity::BaseEntity player;
+HBL::Entity::BaseEntity enemy;
+HBL::Entity::BaseEntity wall[400];
+HBL::Entity::BaseEntity level[10000];
+HBL::Entity::BaseEntity camera;
+HBL::Entity::BaseEntity lvlHandler;
+HBL::Entity::BaseEntity sps;
 
-std::vector<Component::Transform> Transform;
-std::vector<Component::CollisionBox> CollisionBox;
-std::vector<Component::Material> Material;
-std::vector<Component::Health> Health;
-std::vector<Component::Script> Script;
-std::vector<Component::Gravity> Gravity;
-std::vector<Component::Shadow> Shadow;
+std::vector<HBL::Component::Transform> Transform;
+std::vector<HBL::Component::CollisionBox> CollisionBox;
+std::vector<HBL::Component::Material> Material;
+std::vector<HBL::Component::Health> Health;
+std::vector<HBL::Component::Script> Script;
+std::vector<HBL::Component::Gravity> Gravity;
+std::vector<HBL::Component::Shadow> Shadow;
 
-static WindowSystem windowSystem = WindowSystem(1920.0f, 1080.0f, "test", false);
-static TextureSystem textureSystem;
-static RenderingSystem renderingSystem;
-static CameraSystem cameraSystem = CameraSystem(0.0f, windowSystem.Get_Width(), 0.0f, windowSystem.Get_Height());
-static ScriptingSystem scriptingSystem;
-static CollisionSystem collisionSystem;
-static GravitySystem gravitySystem;
-static TransformSystem transformSystem;
-static ShadowCastSystem shadowSystem;
+static HBL::WindowSystem windowSystem = HBL::WindowSystem(1920.0f, 1080.0f, "test", false);
+static HBL::TextureSystem textureSystem;
+static HBL::RenderingSystem renderingSystem;
+static HBL::CameraSystem cameraSystem = HBL::CameraSystem(0.0f, windowSystem.Get_Width(), 0.0f, windowSystem.Get_Height());
+static HBL::ScriptingSystem scriptingSystem;
+static HBL::CollisionSystem collisionSystem;
+static HBL::GravitySystem gravitySystem;
+static HBL::TransformSystem transformSystem;
+static HBL::ShadowCastSystem shadowSystem;
 
 int main() {
 	HBL::Level0 level0;

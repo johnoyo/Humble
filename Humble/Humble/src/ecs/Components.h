@@ -38,7 +38,7 @@ namespace Component {
 	struct Animation {
 		std::string film;
 		float step;
-		bool Enabled = true;;
+		bool Enabled = true;
 	};
 
 	struct Gravity {

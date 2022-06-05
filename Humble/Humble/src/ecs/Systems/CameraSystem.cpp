@@ -20,6 +20,7 @@ void CameraSystem::Recalculate_View_Matrix()
 void CameraSystem::Start()
 {
 	std::cout << "Starting camera system ...\n";
+	m_View_Projection_Matrix = m_Projection_Matrix * m_View_Matrix;
 }
 
 void CameraSystem::Run()

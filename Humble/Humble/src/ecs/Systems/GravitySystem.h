@@ -8,6 +8,7 @@ public:
 	void Start(float gravityForce, float thres);
 	void ResetGravity(float gravityForce, float thres);
 	void Run();
+	void Clear();
 private:
 	float force;
 	float threshold;

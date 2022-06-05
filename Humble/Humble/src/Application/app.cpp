@@ -45,5 +45,8 @@ int main() {
 	app->Add_Scene(&level1);
 
 	app->Start();
+
+	delete app;
+
 	return 0;
 }

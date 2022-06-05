@@ -101,8 +101,11 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 	ecs.GetComponent<Component::Transform>(background.Transform, Transform).Static = false;
 	ecs.GetComponent<Component::Transform>(background.Transform, Transform).Enabled = true;
 
-	// Re enable lvlHandler
-	ecs.GetComponent<Component::Script>(lvlHandler.Script, Script).Enabled = true;
+	if (first) 
+	{
+		// Re enable lvlHandler
+		ecs.GetComponent<Component::Script>(lvlHandler.Script, Script).Enabled = true;
+	}
 
 	// Update the position of the entities
 	for (uint32_t i = 0; i < p.size(); i++) {
@@ -130,6 +133,9 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 			ecs.GetComponent<Component::CollisionBox>(wall[wall_index].CollisionBox, CollisionBox).Enabled = true;
 			ecs.GetComponent<Component::Material>(wall[wall_index].Material, Material).Enabled = true;
 			ecs.GetComponent<Component::Material>(wall[wall_index].Material, Material).texture = "res/textures/brick_3.png";
+
+			if (!first)
+				GET_COMPONENT(Shadow, wall[wall_index]).Enabled = true;
 
 			wall_index++;
 		}
@@ -165,7 +171,6 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 	ecs.GetComponent<Component::Material>(player.Material, Material).Enabled = true;
 	ecs.GetComponent<Component::Material>(player.Material, Material).texture = "res/textures/player_r.png";
 
-
 	// Recalculate all collision boxes
 	for (uint32_t i = 0; i < entities.size(); i++) {
 		if (entities.at(i).CollisionBox != -1 && entities.at(i).Transform != -1) {
@@ -189,10 +194,5 @@ void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& sc
 
 	rend.Init_Vertex_Buffer();
 
-	if (!first)
-		m_current_level++;
-
 	grav.ResetGravity(6.0f, -6.0f);
-	//scr.Start(m_current_level);
-
 }

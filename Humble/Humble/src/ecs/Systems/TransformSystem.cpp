@@ -25,4 +25,5 @@ void TransformSystem::Update(VertexBuffer& buffer, std::vector<int>& entities_to
 
 void TransformSystem::Clear()
 {
+	Transform.clear();
 }

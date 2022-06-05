@@ -79,7 +79,13 @@ void RenderingSystem::Clear()
 	ibuffer.Clean();
 }
 
-void RenderingSystem::Upadte_Index_Buffer(uint32_t size)
+void RenderingSystem::Clear_Buffers()
+{
+	vbuffer.Clean();
+	ibuffer.Clean();
+}
+
+void RenderingSystem::Update_Index_Buffer(uint32_t size)
 {
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
 }
@@ -99,7 +105,7 @@ void RenderingSystem::Init_Vertex_Buffer()
 	std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
 	ibuffer.Clean();
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
-	Upadte_Index_Buffer(vbuffer.Get_Size());
+	Update_Index_Buffer(vbuffer.Get_Size());
 }
 
 void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
@@ -122,38 +128,38 @@ void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
 
 uint32_t RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec4 color)
 {
-	uint32_t index = vbuffer.Get_Size();
+	uint32_t vertex_index = vbuffer.Get_Size();
 
 	vbuffer.Fill_Buffer(p0, color, glm::vec2(0.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p1, color, glm::vec2(1.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p2, color, glm::vec2(1.0f, 0.0f), 0);
 	vbuffer.Fill_Buffer(p3, color, glm::vec2(0.0f, 0.0f), 0);
 
-	return index;
+	return vertex_index;
 }
 
 uint32_t RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
 {
-	uint32_t index = vbuffer.Get_Size();
+	uint32_t vertex_index = vbuffer.Get_Size();
 	
 	vbuffer.Fill_Buffer(p0, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p1, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer(p2, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 	vbuffer.Fill_Buffer(p3, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
-	return index;
+	return vertex_index;
 }
 
 uint32_t RenderingSystem::Draw_Quad(int index)
 {
-	uint32_t index = vbuffer.Get_Size();
+	uint32_t vertex_index = vbuffer.Get_Size();
 
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 	vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
-	return index;
+	return vertex_index;
 }
 
 void RenderingSystem::Invalidate()
@@ -161,7 +167,7 @@ void RenderingSystem::Invalidate()
 	std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
 	ibuffer.Clean();
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
-	Upadte_Index_Buffer(vbuffer.Get_Size());
+	Update_Index_Buffer(vbuffer.Get_Size());
 }
 
 ShaderProgramSource RenderingSystem::ParseShader(const std::string& filepath)

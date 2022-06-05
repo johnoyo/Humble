@@ -24,6 +24,12 @@ public:
 		return ComponentVector.at(ComponenetEntityID);
 	}
 
+	void Flush(std::vector<Entity::BaseEntity>& entities) 
+	{
+		entities.clear();
+		currentID = 0;
+	}
+
 	template<typename T>
 	void PrintComponents(std::vector<T> ComponentVector) { }
 

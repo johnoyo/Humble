@@ -71,19 +71,6 @@ namespace HBL {
 			GET_COMPONENT(Script, player).script.push_back(new PlayerScript());
 			GET_COMPONENT(Script, enemy).script.push_back(new EnemyScript());
 			GET_COMPONENT(Script, lvlHandler).script.push_back(new LevelHandlerScript());
-			
-			/*GET_COMPONENT(Script, player).init.push_back(Player::Level_0::init);
-			GET_COMPONENT(Script, player).update.push_back(Player::Level_0::update);
-
-			GET_COMPONENT(Script, enemy).init.push_back(Enemy::Level_0::init);
-			GET_COMPONENT(Script, enemy).init.push_back(Enemy::Level_1::init);
-			GET_COMPONENT(Script, enemy).update.push_back(Enemy::Level_0::update);
-			GET_COMPONENT(Script, enemy).update.push_back(Enemy::Level_1::update);
-			
-			GET_COMPONENT(Script, lvlHandler).init.push_back(LevelHandler::Level_0::init);
-			GET_COMPONENT(Script, lvlHandler).init.push_back(LevelHandler::Level_1::init);
-			GET_COMPONENT(Script, lvlHandler).update.push_back(LevelHandler::Level_0::update);
-			GET_COMPONENT(Script, lvlHandler).update.push_back(LevelHandler::Level_1::update);*/
 
 			GET_COMPONENT(Transform, player).Static = false;
 			GET_COMPONENT(Transform, enemy).Static = false;
@@ -98,12 +85,7 @@ namespace HBL {
 		
 		void Update() override  
 		{
-			scriptingSystem.Run(LevelManager::GetCurrentLevel());
-			textureSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			gravitySystem.Run();
-			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			shadowSystem.Run(GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+			
 		}
 	};
 

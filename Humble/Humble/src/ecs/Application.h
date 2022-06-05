@@ -17,7 +17,17 @@ namespace HBL {
 		{
 			if (level != current) {
 				current = level;
-				scriptingSystem.Start(current);
+
+				// Clear Systems and ECS
+				Clear();
+
+				// Initialize Systems
+				scenes[current]->Enroll();
+				scenes[current]->Add();
+				scenes[current]->Init();
+
+				// Initialize Systems
+				Restart_Systems();
 			}
 		}
 
@@ -26,6 +36,7 @@ namespace HBL {
 			scenes[current]->Add();
 			scenes[current]->Init();
 
+			// Initialize Systems
 			Initialize();
 
 			while (!windowSystem.Window_Should_Close()) {
@@ -38,6 +49,11 @@ namespace HBL {
 				while (deltaTime >= 1.0) {
 
 					Manage_Scenes(LevelManager::GetCurrentLevel());
+
+					// Update Systems
+					Update();
+
+					// Update Entities
 					scenes[current]->Update();
 
 					updates++;
@@ -62,25 +78,72 @@ namespace HBL {
 			Shutdown();
 		}
 
+		friend class LevelManager;
+
 	private:
 		std::vector<Scene*> scenes;
 		uint32_t current = 0;
 
-		void Initialize() {
+		void Initialize() 
+		{
 			windowSystem.Start(0);
-			textureSystem.Start();
+			cameraSystem.Start();
+			SoundManager::Start();
+
 			renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
+			textureSystem.Start();
 			scriptingSystem.Start(LevelManager::GetCurrentLevel());
 			collisionSystem.Start();
 			gravitySystem.Start(6.0f, -6.0f);
-			cameraSystem.Start();
 			transformSystem.Start();
+
+			LevelManager::Load_Level(LevelManager::GetLevelPath(), scriptingSystem, gravitySystem, renderingSystem, renderingSystem.Get_Vertex_Buffer(), renderingSystem.Get_Index_Buffer(), background, true);
+
 			shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
-			SoundManager::Start();
 		}
 
-		void Shutdown() {
+		void Restart_Systems() 
+		{
+			renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
+			cameraSystem.Start();
+			textureSystem.Start();
+			scriptingSystem.Start(LevelManager::GetCurrentLevel());
+			collisionSystem.Start();
+			gravitySystem.Start(6.0f, -6.0f);
+			transformSystem.Start();
+
+			LevelManager::Load_Level(LevelManager::GetLevelPath(), scriptingSystem, gravitySystem, renderingSystem, renderingSystem.Get_Vertex_Buffer(), renderingSystem.Get_Index_Buffer(), background, false);
+
+			shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+		}
+
+		void Update()
+		{
+			scriptingSystem.Run(LevelManager::GetCurrentLevel());
+			textureSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			gravitySystem.Run();
+			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			shadowSystem.Run(GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+		}
+
+		void Clear() 
+		{
+			scriptingSystem.Clear(LevelManager::GetCurrentLevel());
+			textureSystem.Clear();
+			gravitySystem.Clear();
+			transformSystem.Clear();
+			collisionSystem.Clear();
+			shadowSystem.Clear();
 			renderingSystem.Clear();
+
+			ecs.Flush(entities);
+		}
+
+		void Shutdown() 
+		{
+			renderingSystem.Clear();
+			scriptingSystem.Clear(LevelManager::GetCurrentLevel());
 			textureSystem.Clear();
 			windowSystem.Terminate();
 		}

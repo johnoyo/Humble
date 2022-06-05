@@ -104,6 +104,7 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 
 void CollisionSystem::Clear()
 {
+	CollisionBox.clear();
 }
 
 bool CollisionSystem::CollisionBetween(Entity::BaseEntity& e0, Entity::BaseEntity& e1, VertexBuffer& buffer)

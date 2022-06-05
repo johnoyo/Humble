@@ -34,5 +34,4 @@ private:
 	bool check_side_t_b(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_br, glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_tl, glm::vec3 e_bl, int axis);
 	
 	void Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, VertexBuffer& buffer, int axis);
-
 };

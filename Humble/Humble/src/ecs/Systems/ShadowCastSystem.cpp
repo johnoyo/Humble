@@ -107,3 +107,8 @@ void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, Rend
 		}
 	}
 }
+
+void ShadowCastSystem::Clear()
+{
+	Shadow.clear();
+}

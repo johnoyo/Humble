@@ -93,6 +93,10 @@ void TextureSystem::Run(VertexBuffer& buffer)
 
 void TextureSystem::Clear()
 {
+	map.clear();
+	size.clear();
+	current_index = 0;
+	Material.clear();
 	GLCall(glDeleteTextures(32, texture_slot));
 }
 

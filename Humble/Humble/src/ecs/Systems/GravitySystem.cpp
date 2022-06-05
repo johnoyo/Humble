@@ -38,3 +38,8 @@ void GravitySystem::Run()
 	}
 }
 
+void GravitySystem::Clear()
+{
+	Gravity.clear();
+}
+

@@ -68,6 +68,7 @@ public:
 	void Run(int playerTransformID);
 	void Render(glm::mat4 m_Camera_vp);
 	void Clear();
+	void Clear_Buffers();
 	inline VertexBuffer& Get_Vertex_Buffer() { return vbuffer; }
 	inline IndexBuffer& Get_Index_Buffer() { return ibuffer; }
 
@@ -93,7 +94,7 @@ private:
 	uint32_t CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 
 	void Initialize(glm::mat4 m_Camera_vp);
-	void Upadte_Index_Buffer(uint32_t size);
+	void Update_Index_Buffer(uint32_t size);
 	void Init_Vertex_Buffer();
 	void Update_Vertex_Buffer_Positions(int playerTransformID);
 	void Update_Camera_Uniform(glm::mat4 m_Camera_vp);

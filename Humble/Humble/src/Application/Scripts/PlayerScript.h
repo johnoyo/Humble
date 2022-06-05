@@ -28,7 +28,7 @@ namespace HBL {
 			GET_COMPONENT(Transform, background).position.y = GET_COMPONENT(Transform, player).position.y; /*+(-windowSystem.Get_Height() / 2.0f);*/
 
 			// Camera follow player
-			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));
+			cameraSystem.Follow(camera, player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));
 
 			// Player movement
 			if (InputManager::GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS)) {

@@ -10,17 +10,6 @@ extern HBL::System ecs;
 
 extern std::vector<HBL::Entity::BaseEntity> entities;
 
-/* ------------------------------- Entities Declaration ---------------------------- */
-extern HBL::Entity::BaseEntity background;
-extern HBL::Entity::BaseEntity player;
-extern HBL::Entity::BaseEntity enemy;
-extern HBL::Entity::BaseEntity wall[400];
-extern HBL::Entity::BaseEntity level[10000];
-extern HBL::Entity::BaseEntity lvlHandler;
-extern HBL::Entity::BaseEntity camera;
-extern HBL::Entity::BaseEntity sps;
-/* --------------------------------------------------------------------------------- */
-
 /* ------------------------- Component Vector Declaration -------------------------- */
 extern std::vector<HBL::Component::Transform> Transform;
 extern std::vector<HBL::Component::CollisionBox> CollisionBox;

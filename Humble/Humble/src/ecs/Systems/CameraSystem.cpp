@@ -9,7 +9,7 @@ namespace HBL {
 	}
 
 
-	void CameraSystem::Recalculate_View_Matrix()
+	void CameraSystem::Recalculate_View_Matrix(Entity::BaseEntity& camera)
 	{
 		glm::mat4 tranform =
 			glm::translate(glm::mat4(1.0f), ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position) *
@@ -30,30 +30,30 @@ namespace HBL {
 		std::cout << "Running camera system ...\n";
 	}
 
-	void CameraSystem::Follow(Entity::BaseEntity player, float offset)
+	void CameraSystem::Follow(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset)
 	{
-		Set_Position_x(Transform.at(player.Transform).position.x + offset);
-		Set_Position_y(Transform.at(player.Transform).position.y + offset);
-		Recalculate_View_Matrix();
+		Set_Position_x(camera, Transform.at(player.Transform).position.x + offset);
+		Set_Position_y(camera, Transform.at(player.Transform).position.y + offset);
+		Recalculate_View_Matrix(camera);
 	}
 
-	void CameraSystem::Follow(Entity::BaseEntity player, float offset_x, float offset_y)
+	void CameraSystem::Follow(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset_x, float offset_y)
 	{
-		Set_Position_x(Transform.at(player.Transform).position.x + offset_x);
-		Set_Position_y(Transform.at(player.Transform).position.y + offset_y);
-		Recalculate_View_Matrix();
+		Set_Position_x(camera, Transform.at(player.Transform).position.x + offset_x);
+		Set_Position_y(camera, Transform.at(player.Transform).position.y + offset_y);
+		Recalculate_View_Matrix(camera);
 	}
 
-	void CameraSystem::Follow_Horizontally(Entity::BaseEntity player, float offset_x)
+	void CameraSystem::Follow_Horizontally(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset_x)
 	{
-		Set_Position_x(Transform.at(player.Transform).position.x + offset_x);
-		Recalculate_View_Matrix();
+		Set_Position_x(camera, Transform.at(player.Transform).position.x + offset_x);
+		Recalculate_View_Matrix(camera);
 	}
 
-	void CameraSystem::Follow_Vertically(Entity::BaseEntity player, float offset_y)
+	void CameraSystem::Follow_Vertically(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset_y)
 	{
-		Set_Position_y(Transform.at(player.Transform).position.y + offset_y);
-		Recalculate_View_Matrix();
+		Set_Position_y(camera, Transform.at(player.Transform).position.y + offset_y);
+		Recalculate_View_Matrix(camera);
 	}
 
 }

@@ -6,6 +6,15 @@
 #include "../Systems/ScriptingSystem.h"
 #include <string>
 
+extern HBL::Entity::BaseEntity background;
+extern HBL::Entity::BaseEntity player;
+extern HBL::Entity::BaseEntity enemy;
+extern HBL::Entity::BaseEntity wall[400];
+extern HBL::Entity::BaseEntity level[10000];
+extern HBL::Entity::BaseEntity lvlHandler;
+extern HBL::Entity::BaseEntity camera;
+extern HBL::Entity::BaseEntity sps;
+
 namespace HBL {
 
 	class LevelManager {

@@ -16,7 +16,7 @@ namespace HBL {
 			ENROLL_ENTITY(camera);
 			ENROLL_ENTITY(sps);
 
-			for (uint32_t i = 0; i < 100; i++)
+			for (uint32_t i = 0; i < 400; i++)
 				ENROLL_ENTITY(wall[i]);
 
 			for (uint32_t i = 0; i < 100; i++)
@@ -46,7 +46,7 @@ namespace HBL {
 
 			ADD_COMPONENT(Material, sps);
 
-			for (uint32_t i = 0; i < 100; i++) {
+			for (uint32_t i = 0; i < 400; i++) {
 				ADD_COMPONENT(Transform, wall[i]);
 				ADD_COMPONENT(CollisionBox, wall[i]);
 				ADD_COMPONENT(Material, wall[i]);
@@ -69,7 +69,7 @@ namespace HBL {
 			GET_COMPONENT(Transform, enemy).Static = false;
 			GET_COMPONENT(Transform, background).Static = false;
 
-			for (uint32_t i = 0; i < 100; i++)
+			for (uint32_t i = 0; i < 400; i++)
 				GET_COMPONENT(Transform, wall[i]).Static = true;
 
 			for (uint32_t i = 0; i < 100; i++)

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SystemsHeader.h"
+#include "GlobalsHeader.h"
 #include "../ecs/Managers/InputManager.h"
-#include "../ecs/Managers/LevelManager.h"
+#include "LevelManager.h"
 #include "../ecs/Managers/SoundManager.h"
 #include "../ecs/Utilities.h"
 #include "../ecs/ScriptFunction.h"

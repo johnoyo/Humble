@@ -10,12 +10,7 @@ namespace HBL {
 			if (Script.at(i).Enabled) {
 				int size = Script.at(i).script.size();
 				if (current_level < size)
-				{
-					if (current_level == -1)
-						Script.at(i).script[0]->Init();
-					else
-						Script.at(i).script[current_level]->Init();
-				}
+					Script.at(i).script[current_level]->Init();
 				else
 					Script.at(i).script[size - 1]->Init();
 			}
@@ -30,12 +25,7 @@ namespace HBL {
 			if (Script.at(i).Enabled) {
 				int size = Script.at(i).script.size();
 				if (current_level < size)
-				{
-					if (current_level == -1)
-						Script.at(i).script[0]->Update();
-					else
-						Script.at(i).script[current_level]->Update();
-				}
+					Script.at(i).script[current_level]->Update();
 				else
 					Script.at(i).script[size - 1]->Update();
 			}

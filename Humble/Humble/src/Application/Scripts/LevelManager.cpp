@@ -109,11 +109,8 @@ namespace HBL {
 		ecs.GetComponent<Component::Transform>(background.Transform, Transform).Static = false;
 		ecs.GetComponent<Component::Transform>(background.Transform, Transform).Enabled = true;
 
-		if (first)
-		{
-			// Re enable lvlHandler
-			ecs.GetComponent<Component::Script>(lvlHandler.Script, Script).Enabled = true;
-		}
+		// Re enable lvlHandler
+		ecs.GetComponent<Component::Script>(lvlHandler.Script, Script).Enabled = true;
 
 		// Update the position of the entities
 		for (uint32_t i = 0; i < p.size(); i++) {

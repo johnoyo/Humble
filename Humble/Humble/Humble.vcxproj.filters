@@ -54,9 +54,6 @@
     <ClCompile Include="src\ecs\Managers\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\Managers\LevelManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ecs\Managers\SoundManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Scripts\LevelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1250,9 +1250,6 @@
     <ClInclude Include="src\ecs\Systems\InputSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\Managers\LevelManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ecs\Systems\LevelManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1277,9 +1274,6 @@
     <ClInclude Include="src\Application\Scripts\LevelHandlerScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application\SystemsHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Application\Scripts\PlayerScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1293,6 +1287,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Humble.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Scripts\LevelManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\GlobalsHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\SystemsHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

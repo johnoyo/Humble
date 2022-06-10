@@ -1,12 +1,15 @@
 #pragma once
 
-#include "SystemsHeader.h"
+#include "GlobalsHeader.h"
 #include "..\ecs\Scene.h"
 
 namespace HBL {
 
 	class Level1 : public Scene
 	{
+		// This is so the class Level1 also inherits the constructor of class Scene
+		using Scene::Scene;
+
 	public:
 		void Enroll_Entities() override
 		{
@@ -15,6 +18,7 @@ namespace HBL {
 			ENROLL_ENTITY(enemy);
 			ENROLL_ENTITY(camera);
 			ENROLL_ENTITY(sps);
+			ENROLL_ENTITY(lvlHandler);
 
 			for (uint32_t i = 0; i < 400; i++)
 				ENROLL_ENTITY(wall[i]);
@@ -46,6 +50,8 @@ namespace HBL {
 
 			ADD_COMPONENT(Material, sps);
 
+			ADD_COMPONENT(Script, lvlHandler);
+
 			for (uint32_t i = 0; i < 400; i++) {
 				ADD_COMPONENT(Transform, wall[i]);
 				ADD_COMPONENT(CollisionBox, wall[i]);
@@ -64,6 +70,7 @@ namespace HBL {
 		{
 			GET_COMPONENT(Script, player).script.push_back(new PlayerScript());
 			GET_COMPONENT(Script, enemy).script.push_back(new EnemyScript());
+			GET_COMPONENT(Script, lvlHandler).script.push_back(new LevelHandlerScript());
 
 			GET_COMPONENT(Transform, player).Static = false;
 			GET_COMPONENT(Transform, enemy).Static = false;

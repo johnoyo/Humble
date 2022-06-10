@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SystemsHeader.h"
+#include "GlobalsHeader.h"
 #include "../ecs/Scene.h"
 
 #include "../Scripts/PlayerScript.h"
@@ -11,6 +11,9 @@ namespace HBL {
 
 	class Level0 : public Scene
 	{
+		// This is so the class Level0 also inherits the constructor of class Scene
+		using Scene::Scene;
+
 	public:
 		void Enroll_Entities() override
 		{

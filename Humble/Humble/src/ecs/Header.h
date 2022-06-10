@@ -19,3 +19,5 @@ extern std::vector<HBL::Component::Script> Script;
 extern std::vector<HBL::Component::Gravity> Gravity;
 extern std::vector<HBL::Component::Shadow> Shadow;
 /* --------------------------------------------------------------------------------- */
+
+static bool Scene_Change = false;

@@ -1,7 +1,10 @@
 #include "..\ecs\Header.h"
 #include "..\ecs\Utilities.h"
+#include "GlobalsHeader.h"
+
 #include "..\ecs\Application.h"
 #include "..\ecs\Scene.h"
+
 #include "Levels/Level0.h"
 #include "Levels/Level1.h"
 
@@ -36,11 +39,13 @@ static HBL::GravitySystem gravitySystem;
 static HBL::TransformSystem transformSystem;
 static HBL::ShadowCastSystem shadowSystem;
 
+
 int main() {
-	HBL::Level0 level0;
-	HBL::Level1 level1;
+	HBL::Level0 level0(player);
+	HBL::Level1 level1(player);
 
 	HBL::Application *app = new HBL::Application();
+
 	app->Add_Scene(&level0);
 	app->Add_Scene(&level1);
 

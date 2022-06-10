@@ -143,7 +143,7 @@
     <ClCompile Include="src\Application\app.cpp" />
     <ClCompile Include="src\ecs\Application.cpp" />
     <ClCompile Include="src\ecs\Managers\InputManager.cpp" />
-    <ClCompile Include="src\ecs\Managers\LevelManager.cpp" />
+    <ClCompile Include="src\Application\Scripts\LevelManager.cpp" />
     <ClCompile Include="src\ecs\Managers\SoundManager.cpp" />
     <ClCompile Include="src\ecs\System.cpp" />
     <ClCompile Include="src\ecs\Systems\CameraSystem.cpp" />
@@ -304,12 +304,13 @@
     <ClInclude Include="src\ecs\Entities.h" />
     <ClInclude Include="src\ecs\Header.h" />
     <ClInclude Include="src\ecs\Managers\InputManager.h" />
-    <ClInclude Include="src\ecs\Managers\LevelManager.h" />
+    <ClInclude Include="src\Application\Scripts\LevelManager.h" />
     <ClInclude Include="src\ecs\Managers\SoundManager.h" />
     <ClInclude Include="src\ecs\Scene.h" />
     <ClInclude Include="src\ecs\ScriptFunction.h" />
     <ClInclude Include="src\ecs\System.h" />
-    <ClInclude Include="src\Application\SystemsHeader.h" />
+    <ClInclude Include="src\Application\GlobalsHeader.h" />
+    <ClInclude Include="src\ecs\SystemsHeader.h" />
     <ClInclude Include="src\ecs\Systems\CameraSystem.h" />
     <ClInclude Include="src\ecs\Systems\CollisionSystem.h" />
     <ClInclude Include="src\ecs\Systems\GravitySystem.h" />

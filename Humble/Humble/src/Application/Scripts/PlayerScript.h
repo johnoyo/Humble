@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SystemsHeader.h"
+#include "GlobalsHeader.h"
 #include "../ecs/Managers/InputManager.h"
-#include "../ecs/Managers/LevelManager.h"
+//#include "LevelManager.h"
 #include "../ecs/Managers/SoundManager.h"
 #include "../ecs/Utilities.h"
 #include "../ecs/ScriptFunction.h"
@@ -18,7 +18,6 @@ namespace HBL {
 		virtual void Init() override {
 
 			GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
-
 		}
 
 		virtual void Update() override {

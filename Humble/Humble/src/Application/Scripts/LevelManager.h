@@ -1,19 +1,10 @@
 #pragma once
-#include "../Header.h"
-#include "../Systems/RenderingSystem.h"
-#include "../Systems/CollisionSystem.h"
-#include "../Systems/GravitySystem.h"
-#include "../Systems/ScriptingSystem.h"
+#include "../GlobalsHeader.h"
+#include "../../ecs/Systems/RenderingSystem.h"
+#include "../../ecs/Systems/CollisionSystem.h"
+#include "../../ecs/Systems/GravitySystem.h"
+#include "../../ecs/Systems/ScriptingSystem.h"
 #include <string>
-
-extern HBL::Entity::BaseEntity background;
-extern HBL::Entity::BaseEntity player;
-extern HBL::Entity::BaseEntity enemy;
-extern HBL::Entity::BaseEntity wall[400];
-extern HBL::Entity::BaseEntity level[10000];
-extern HBL::Entity::BaseEntity lvlHandler;
-extern HBL::Entity::BaseEntity camera;
-extern HBL::Entity::BaseEntity sps;
 
 namespace HBL {
 
@@ -32,6 +23,7 @@ namespace HBL {
 		}
 
 		static void Load_Level(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first) {
+			Get().m_current_level++;
 			return Get().ILoadLevel(level_path, scr, grav, rend, vertex_buffer, index_buffer, background, first);
 		}
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Core.h"
+#include "../Core.h"
 #include "../Header.h"
 #include <irrKlang.h>
 

@@ -1,9 +1,9 @@
 #pragma once
 #include "../GlobalsHeader.h"
-#include "../../ecs/Systems/RenderingSystem.h"
-#include "../../ecs/Systems/CollisionSystem.h"
-#include "../../ecs/Systems/GravitySystem.h"
-#include "../../ecs/Systems/ScriptingSystem.h"
+#include "../../Core/Systems/RenderingSystem.h"
+#include "../../Core/Systems/CollisionSystem.h"
+#include "../../Core/Systems/GravitySystem.h"
+#include "../../Core/Systems/ScriptingSystem.h"
 #include <string>
 
 namespace HBL {

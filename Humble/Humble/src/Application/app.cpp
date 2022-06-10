@@ -1,9 +1,9 @@
-#include "..\ecs\Header.h"
-#include "..\ecs\Utilities.h"
+#include "..\Core\Header.h"
+#include "..\Core\Utilities.h"
 #include "GlobalsHeader.h"
 
-#include "..\ecs\Application.h"
-#include "..\ecs\Scene.h"
+#include "..\Core\Application.h"
+#include "..\Core\Scene.h"
 
 #include "Levels/Level0.h"
 #include "Levels/Level1.h"

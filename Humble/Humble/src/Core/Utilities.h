@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Header.h"
-#include "../ProfilerScope.h"
+#include "ProfilerScope.h"
 #include <string>
 
 #define ENROLL_ENTITY(entity) ecs.EnrollEntity(entity, entities)

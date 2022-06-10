@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GlobalsHeader.h"
-#include "../ecs/Scene.h"
+#include "../Core/Scene.h"
 
 #include "../Scripts/PlayerScript.h"
 #include "../Scripts/EnemyScript.h"

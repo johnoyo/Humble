@@ -1,14 +1,14 @@
 #pragma once
-#include "..\ecs\Systems\CameraSystem.h"
-#include "..\ecs\Systems\RenderingSystem.h"
-#include "..\ecs\Systems\WindowSystem.h"
-#include "..\ecs\Systems\TextureSystem.h"
-#include "..\ecs\Systems\ScriptingSystem.h"
-#include "..\ecs\Systems\CollisionSystem.h"
-#include "..\ecs\Systems\GravitySystem.h"
-#include "..\ecs\Managers\SoundManager.h"
-#include "..\ecs\Systems\TransformSystem.h"
-#include "..\ecs\Systems\ShadowCastSystem.h"
+#include "..\Core\Systems\CameraSystem.h"
+#include "..\Core\Systems\RenderingSystem.h"
+#include "..\Core\Systems\WindowSystem.h"
+#include "..\Core\Systems\TextureSystem.h"
+#include "..\Core\Systems\ScriptingSystem.h"
+#include "..\Core\Systems\CollisionSystem.h"
+#include "..\Core\Systems\GravitySystem.h"
+#include "..\Core\Managers\SoundManager.h"
+#include "..\Core\Systems\TransformSystem.h"
+#include "..\Core\Systems\ShadowCastSystem.h"
 
 extern HBL::WindowSystem windowSystem;
 extern HBL::TextureSystem textureSystem;

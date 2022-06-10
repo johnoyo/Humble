@@ -54,7 +54,6 @@ namespace HBL {
 
 					shadow_points.push_back({ rdx, rdy });
 
-					// Find Intersection points between shadow line and all edges, store closer one for each edge 
 				}
 
 				// Set shadow quad positions

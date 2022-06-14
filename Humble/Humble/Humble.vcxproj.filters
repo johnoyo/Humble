@@ -1268,9 +1268,6 @@
     <ClInclude Include="src\Core\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Core\Entities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Core\Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1296,6 +1293,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Humble.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Managers\Entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

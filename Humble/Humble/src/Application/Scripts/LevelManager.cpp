@@ -160,9 +160,9 @@ namespace HBL {
 			}
 		}
 
-		std::cout << "lvl indx: " << level_index << "\n";
-		std::cout << "wall indx: " << wall_index << "\n";
-		std::cout << "p size: " << p.size() << "\n";
+		ENGINE_LOG("lvl indx: %d", level_index);
+		ENGINE_LOG("wall indx: %d", wall_index);
+		ENGINE_LOG("p size: %d", p.size());
 
 		// Upadate the position of the player last
 		ecs.GetComponent<Component::Transform>(player.Transform, Transform).scale.x = 29.0f;

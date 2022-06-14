@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System.h"
-#include "Entities.h"
+#include "Entity.h"
 #include "Components.h"
 #include <vector>
 #include <string>

@@ -2,10 +2,10 @@
 
 #include "GlobalsHeader.h"
 #include "LevelManager.h"
-#include "../Core/Managers/InputManager.h"
-#include "../Core/Managers/SoundManager.h"
-#include "../Core/Utilities.h"
-#include "../Core/ScriptFunction.h"
+#include "..\Core\Managers\InputManager.h"
+#include "..\Core\Managers\SoundManager.h"
+#include "..\Core\Utilities.h"
+#include "..\Core\ScriptFunction.h"
 
 namespace HBL {
 
@@ -26,6 +26,9 @@ namespace HBL {
 		virtual void Update() override {
 			if (InputManager::GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_K))
 				Scene_Change = true;
+
+			if (InputManager::GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_L))
+				LevelManager::Load_Level("res/levels/test4.txt", scriptingSystem, gravitySystem, renderingSystem, renderingSystem.Get_Vertex_Buffer(), renderingSystem.Get_Index_Buffer(), background, true);
 		}
 
 	};

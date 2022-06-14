@@ -87,7 +87,7 @@ namespace HBL {
 				}
 
 				// collision check on x-axis
-				if (entities.at(i).CollisionBox != -1) Check_For_Collisions(entt, entt.CollisionBox, buffer, X_AXIS);
+				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) Check_For_Collisions(entt, entt.CollisionBox, buffer, X_AXIS);
 
 				// update collision box on y-axis
 				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {

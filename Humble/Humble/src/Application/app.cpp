@@ -5,8 +5,8 @@
 #include "..\Core\Application.h"
 #include "..\Core\Scene.h"
 
-#include "Levels/Level0.h"
-#include "Levels/Level1.h"
+#include "Levels\Level0.h"
+#include "Levels\Level1.h"
 
 HBL::System ecs = HBL::System();
 
@@ -41,6 +41,7 @@ static HBL::ShadowCastSystem shadowSystem;
 
 
 int main() {
+
 	HBL::Level0 level0(player);
 	HBL::Level1 level1(player);
 

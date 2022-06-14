@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "Entities.h"
+#include "Entity.h"
 #include "Components.h"
 
 namespace HBL {

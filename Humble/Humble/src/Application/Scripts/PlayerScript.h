@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GlobalsHeader.h"
-#include "../Core/Managers/InputManager.h"
-#include "../Core/Managers/SoundManager.h"
-#include "../Core/Utilities.h"
-#include "../Core/ScriptFunction.h"
+#include "..\Core\Managers\InputManager.h"
+#include "..\Core\Managers\SoundManager.h"
+#include "..\Core\Utilities.h"
+#include "..\Core\ScriptFunction.h"
 
 namespace HBL {
 

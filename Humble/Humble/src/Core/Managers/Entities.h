@@ -20,13 +20,13 @@ namespace HBL {
 			Get().IFor_Each(func);
 		}
 
-		Entities* Filter(std::vector<Entity::BaseEntity> current_entities)
+		Entities& Filter(std::vector<Entity::BaseEntity> current_entities)
 		{
-			return static_cast<Entities*>(&Get());
+			return Get();
 		}
 
 		template<typename T, typename... Ts>
-		Entities* Filter(std::vector<Entity::BaseEntity> current_entities, T param, Ts... params)
+		Entities& Filter(std::vector<Entity::BaseEntity> current_entities, T param, Ts... params)
 		{
 			Get().filtered.clear();
 

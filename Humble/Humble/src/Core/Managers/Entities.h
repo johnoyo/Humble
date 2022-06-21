@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../Entity.h"
+#include "../IEntity.h"
 
 namespace HBL {
 
@@ -8,29 +8,29 @@ namespace HBL {
 	public:
 		Entities(const Entities&) = delete;
 
-		std::vector<Entity::BaseEntity> entities;
+		std::vector<IEntity> entities;
 
 		static Entities& Get() {
 			static Entities instance;
 			return instance;
 		}
 
-		static void For_Each(std::function<void(Entity::BaseEntity)> func) 
+		static void For_Each(std::function<void(IEntity)> func) 
 		{
 			Get().IFor_Each(func);
 		}
 
-		Entities& Filter(std::vector<Entity::BaseEntity> current_entities)
+		Entities& Filter(std::vector<IEntity> current_entities)
 		{
 			return Get();
 		}
 
 		template<typename T, typename... Ts>
-		Entities& Filter(std::vector<Entity::BaseEntity> current_entities, T param, Ts... params)
+		Entities& Filter(std::vector<IEntity> current_entities, T param, Ts... params)
 		{
 			Get().filtered.clear();
 
-			auto lamda = [&](Entity::BaseEntity entt) {
+			auto lamda = [&](IEntity entt) {
 				if (param == "Transform")
 					return entt.Transform != -1;
 				else if (param == "Material")
@@ -62,14 +62,14 @@ namespace HBL {
 	private:
 		Entities() {}
 
-		void IFor_Each(std::function<void(Entity::BaseEntity)> func) {
-			for (Entity::BaseEntity entt : filtered) {
+		void IFor_Each(std::function<void(IEntity)> func) {
+			for (IEntity entt : filtered) {
 				func(entt);
 			}
 			Get().filtered.clear();
 		}
 
-		std::vector<Entity::BaseEntity> filtered;
+		std::vector<IEntity> filtered;
 
 	};
 

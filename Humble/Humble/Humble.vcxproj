@@ -303,6 +303,7 @@
     <ClInclude Include="src\Core\Components.h" />
     <ClInclude Include="src\Core\Entity.h" />
     <ClInclude Include="src\Core\Header.h" />
+    <ClInclude Include="src\Core\IEntity.h" />
     <ClInclude Include="src\Core\Managers\Entities.h" />
     <ClInclude Include="src\Core\Managers\InputManager.h" />
     <ClInclude Include="src\Application\Scripts\LevelManager.h" />

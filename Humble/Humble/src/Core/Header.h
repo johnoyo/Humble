@@ -1,14 +1,14 @@
 #pragma once
 
 #include "System.h"
-#include "Entity.h"
+#include "IEntity.h"
 #include "Components.h"
 #include <vector>
 #include <string>
 
 extern HBL::System ecs;
 
-extern std::vector<HBL::Entity::BaseEntity> entities;
+extern std::vector<HBL::IEntity> entities;
 
 /* ------------------------- Component Vector Declaration -------------------------- */
 extern std::vector<HBL::Component::Transform> Transform;

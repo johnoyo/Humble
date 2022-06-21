@@ -5,6 +5,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
 
+#include "../Utilities.h"
+
 namespace HBL {
 
 	class CameraSystem {
@@ -15,22 +17,22 @@ namespace HBL {
 		void Start();
 		void Run();
 
-		void Follow(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset);
-		void Follow(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset_x, float offset_y);
-		void Follow_Horizontally(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset_x);
-		void Follow_Vertically(Entity::BaseEntity& camera, Entity::BaseEntity& player, float offset_y);
+		void Follow(IEntity& camera, IEntity& player, float offset);
+		void Follow(IEntity& camera, IEntity& player, float offset_x, float offset_y);
+		void Follow_Horizontally(IEntity& camera, IEntity& player, float offset_x);
+		void Follow_Vertically(IEntity& camera, IEntity& player, float offset_y);
 
 		const glm::mat4& Get_Projection_Matrix() const { return m_Projection_Matrix; }
 		const glm::mat4& Get_View_Matrix() const { return m_View_Matrix; }
 		const glm::mat4& Get_View_Projection_Matrix() const { return m_View_Projection_Matrix; }
 
 	private:
-		void Set_Position(Entity::BaseEntity& camera, const glm::vec3& position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position = position; Recalculate_View_Matrix(camera); }
-		void Set_Position_x(Entity::BaseEntity& camera, float position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.x = position; Recalculate_View_Matrix(camera); }
-		void Set_Position_y(Entity::BaseEntity& camera, float position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.y = position; Recalculate_View_Matrix(camera); }
-		void Incr_Position(Entity::BaseEntity& camera, Entity::BaseEntity& player, const glm::vec3& position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.x += position.x;  ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.y += position.y; Recalculate_View_Matrix(camera); }
+		void Set_Position(IEntity& camera, const glm::vec3& position) { GET_COMPONENT(Transform, camera).position = position; Recalculate_View_Matrix(camera); }
+		void Set_Position_x(IEntity& camera, float position) { GET_COMPONENT(Transform, camera).position.x = position; Recalculate_View_Matrix(camera); }
+		void Set_Position_y(IEntity& camera, float position) { GET_COMPONENT(Transform, camera).position.y = position; Recalculate_View_Matrix(camera); }
+		void Incr_Position(IEntity& camera, IEntity& player, const glm::vec3& position) { GET_COMPONENT(Transform, camera).position.x += position.x;  GET_COMPONENT(Transform, camera).position.y += position.y; Recalculate_View_Matrix(camera); }
 
-		void Recalculate_View_Matrix(Entity::BaseEntity& camera);
+		void Recalculate_View_Matrix(IEntity& camera);
 
 		glm::mat4 m_Projection_Matrix;
 		glm::mat4 m_View_Matrix;

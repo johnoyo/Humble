@@ -14,8 +14,8 @@ namespace HBL {
 			int Animation = -1;
 			int Gravity = -1;
 			int Script = -1;
-			int Health = -1;
 			int Shadow = -1;
+			int Health = -1;
 		};
 
 	}

@@ -9,14 +9,14 @@ namespace HBL {
 		uint32_t offset = 0;
 		// Init shadow cast component info
 		for (uint32_t i = 0; i < entities.size(); i++) {
-			if (entities.at(i).Transform != -1 && entities.at(i).Shadow != -1) {
-				if (Shadow.at(entities.at(i).Shadow).Enabled) {
-					Material.at(entities.at(i).Material).texture = "-";
-					Material.at(entities.at(i).Material).color = shadow_color;
+			if (TRY_FIND_COMPONENT(Transform, entities.at(i)) && TRY_FIND_COMPONENT(Material, entities.at(i)) && TRY_FIND_COMPONENT(Shadow, entities.at(i))) {
+				if (GET_COMPONENT(Shadow, entities.at(i)).Enabled) {
+					GET_COMPONENT(Material, entities.at(i)).texture = "-";
+					GET_COMPONENT(Material, entities.at(i)).color = shadow_color;
 
-					Shadow.at(entities.at(i).Shadow).parentBufferIndex = Transform.at(entities.at(i).Transform).bufferIndex;
-					Shadow.at(entities.at(i).Shadow).bufferIndex = buffer.Get_Size() + offset;
-					Shadow.at(entities.at(i).Shadow).color = shadow_color;
+					GET_COMPONENT(Shadow, entities.at(i)).parentBufferIndex = GET_COMPONENT(Transform, entities.at(i)).bufferIndex;
+					GET_COMPONENT(Shadow, entities.at(i)).bufferIndex = buffer.Get_Size() + offset;
+					GET_COMPONENT(Shadow, entities.at(i)).color = shadow_color;
 					offset += 12;
 				}
 			}

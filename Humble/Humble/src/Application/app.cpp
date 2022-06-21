@@ -10,16 +10,16 @@
 
 HBL::System ecs = HBL::System();
 
-std::vector<HBL::Entity::BaseEntity> entities;
+std::vector<HBL::IEntity> entities;
 
-HBL::Entity::BaseEntity background;
-HBL::Entity::BaseEntity player;
-HBL::Entity::BaseEntity enemy;
-HBL::Entity::BaseEntity wall[400];
-HBL::Entity::BaseEntity level[10000];
-HBL::Entity::BaseEntity camera;
-HBL::Entity::BaseEntity lvlHandler;
-HBL::Entity::BaseEntity sps;
+HBL::IEntity background;
+HBL::IEntity player;
+HBL::IEntity enemy;
+HBL::IEntity wall[400];
+HBL::IEntity level[10000];
+HBL::IEntity camera;
+HBL::IEntity lvlHandler;
+HBL::IEntity sps;
 
 std::vector<HBL::Component::Transform> Transform;
 std::vector<HBL::Component::CollisionBox> CollisionBox;

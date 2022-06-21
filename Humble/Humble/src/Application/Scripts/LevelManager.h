@@ -22,7 +22,7 @@ namespace HBL {
 			Get().m_level_path = level_path;
 		}
 
-		static void Load_Level(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first) {
+		static void Load_Level(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity background, bool first) {
 			Get().m_current_level++;
 			return Get().ILoadLevel(level_path, scr, grav, rend, vertex_buffer, index_buffer, background, first);
 		}
@@ -33,7 +33,7 @@ namespace HBL {
 	private:
 		LevelManager() {}
 
-		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, Entity::BaseEntity background, bool first);
+		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity background, bool first);
 		inline uint32_t IGetCurrentLevel() { return m_current_level; }
 		inline const std::string& IGetCurrentPath() { return m_level_path; }
 

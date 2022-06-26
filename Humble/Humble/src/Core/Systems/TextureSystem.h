@@ -25,7 +25,6 @@ namespace HBL {
 		void Load_Texture(const std::string& path);
 		float Find(const std::string& path);
 
-
 	};
 
 }

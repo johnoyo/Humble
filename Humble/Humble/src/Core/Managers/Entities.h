@@ -9,14 +9,16 @@ namespace HBL {
 		Entities(const Entities&) = delete;
 
 		std::vector<IEntity> entities;
+		std::vector<IEntity> filtered;
 
 		static Entities& Get() {
 			static Entities instance;
 			return instance;
 		}
 
-		static void For_Each(std::function<void(IEntity)> func) 
+		static void For_Each(std::function<void(IEntity&)> func) 
 		{
+			ENGINE_PROFILE("For_Each");
 			Get().IFor_Each(func);
 		}
 
@@ -26,25 +28,16 @@ namespace HBL {
 		}
 
 		template<typename T, typename... Ts>
-		Entities& Filter(std::vector<IEntity> current_entities, T param, Ts... params)
+		Entities& Filter(std::vector<IEntity> current_entities, T& param, Ts&... params)
 		{
+			ENGINE_PROFILE("Filter: param");
+			// TODO: fix this
+
 			Get().filtered.clear();
 
-			auto lamda = [&](IEntity entt) {
-				if (param == "Transform")
-					return entt.Transform != -1;
-				else if (param == "Material")
-					return entt.Material != -1;
-				else if (param == "CollisionBox")
-					return entt.CollisionBox != -1;
-				else if (param == "Shadow")
-					return entt.Shadow != -1;
-				else if (param == "Gravity")
-					return entt.Gravity != -1;
-				else if (param == "Script")
-					return entt.Script != -1;
-				else if (param == "Animation")
-					return entt.Animation != -1;
+			auto lamda = [&](IEntity entt) 
+			{
+				return entt.components.find(param) != entt.components.end();
 			};
 
 			for (
@@ -62,14 +55,14 @@ namespace HBL {
 	private:
 		Entities() {}
 
-		void IFor_Each(std::function<void(IEntity)> func) {
-			for (IEntity entt : filtered) {
+		void IFor_Each(std::function<void(IEntity&)> func) {
+			for (IEntity& entt : filtered) {
 				func(entt);
 			}
 			Get().filtered.clear();
 		}
 
-		std::vector<IEntity> filtered;
+		std::vector<IEntity> current;
 
 	};
 

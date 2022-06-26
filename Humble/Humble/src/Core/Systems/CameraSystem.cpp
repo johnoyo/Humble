@@ -21,13 +21,12 @@ namespace HBL {
 
 	void CameraSystem::Start()
 	{
-		std::cout << "Starting camera system ...\n";
 		m_View_Projection_Matrix = m_Projection_Matrix * m_View_Matrix;
 	}
 
 	void CameraSystem::Run()
 	{
-		std::cout << "Running camera system ...\n";
+
 	}
 
 	void CameraSystem::Follow(IEntity& camera, IEntity& player, float offset)

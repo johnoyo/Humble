@@ -9,10 +9,7 @@ namespace HBL {
 	public:
 		void Start();
 		void Run(VertexBuffer& buffer);
-		void Update(VertexBuffer& buffer, std::vector<int>& entities_to_be_updated);
 		void Clear();
-	private:
-
 	};
 
 }

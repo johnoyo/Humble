@@ -4,104 +4,60 @@ namespace HBL {
 
 	void CollisionSystem::Start()
 	{
-		ENGINE_PROFILE("CollisionSystem::Start");
+		FUNCTION_PROFILE();
 
-		for (uint32_t i = 0; i < entities.size(); i++) {
-			if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i)) && TRY_FIND_COMPONENT(Transform, entities.at(i))) {
-				GET_COMPONENT(CollisionBox, entities.at(i)).tl.x = GET_COMPONENT(Transform, entities.at(i)).position.x - GET_COMPONENT(Transform, entities.at(i)).scale.x / 2.0f;
-				GET_COMPONENT(CollisionBox, entities.at(i)).tl.y = GET_COMPONENT(Transform, entities.at(i)).position.y + GET_COMPONENT(Transform, entities.at(i)).scale.y / 2.0f;
-																														 
-				GET_COMPONENT(CollisionBox, entities.at(i)).tr.x = GET_COMPONENT(Transform, entities.at(i)).position.x + GET_COMPONENT(Transform, entities.at(i)).scale.x / 2.0f;
-				GET_COMPONENT(CollisionBox, entities.at(i)).tr.y = GET_COMPONENT(Transform, entities.at(i)).position.y + GET_COMPONENT(Transform, entities.at(i)).scale.y / 2.0f;
-																														 
-				GET_COMPONENT(CollisionBox, entities.at(i)).br.x = GET_COMPONENT(Transform, entities.at(i)).position.x + GET_COMPONENT(Transform, entities.at(i)).scale.x / 2.0f;
-				GET_COMPONENT(CollisionBox, entities.at(i)).br.y = GET_COMPONENT(Transform, entities.at(i)).position.y - GET_COMPONENT(Transform, entities.at(i)).scale.y / 2.0f;
-																   														 
-				GET_COMPONENT(CollisionBox, entities.at(i)).bl.x = GET_COMPONENT(Transform, entities.at(i)).position.x - GET_COMPONENT(Transform, entities.at(i)).scale.x / 2.0f;
-				GET_COMPONENT(CollisionBox, entities.at(i)).bl.y = GET_COMPONENT(Transform, entities.at(i)).position.y - GET_COMPONENT(Transform, entities.at(i)).scale.y / 2.0f;
-			}
-		}
-	}
+		Filter(entities, "Transform", "CollisionBox");
 
-	void CollisionSystem::Run0(VertexBuffer& buffer)
-	{
-		//ENGINE_PROFILE("CollisionSystem::Run0");
+		For_Each([&](IEntity& entt)
+		{
+			Component::Transform& transfom = GET_COMPONENT(Transform, entt);
+			Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, entt);
 
-		// update collision boxes and move the Transform of non-static objects
-		for (uint32_t i = 0; i < entities.size(); i++) {
-			if (TRY_FIND_COMPONENT(Transform, entities.at(i)) && GET_COMPONENT(Transform, entities.at(i)).Static == false) {
-				IEntity& entt = entities.at(i);
-
-				glm::vec3 tr = GET_COMPONENT(Transform, entt).position;
-				glm::vec3 sc = GET_COMPONENT(Transform, entt).scale;
-
-				// move player on x-axis
-				buffer.Update_PositionX_On_Quad(GET_COMPONENT(Transform, entt).bufferIndex, GET_COMPONENT(Transform, entt));
-
-				// update collision box on x-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
-					GET_COMPONENT(CollisionBox, entt).tl.x = tr.x - sc.x / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).tr.x = tr.x + sc.x / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).br.x = tr.x + sc.x / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).bl.x = tr.x - sc.x / 2.0f;
-				}
-
-				// collision check on x-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entt)) Check_For_Collisions(entt, entt.CollisionBox, buffer, X_AXIS);
-
-				// move player on y-axis
-				buffer.Update_PositionY_On_Quad(GET_COMPONENT(Transform, entt).bufferIndex, GET_COMPONENT(Transform, entt));
-
-				// update collision box on y-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entt)) {
-					GET_COMPONENT(CollisionBox, entt).tl.y = tr.y + sc.y / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).tr.y = tr.y + sc.y / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).br.y = tr.y - sc.y / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).bl.y = tr.y - sc.y / 2.0f;
-				}
-
-				// collision check on y-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entt)) Check_For_Collisions(entt, entt.CollisionBox, buffer, Y_AXIS);
-			}
-		}
+			collisionBox.tl.x = transfom.position.x - transfom.scale.x / 2.0f;
+			collisionBox.tl.y = transfom.position.y + transfom.scale.y / 2.0f;
+													  
+			collisionBox.tr.x = transfom.position.x + transfom.scale.x / 2.0f;
+			collisionBox.tr.y = transfom.position.y + transfom.scale.y / 2.0f;
+													  
+			collisionBox.br.x = transfom.position.x + transfom.scale.x / 2.0f;
+			collisionBox.br.y = transfom.position.y - transfom.scale.y / 2.0f;
+													  
+			collisionBox.bl.x = transfom.position.x - transfom.scale.x / 2.0f;
+			collisionBox.bl.y = transfom.position.y - transfom.scale.y / 2.0f;
+		});
 	}
 
 	void CollisionSystem::Run(VertexBuffer& buffer)
 	{
-		//ENGINE_PROFILE("CollisionSystem::Run");
+		// Update collision boxes of non-static objects
+		For_Each([&](IEntity& entt)
+		{
+			if (GET_COMPONENT(Transform, entt).Static == false) 
+			{
+				Component::Transform& transfom = GET_COMPONENT(Transform, entt);
+				Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, entt);
 
-		// update collision boxes of non-static objects
-		for (uint32_t i = 0; i < entities.size(); i++) {
-			if (TRY_FIND_COMPONENT(Transform, entities.at(i)) && GET_COMPONENT(Transform, entities.at(i)).Static == false) {
-				IEntity& entt = entities.at(i);
+				glm::vec3& tr = transfom.position;
+				glm::vec3& sc = transfom.scale;
 
-				glm::vec3& tr = GET_COMPONENT(Transform, entt).position;
-				glm::vec3& sc = GET_COMPONENT(Transform, entt).scale;
-
-				// update collision box on x-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
-					GET_COMPONENT(CollisionBox, entt).tl.x = tr.x - sc.x / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).tr.x = tr.x + sc.x / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).br.x = tr.x + sc.x / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).bl.x = tr.x - sc.x / 2.0f;
-				}
+				collisionBox.tl.x = tr.x - sc.x / 2.0f;
+				collisionBox.tr.x = tr.x + sc.x / 2.0f;
+				collisionBox.br.x = tr.x + sc.x / 2.0f;
+				collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 				// collision check on x-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) Check_For_Collisions(entt, entt.CollisionBox, buffer, X_AXIS);
+				Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, X_AXIS);
 
 				// update collision box on y-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) {
-					GET_COMPONENT(CollisionBox, entt).tl.y = tr.y + sc.y / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).tr.y = tr.y + sc.y / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).br.y = tr.y - sc.y / 2.0f;
-					GET_COMPONENT(CollisionBox, entt).bl.y = tr.y - sc.y / 2.0f;
-				}
+				collisionBox.tl.y = tr.y + sc.y / 2.0f;
+				collisionBox.tr.y = tr.y + sc.y / 2.0f;
+				collisionBox.br.y = tr.y - sc.y / 2.0f;
+				collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 				// collision check on y-axis
-				if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i))) Check_For_Collisions(entt, entt.CollisionBox, buffer, Y_AXIS);
-
+				Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, Y_AXIS);
 			}
-		}
+		});
 	}
 
 	void CollisionSystem::Clear()
@@ -112,79 +68,85 @@ namespace HBL {
 	bool CollisionSystem::CollisionBetween(IEntity& e0, IEntity& e1, VertexBuffer& buffer)
 	{
 		bool collision = false;
+		Component::CollisionBox& collisionBox0 = GET_COMPONENT(CollisionBox, e0);
+		Component::CollisionBox& collisionBox1 = GET_COMPONENT(CollisionBox, e1);
 
-		collision = check_corner_br_tl_bool(GET_COMPONENT(CollisionBox, e0).br, GET_COMPONENT(CollisionBox, e1).tl, GET_COMPONENT(CollisionBox, e1).br);
+		collision = check_corner_br_tl_bool(collisionBox0.br, collisionBox1.tl, collisionBox1.br);
 		if (collision) return true;
 
-		collision = check_corner_tr_bl_bool(GET_COMPONENT(CollisionBox, e0).tr, GET_COMPONENT(CollisionBox, e1).bl, GET_COMPONENT(CollisionBox, e1).tr);
+		collision = check_corner_tr_bl_bool(collisionBox0.tr, collisionBox1.bl, collisionBox1.tr);
 		if (collision) return true;
 
-		collision = check_corner_tl_br_bool(GET_COMPONENT(CollisionBox, e0).tl, GET_COMPONENT(CollisionBox, e1).br, GET_COMPONENT(CollisionBox, e1).tl);
+		collision = check_corner_tl_br_bool(collisionBox0.tl, collisionBox1.br, collisionBox1.tl);
 		if (collision) return true;
 
-		collision = check_corner_bl_tr_bool(GET_COMPONENT(CollisionBox, e0).bl, GET_COMPONENT(CollisionBox, e1).tr, GET_COMPONENT(CollisionBox, e1).bl);
+		collision = check_corner_bl_tr_bool(collisionBox0.bl, collisionBox1.tr, collisionBox1.bl);
 		if (collision) return true;
 
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_br_tl_bool(glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br) {
+	bool CollisionSystem::check_corner_br_tl_bool(glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br) {
 		if (p_br.y <= e_tl.y && p_br.x >= e_tl.x && p_br.y >= e_br.y && p_br.x <= e_br.x)
 			return true;
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tr_bl_bool(glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_tr) {
+	bool CollisionSystem::check_corner_tr_bl_bool(glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr) {
 		if (p_tr.y >= e_bl.y && p_tr.x >= e_bl.x && p_tr.y <= e_tr.y && p_tr.x <= e_tr.x)
 			return true;
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tl_br_bool(glm::vec3 p_tl, glm::vec3 e_br, glm::vec3 e_tl) {
+	bool CollisionSystem::check_corner_tl_br_bool(glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl) {
 		if (p_tl.y >= e_br.y && p_tl.x <= e_br.x && p_tl.y <= e_tl.y && p_tl.x >= e_tl.x)
 			return true;
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_bl_tr_bool(glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_bl) {
+	bool CollisionSystem::check_corner_bl_tr_bool(glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl) {
 		if (p_bl.y <= e_tr.y && p_bl.x <= e_tr.x && p_bl.y >= e_bl.y && p_bl.x >= e_bl.x)
 			return true;
 		return false;
 	}
 
-	void CollisionSystem::change_position_x(IEntity& p, VertexBuffer& buffer) {
+	void CollisionSystem::change_position_x(IEntity& p, VertexBuffer& buffer) 
+	{
+		Component::Transform& transfom = GET_COMPONENT(Transform, p);
+		Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, p);
 
-		glm::vec3 tr = GET_COMPONENT(Transform, p).position;
-		glm::vec3 sc = GET_COMPONENT(Transform, p).scale;
+		glm::vec3 tr = transfom.position;
+		glm::vec3 sc = transfom.scale;
 
 		// update collision box on x-axis
-		GET_COMPONENT(CollisionBox, p).tl.x = tr.x - sc.x / 2.0f;
-		GET_COMPONENT(CollisionBox, p).tr.x = tr.x + sc.x / 2.0f;
-		GET_COMPONENT(CollisionBox, p).br.x = tr.x + sc.x / 2.0f;
-		GET_COMPONENT(CollisionBox, p).bl.x = tr.x - sc.x / 2.0f;
+		collisionBox.tl.x = tr.x - sc.x / 2.0f;
+		collisionBox.tr.x = tr.x + sc.x / 2.0f;
+		collisionBox.br.x = tr.x + sc.x / 2.0f;
+		collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 		// move player on x-axis
-		entities_to_be_updated.push_back(p.Transform);
-		buffer.Update_PositionX_On_Quad(GET_COMPONENT(Transform, p).bufferIndex, GET_COMPONENT(Transform, p));
+		buffer.Update_PositionX_On_Quad(transfom.bufferIndex, transfom);
 	}
 
-	void CollisionSystem::change_position_y(IEntity& p, VertexBuffer& buffer) {
+	void CollisionSystem::change_position_y(IEntity& p, VertexBuffer& buffer) 
+	{
+		Component::Transform& transfom = GET_COMPONENT(Transform, p);
+		Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, p);
 
-		glm::vec3 tr = GET_COMPONENT(Transform, p).position;
-		glm::vec3 sc = GET_COMPONENT(Transform, p).scale;
+		glm::vec3 tr = transfom.position;
+		glm::vec3 sc = transfom.scale;
 
 		// update collision box on y-axis
-		GET_COMPONENT(CollisionBox, p).tl.y = tr.y + sc.y / 2.0f;
-		GET_COMPONENT(CollisionBox, p).tr.y = tr.y + sc.y / 2.0f;
-		GET_COMPONENT(CollisionBox, p).br.y = tr.y - sc.y / 2.0f;
-		GET_COMPONENT(CollisionBox, p).bl.y = tr.y - sc.y / 2.0f;
+		collisionBox.tl.y = tr.y + sc.y / 2.0f;
+		collisionBox.tr.y = tr.y + sc.y / 2.0f;
+		collisionBox.br.y = tr.y - sc.y / 2.0f;
+		collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 		// move player on y-axis
-		entities_to_be_updated.push_back(p.Transform);
-		buffer.Update_PositionY_On_Quad(GET_COMPONENT(Transform, p).bufferIndex, GET_COMPONENT(Transform, p));
+		buffer.Update_PositionY_On_Quad(transfom.bufferIndex, transfom);
 	}
 
-	bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, IEntity& p, glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br, int axis)
+	bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br, int axis)
 	{
 		if (p_br.y < e_tl.y && p_br.x > e_tl.x && p_br.y > e_br.y && p_br.x < e_br.x) {
 			//std::cout << "bottom right\n";
@@ -201,7 +163,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tr_bl(VertexBuffer& buffer, IEntity& p, glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_tr, int axis)
+	bool CollisionSystem::check_corner_tr_bl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr, int axis)
 	{
 		if (p_tr.y > e_bl.y && p_tr.x > e_bl.x && p_tr.y < e_tr.y && p_tr.x < e_tr.x) {
 			//std::cout << "top right\n";
@@ -219,7 +181,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tl_br(VertexBuffer& buffer, IEntity& p, glm::vec3 p_tl, glm::vec3 e_br, glm::vec3 e_tl, int axis)
+	bool CollisionSystem::check_corner_tl_br(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
 	{
 		if (p_tl.y > e_br.y && p_tl.x < e_br.x && p_tl.y < e_tl.y && p_tl.x > e_tl.x) {
 			//std::cout << "top left\n";
@@ -237,7 +199,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_bl_tr(VertexBuffer& buffer, IEntity& p, glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_bl, int axis)
+	bool CollisionSystem::check_corner_bl_tr(VertexBuffer& buffer, IEntity& p, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl, int axis)
 	{
 		if (p_bl.y < e_tr.y && p_bl.x < e_tr.x && p_bl.y > e_bl.y && p_bl.x > e_bl.x) {
 			//std::cout << "bottom left\n";
@@ -254,7 +216,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_side_l_r(VertexBuffer& buffer, IEntity& p, glm::vec3 p_br, glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_tl, glm::vec3 e_tr, int axis)
+	bool CollisionSystem::check_side_l_r(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tl, glm::vec3& e_tr, int axis)
 	{
 		if (p_br.y <= e_bl.y && p_tr.y >= e_tl.y && p_br.x > e_bl.x && p_tr.x > e_tl.x && p_tr.x < e_tr.x) {
 			if (axis == X_AXIS) {
@@ -268,7 +230,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_side_r_l(VertexBuffer& buffer, IEntity& p, glm::vec3 p_tl, glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_br, glm::vec3 e_bl, int axis)
+	bool CollisionSystem::check_side_r_l(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_br, glm::vec3& e_bl, int axis)
 	{
 		if (p_tl.y >= e_tr.y && p_bl.y <= e_br.y && p_tl.x < e_tr.x && p_bl.x < e_br.x && p_tl.x > e_bl.x) {
 			if (axis == X_AXIS) {
@@ -282,7 +244,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_side_b_t(VertexBuffer& buffer, IEntity& p, glm::vec3 p_tl, glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_br, glm::vec3 e_tl, int axis)
+	bool CollisionSystem::check_side_b_t(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
 	{
 		if (p_tl.x <= e_bl.x && p_tl.y > e_bl.y && p_tr.x >= e_br.x && p_tr.y > e_br.y && p_tl.y < e_tl.y) {
 			if (axis == Y_AXIS) {
@@ -297,7 +259,7 @@ namespace HBL {
 		return false;
 	}
 
-	bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, IEntity& p, glm::vec3 p_br, glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_tl, glm::vec3 e_bl, int axis)
+	bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_tl, glm::vec3& e_bl, int axis)
 	{
 		if (p_bl.x <= e_tl.x && p_bl.y < e_tl.y && p_br.y < e_tr.y && p_br.x >= e_tr.x && p_bl.y > e_bl.y) {
 			if (axis == Y_AXIS) {

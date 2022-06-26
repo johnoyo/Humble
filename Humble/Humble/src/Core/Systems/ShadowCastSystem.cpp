@@ -4,7 +4,7 @@ namespace HBL {
 
 	void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend)
 	{
-		ENGINE_PROFILE("ShadowCastSystem::Start");
+		FUNCTION_PROFILE();
 
 		uint32_t offset = 0;
 		// Init shadow cast component info
@@ -70,6 +70,7 @@ namespace HBL {
 	void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend)
 	{
 		//ENGINE_PROFILE("ShadowCastSystem::Run");
+
 		glm::vec3 O = player_position;
 
 		for (uint32_t i = 0; i < Shadow.size(); i++) {

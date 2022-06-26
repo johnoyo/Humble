@@ -3,6 +3,7 @@
 #include <vector>
 #include "IEntity.h"
 #include "Components.h"
+#include <type_traits>
 
 namespace HBL {
 
@@ -13,6 +14,7 @@ namespace HBL {
 
 		void EnrollEntity(IEntity& Entity, std::vector<IEntity>& entities) 
 		{
+			//Entity.components = new Trie();
 			Entity.ID = currentID++;
 			entities.push_back(Entity);
 		}
@@ -30,6 +32,21 @@ namespace HBL {
 		T& GetComponent(int ComponenetEntityID, std::vector<T>& ComponentVector) 
 		{
 			return ComponentVector.at(ComponenetEntityID);
+		}
+
+		template<typename T>
+		void AddComponent(IEntity& Entity, const std::string& Component, std::vector<IEntity>& entities, std::vector<T>& ComponentVector)
+		{
+			T c;
+			ComponentVector.push_back(c);
+			Entity.components.emplace(Component, ComponentVector.size() - 1);
+			entities.at(Entity.ID).components.emplace(Component, ComponentVector.size() - 1);
+		}
+
+		template<typename T>
+		T& GetComponent(IEntity& Entity, const std::string& Component, std::vector<T>& ComponentVector)
+		{
+			return ComponentVector.at(Entity.components[Component]);
 		}
 
 		void Flush(std::vector<IEntity>& entities)

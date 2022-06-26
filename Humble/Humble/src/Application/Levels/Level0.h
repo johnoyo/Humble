@@ -88,11 +88,6 @@ namespace HBL {
 			
 			for (uint32_t i = 0; i < 10000; i++)
 				GET_COMPONENT(Transform, level[i]).Static = true;
-			
-			/*Entities::Get().Filter(entities, "Transform", "CollisionBox", "Material", "Script").For_Each([&](IEntity entt)
-			{
-				std::cout << "+++++++++++++++++++++++++++++++++++++++++++++Entities: " << entt.ID << "\n";
-			});*/
 		}
 
 	};

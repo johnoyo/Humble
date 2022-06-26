@@ -4,13 +4,17 @@ namespace HBL {
 
 	void GravitySystem::Start(float GravityForce, float thres)
 	{
+		FUNCTION_PROFILE();
+
 		force = GravityForce;
 		threshold = thres;
+
+		Filter(entities, "Transform", "Gravity");
 	}
 
 	void GravitySystem::ResetGravity(float GravityForce, float thres)
 	{
-		//ENGINE_PROFILE("GravitySystem::ResetGravity");
+		FUNCTION_PROFILE();
 
 		// Reset Gravity forces
 		force = GravityForce;
@@ -25,22 +29,25 @@ namespace HBL {
 	{
 		//ENGINE_PROFILE("GravitySystem::Run");
 
-		for (uint32_t i = 0; i < entities.size(); i++) {
-			IEntity entt = entities.at(i);
-			if (TRY_FIND_COMPONENT(Gravity, entt) && GET_COMPONENT(Gravity, entt).Enabled && !GET_COMPONENT(Gravity, entt).isGrounded) {
+		For_Each([&](IEntity& entt)
+		{
+			Component::Gravity& gravity = GET_COMPONENT(Gravity, entt);
+			Component::Transform& transfom = GET_COMPONENT(Transform, entt);
 
-				if (!GET_COMPONENT(Gravity, entt).collides) 
-					GET_COMPONENT(Gravity, entt).appliedForce += -0.1f * force;
-				else 
-					GET_COMPONENT(Gravity, entt).appliedForce = -1.0f;
+			if (gravity.Enabled && !gravity.isGrounded) {
 
-				GET_COMPONENT(Transform, entt).position.y += 2.0f * GET_COMPONENT(Gravity, entt).appliedForce;
+				if (!gravity.collides)
+					gravity.appliedForce += -0.1f * force;
+				else
+					gravity.appliedForce = -1.0f;
+
+				transfom.position.y += 2.0f * gravity.appliedForce;
 			}
-			else if (TRY_FIND_COMPONENT(Gravity, entt) && GET_COMPONENT(Gravity, entt).Enabled && GET_COMPONENT(Gravity, entt).isGrounded) {
-				if (GET_COMPONENT(Gravity, entt).appliedForce <= threshold) 
-					GET_COMPONENT(Gravity, entt).appliedForce = threshold;
+			else if (gravity.Enabled && gravity.isGrounded) {
+				if (gravity.appliedForce <= threshold)
+					gravity.appliedForce = threshold;
 			}
-		}
+		});
 	}
 
 	void GravitySystem::Clear()

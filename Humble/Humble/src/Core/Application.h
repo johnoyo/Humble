@@ -112,9 +112,9 @@ namespace HBL {
 		{
 			scriptingSystem.Run(current);
 			textureSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			gravitySystem.Run();
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			gravitySystem.Run();
 			shadowSystem.Run(GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
 		}
 

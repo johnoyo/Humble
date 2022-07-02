@@ -1,13 +1,14 @@
 #pragma once
 #include "../Header.h"
 #include "../Utilities.h"
+#include "../HumbleAPI.h"
 #include "../ISystem.h"
 #include "RenderingSystem.h"
 #include <vector>
 
 namespace HBL {
 
-	class CollisionSystem final : public ISystem {
+	class HBL_API CollisionSystem final : public ISystem {
 	public:
 		void Start();
 		void Run(VertexBuffer& buffer);

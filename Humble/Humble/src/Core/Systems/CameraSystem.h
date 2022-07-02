@@ -1,15 +1,16 @@
 #pragma once
 #include "../Header.h"
+#include "../Utilities.h"
+#include "../HumbleAPI.h"
 #include "WindowSystem.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
 
-#include "../Utilities.h"
 
 namespace HBL {
 
-	class CameraSystem {
+	class HBL_API CameraSystem {
 	public:
 		CameraSystem() { }
 		CameraSystem(float left, float right, float bottom, float top);

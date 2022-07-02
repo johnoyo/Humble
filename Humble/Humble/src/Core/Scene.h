@@ -1,8 +1,9 @@
 #pragma once
+#include "HumbleAPI.h"
 
 namespace HBL {
 
-	class Scene {
+	class HBL_API Scene {
 	public:
 		Scene(IEntity& player) : _player(player) {  }
 

@@ -6,18 +6,20 @@
 #include <vector>
 #include <string>
 
-extern HBL::System ecs;
+struct HBL_API Globals 
+{
+	static HBL::System ecs;
 
-extern std::vector<HBL::IEntity> entities;
+	static std::vector<HBL::IEntity> entities;
 
-/* ------------------------- Component Vector Declaration -------------------------- */
-extern std::vector<HBL::Component::Transform> Transform;
-extern std::vector<HBL::Component::CollisionBox> CollisionBox;
-extern std::vector<HBL::Component::Material> Material;
-extern std::vector<HBL::Component::Health> Health;
-extern std::vector<HBL::Component::Script> Script;
-extern std::vector<HBL::Component::Gravity> Gravity;
-extern std::vector<HBL::Component::Shadow> Shadow;
-/* --------------------------------------------------------------------------------- */
+	static bool Scene_Change;
 
-static bool Scene_Change = false;
+	// Component Vector Declaration
+	static std::vector<HBL::Component::Transform> Transform;
+	static std::vector<HBL::Component::CollisionBox> CollisionBox;
+	static std::vector<HBL::Component::Material> Material;
+	static std::vector<HBL::Component::Health> Health;
+	static std::vector<HBL::Component::Script> Script;
+	static std::vector<HBL::Component::Gravity> Gravity;
+	static std::vector<HBL::Component::Shadow> Shadow;
+};

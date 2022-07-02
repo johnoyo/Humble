@@ -2,6 +2,7 @@
 #include "../Core.h"
 #include "../Header.h"
 #include "../Utilities.h"
+#include "../HumbleAPI.h"
 #include "RenderingSystem.h"
 #include <vector>
 #include <iostream>
@@ -9,7 +10,7 @@
 
 namespace HBL {
 
-	class TextureSystem {
+	class HBL_API TextureSystem {
 	public:
 		void Start();
 		void Run(VertexBuffer& buffer);

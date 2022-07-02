@@ -3,11 +3,12 @@
 #include <vector>
 #include "IEntity.h"
 #include "Components.h"
+#include "HumbleAPI.h"
 #include <type_traits>
 
 namespace HBL {
 
-	class System {
+	class HBL_API System {
 	public:
 
 		System();

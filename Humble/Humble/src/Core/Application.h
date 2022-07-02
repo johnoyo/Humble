@@ -3,19 +3,20 @@
 #include "Header.h"
 #include "SystemsHeader.h"
 #include "Utilities.h"
+#include "HumbleAPI.h"
 #include "Scene.h"
 
 namespace HBL {
 
-	class Application {
+	class HBL_API Application {
 	public:
 
 		void Add_Scene(Scene* scene);
 
 		void Manage_Scenes()
 		{
-			if (Scene_Change) {
-				Scene_Change = false;
+			if (Globals::Scene_Change) {
+				Globals::Scene_Change = false;
 				current++;
 
 				// Clear Systems and ECS
@@ -39,7 +40,7 @@ namespace HBL {
 			// Initialize Systems
 			Initialize();
 
-			while (!windowSystem.Window_Should_Close()) {
+			while (!GlobalSystems::windowSystem.Window_Should_Close()) {
 				// - Measure time
 				nowTime = glfwGetTime();
 				deltaTime += (nowTime - lastTime) / limitFPS;
@@ -58,7 +59,7 @@ namespace HBL {
 				}
 
 				// - Render at maximum possible frames
-				renderingSystem.Render(cameraSystem.Get_View_Projection_Matrix());
+				GlobalSystems::renderingSystem.Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 				frames++;
 
 				// - Reset after one second
@@ -68,8 +69,8 @@ namespace HBL {
 					updates = 0, frames = 0;
 				}
 
-				windowSystem.Swap_Buffers();
-				windowSystem.Poll_For_Events();
+				GlobalSystems::windowSystem.Swap_Buffers();
+				GlobalSystems::windowSystem.Poll_For_Events();
 			}
 
 			Shutdown();
@@ -81,62 +82,64 @@ namespace HBL {
 
 		void Initialize() 
 		{
-			windowSystem.Start(0);
-			cameraSystem.Start();
+			GlobalSystems::windowSystem.Start(0);
+			GlobalSystems::cameraSystem.Start();
 			SoundManager::Start();
 
-			renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
-			textureSystem.Start();
-			scriptingSystem.Start(current);
-			collisionSystem.Start();
-			gravitySystem.Start(6.0f, -6.0f);
-			transformSystem.Start();
+			GlobalSystems::renderingSystem.Start(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
+			GlobalSystems::textureSystem.Start();
+			GlobalSystems::scriptingSystem.Start(current);
+			GlobalSystems::collisionSystem.Start();
+			GlobalSystems::gravitySystem.Start(6.0f, -6.0f);
+			GlobalSystems::transformSystem.Start();
 
-			shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+
+			GlobalSystems::shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
 		}
 
 		void Restart_Systems() 
 		{
-			renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
-			cameraSystem.Start();
-			textureSystem.Start();
-			scriptingSystem.Start(current);
-			collisionSystem.Start();
-			gravitySystem.Start(6.0f, -6.0f);
-			transformSystem.Start();
+			GlobalSystems::renderingSystem.Start(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
+			GlobalSystems::cameraSystem.Start();
+			GlobalSystems::textureSystem.Start();
+			GlobalSystems::scriptingSystem.Start(current);
+			GlobalSystems::collisionSystem.Start();
+			GlobalSystems::gravitySystem.Start(6.0f, -6.0f);
+			GlobalSystems::transformSystem.Start();
 
-			shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+			GlobalSystems::shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
 		}
 
 		void Update()
 		{
-			scriptingSystem.Run(current);
-			textureSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			gravitySystem.Run();
-			shadowSystem.Run(GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+			GlobalSystems::scriptingSystem.Run(current);
+			GlobalSystems::textureSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
+			GlobalSystems::transformSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
+			GlobalSystems::collisionSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
+			GlobalSystems::gravitySystem.Run();
+			GlobalSystems::shadowSystem.Run(GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
 		}
 
 		void Clear() 
 		{
-			scriptingSystem.Clear(current);
-			textureSystem.Clear();
-			gravitySystem.Clear();
-			transformSystem.Clear();
-			collisionSystem.Clear();
-			shadowSystem.Clear();
-			renderingSystem.Clear();
+			GlobalSystems::scriptingSystem.Clear(current);
+			GlobalSystems::textureSystem.Clear();
+			GlobalSystems::gravitySystem.Clear();
+			GlobalSystems::transformSystem.Clear();
+			GlobalSystems::collisionSystem.Clear();
+			GlobalSystems::shadowSystem.Clear();
+			GlobalSystems::renderingSystem.Clear();
 
-			ecs.Flush(entities);
+			Globals::ecs.Flush(Globals::entities);
 		}
 
 		void Shutdown() 
 		{
-			renderingSystem.Clear();
-			scriptingSystem.Clear(current);
-			textureSystem.Clear();
-			windowSystem.Terminate();
+			GlobalSystems::renderingSystem.Clear();
+			GlobalSystems::scriptingSystem.Clear(current);
+			GlobalSystems::textureSystem.Clear();
+			GlobalSystems::windowSystem.Terminate();
 		}
 
 		double limitFPS = 1.0 / 60.0;

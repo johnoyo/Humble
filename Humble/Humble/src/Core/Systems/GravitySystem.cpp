@@ -9,7 +9,7 @@ namespace HBL {
 		force = GravityForce;
 		threshold = thres;
 
-		Filter(entities, "Transform", "Gravity");
+		Filter(Globals::entities, "Transform", "Gravity");
 	}
 
 	void GravitySystem::ResetGravity(float GravityForce, float thres)
@@ -20,8 +20,8 @@ namespace HBL {
 		force = GravityForce;
 		threshold = thres;
 
-		for (uint32_t i = 0; i < Gravity.size(); i++) {
-			Gravity.at(i).appliedForce = 0.0f;
+		for (uint32_t i = 0; i < Globals::Gravity.size(); i++) {
+			Globals::Gravity.at(i).appliedForce = 0.0f;
 		}
 	}
 
@@ -52,7 +52,7 @@ namespace HBL {
 
 	void GravitySystem::Clear()
 	{
-		Gravity.clear();
+		Globals::Gravity.clear();
 	}
 
 }

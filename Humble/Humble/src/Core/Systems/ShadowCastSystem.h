@@ -1,6 +1,7 @@
 #pragma once
 #include "../Header.h"
 #include "../Utilities.h"
+#include "../HumbleAPI.h"
 #include "RenderingSystem.h"
 
  /*
@@ -14,7 +15,7 @@
 
 namespace HBL {
 
-    class ShadowCastSystem {
+    class HBL_API ShadowCastSystem {
     public:
         void Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
         void Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);

@@ -10,12 +10,15 @@
 #include "..\Core\Systems\TransformSystem.h"
 #include "..\Core\Systems\ShadowCastSystem.h"
 
-extern HBL::WindowSystem windowSystem;
-extern HBL::TextureSystem textureSystem;
-extern HBL::RenderingSystem renderingSystem;
-extern HBL::CameraSystem cameraSystem;
-extern HBL::ScriptingSystem scriptingSystem;
-extern HBL::CollisionSystem collisionSystem;
-extern HBL::GravitySystem gravitySystem;
-extern HBL::TransformSystem transformSystem;
-extern HBL::ShadowCastSystem shadowSystem;
+struct HBL_API GlobalSystems 
+{
+	static HBL::WindowSystem windowSystem;
+	static HBL::TextureSystem textureSystem;
+	static HBL::RenderingSystem renderingSystem;
+	static HBL::CameraSystem cameraSystem;
+	static HBL::ScriptingSystem scriptingSystem;
+	static HBL::CollisionSystem collisionSystem;
+	static HBL::GravitySystem gravitySystem;
+	static HBL::TransformSystem transformSystem;
+	static HBL::ShadowCastSystem shadowSystem;
+};

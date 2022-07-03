@@ -4,14 +4,10 @@
 #include "ProfilerScope.h"
 #include <string>
 
-#define ENROLL_ENTITY(entity) ecs.EnrollEntity(entity, entities)
+#define ENROLL_ENTITY(entity) Globals::ecs.EnrollEntity(entity, Globals::entities)
 
-//#define ADD_COMPONENT(component, entity) ecs.AddComponent<HBL::Component::component>(entity.component, entities.at(entity.ID).component, component)
-//#define GET_COMPONENT(component, entity) ecs.GetComponent<HBL::Component::component>(entity.component, component)
-//#define TRY_FIND_COMPONENT(component, entity) (entity.component != -1)
-
-#define ADD_COMPONENT(component, entity) ecs.AddComponent<HBL::Component::component>(entity, #component, entities, component)
-#define GET_COMPONENT(component, entity) ecs.GetComponent<HBL::Component::component>(entity, #component, component)
+#define ADD_COMPONENT(component, entity) Globals::ecs.AddComponent<HBL::Component::component>(entity, #component, Globals::entities, Globals::component)
+#define GET_COMPONENT(component, entity) Globals::ecs.GetComponent<HBL::Component::component>(entity, #component, Globals::component)
 #define TRY_FIND_COMPONENT(component, entity) (entity.components.find(#component) != entity.components.end())
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)

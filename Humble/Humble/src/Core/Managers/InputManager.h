@@ -1,9 +1,11 @@
 #pragma once
 #include "../Core.h"
+#include "../Utilities.h"
+#include "../HumbleAPI.h"
 
 namespace HBL {
 
-	class InputManager {
+	class HBL_API InputManager {
 	public:
 		InputManager(const InputManager&) = delete;
 
@@ -14,9 +16,9 @@ namespace HBL {
 
 		// Returns true i.e. 1, as long as the specified key is pressed or released
 		static int GetKeyDown(GLFWwindow* window, int Key_Code, int Mode) { return Get().IGetKeyDown(window, Key_Code, Mode); }
-		// Returns true i.e. 1, only the moment that the key is pressed
+		// Returns true i.e. 1, only the momment that the key is pressed
 		static int GetKeyPress(GLFWwindow* window, int Key_Code) { return Get().IGetKeyPress(window, Key_Code); }
-		// Returns true i.e. 1, only the moment that the key is released
+		// Returns true i.e. 1, only the momment that the key is released
 		static int GetKeyRelease(GLFWwindow* window, int Key_Code) { return Get().IGetKeyRelease(window, Key_Code); }
 	private:
 		int IGetKeyDown(GLFWwindow* window, int Key_Code, int Mode);

@@ -3,6 +3,7 @@
 #include "../Core.h"
 #include "../Header.h"
 #include "../Utilities.h"
+#include "../HumbleAPI.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -13,13 +14,13 @@
 
 namespace HBL {
 
-	struct ShaderProgramSource {
+	struct HBL_API ShaderProgramSource {
 		std::string VertexSource;
 		std::string FragmentSource;
 	};
 
 	/*Vertex buffer declaration*/
-	class VertexBuffer {
+	class HBL_API VertexBuffer {
 	public:
 
 		void Initialize(int total_buffer_size);
@@ -50,7 +51,7 @@ namespace HBL {
 	};
 
 	/*IndexBuffer declaration*/
-	class IndexBuffer {
+	class HBL_API IndexBuffer {
 	public:
 		void Make_Indecies(uint32_t size);
 		void Clean();
@@ -63,7 +64,7 @@ namespace HBL {
 
 
 	/*RenderingSystem declaration*/
-	class RenderingSystem {
+	class HBL_API RenderingSystem {
 	public:
 
 		void Start(glm::mat4 vpMatrix);

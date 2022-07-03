@@ -2,13 +2,14 @@
 #include <string>
 #include <chrono>
 #include <iostream>
+#include "HumbleAPI.h"
 
 namespace HBL {
 
-	class ProfilerScope {
+	class HBL_API ProfilerScope {
 	public:
-		std::chrono::time_point<std::chrono::system_clock> _timeStart;
-		std::string _name;
+		std::chrono::time_point<std::chrono::system_clock> _timeStart = std::chrono::system_clock::now();
+		std::string _name = "";
 
 		ProfilerScope(std::string name) {
 			_timeStart = std::chrono::system_clock::now();

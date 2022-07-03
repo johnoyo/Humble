@@ -95,11 +95,11 @@ namespace HBL {
 	void RenderingSystem::Init_Vertex_Buffer()
 	{
 		vbuffer.Reset();
-		std::cout << "Transform size: " << Transform.size() << "\n";
+		std::cout << "Transform size: " << Globals::Transform.size() << "\n";
 
-		for (uint32_t i = 0; i < Transform.size(); i++) {
-			if (Transform.at(i).Enabled) {
-				Transform.at(i).bufferIndex = vbuffer.index;
+		for (uint32_t i = 0; i < Globals::Transform.size(); i++) {
+			if (Globals::Transform.at(i).Enabled) {
+				Globals::Transform.at(i).bufferIndex = vbuffer.index;
 				Draw_Quad(i);
 			}
 		}
@@ -113,8 +113,8 @@ namespace HBL {
 	void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
 	{
 		uint32_t indx = 0;
-		for (uint32_t i = 0; i < Transform.size() - 1; i++) {
-			if (i != playerTransformID && Transform.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, Transform.at(i));
+		for (uint32_t i = 0; i < Globals::Transform.size() - 1; i++) {
+			if (i != playerTransformID && Globals::Transform.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, Globals::Transform.at(i));
 			indx += 4;
 		}
 	}
@@ -156,10 +156,12 @@ namespace HBL {
 	{
 		uint32_t vertex_index = vbuffer.Get_Size();
 
-		vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-		vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-		vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-		vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+		Component::Transform& tr = Globals::Transform.at(index);
+
+		vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+		vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+		vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+		vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
 	}
@@ -246,7 +248,7 @@ namespace HBL {
 	void RenderingSystem::Start(glm::mat4 vpMatrix)
 	{
 		ENGINE_PROFILE("ShadowCastSystem::Start");
-		vbuffer.total_size = (entities.size() * 4) + (Shadow.size() * 12);
+		vbuffer.total_size = (Globals::entities.size() * 4) + (Globals::Shadow.size() * 12);
 
 		vbuffer.Initialize(vbuffer.total_size);
 		ibuffer.Make_Indecies(vbuffer.Get_Size());

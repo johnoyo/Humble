@@ -1,10 +1,11 @@
 #pragma once
 #include "../Core.h"
 #include <string>
+#include "../HumbleAPI.h"
 
 namespace HBL {
 
-	class WindowSystem {
+	class HBL_API WindowSystem {
 	public:
 		WindowSystem(float w, float h, const std::string& name, bool full_screen);
 		WindowSystem() { }

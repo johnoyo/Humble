@@ -6,7 +6,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Filter(entities, "Transform", "CollisionBox");
+		Filter(Globals::entities, "Transform", "CollisionBox");
 
 		For_Each([&](IEntity& entt)
 		{
@@ -62,7 +62,7 @@ namespace HBL {
 
 	void CollisionSystem::Clear()
 	{
-		CollisionBox.clear();
+		Globals::CollisionBox.clear();
 	}
 
 	bool CollisionSystem::CollisionBetween(IEntity& e0, IEntity& e1, VertexBuffer& buffer)
@@ -280,49 +280,53 @@ namespace HBL {
 			GET_COMPONENT(Gravity, p).collides = true;
 			GET_COMPONENT(Gravity, p).isGrounded = false;
 		}
-		for (i = 0; i < CollisionBox.size(); i++) {
+		for (i = 0; i < Globals::CollisionBox.size(); i++) {
 			bool tmp = false;
-			if (i != collisionBox && CollisionBox.at(i).Enabled) {
+			if (i != collisionBox && Globals::CollisionBox.at(i).Enabled) {
 
-				tmp = check_corner_br_tl(buffer, p, CollisionBox.at(collisionBox).br, CollisionBox.at(i).tl, CollisionBox.at(i).br, axis);
+				Component::CollisionBox& cb_p = Globals::CollisionBox.at(collisionBox);
+				Component::Gravity& gr_p = GET_COMPONENT(Gravity, p);
+				Component::CollisionBox& cb_i = Globals::CollisionBox.at(i);
+
+				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
 					return;
 				}
 
-				tmp = check_corner_tr_bl(buffer, p, CollisionBox.at(collisionBox).tr, CollisionBox.at(i).bl, CollisionBox.at(i).tr, axis);
-				if (tmp != false) {
-					return;
-				}
-
-				tmp = check_corner_tl_br(buffer, p, CollisionBox.at(collisionBox).tl, CollisionBox.at(i).br, CollisionBox.at(i).tl, axis);
-				if (tmp != false) {
-					return;
-				}
-
-				tmp = check_corner_bl_tr(buffer, p, CollisionBox.at(collisionBox).bl, CollisionBox.at(i).tr, CollisionBox.at(i).bl, axis);
-				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
-					return;
-				}
-
-				tmp = check_side_l_r(buffer, p, CollisionBox.at(collisionBox).br, CollisionBox.at(collisionBox).tr, CollisionBox.at(i).bl, CollisionBox.at(i).tl, CollisionBox.at(i).tr, axis);
+				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
 				if (tmp != false) {
 					return;
 				}
 
-				tmp = check_side_r_l(buffer, p, CollisionBox.at(collisionBox).tl, CollisionBox.at(collisionBox).bl, CollisionBox.at(i).tr, CollisionBox.at(i).br, CollisionBox.at(i).bl, axis);
+				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
 					return;
 				}
 
-				tmp = check_side_t_b(buffer, p, CollisionBox.at(collisionBox).br, CollisionBox.at(collisionBox).bl, CollisionBox.at(i).tr, CollisionBox.at(i).tl, CollisionBox.at(i).bl, axis);
+				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
 					return;
 				}
 
-				tmp = check_side_b_t(buffer, p, CollisionBox.at(collisionBox).tl, CollisionBox.at(collisionBox).tr, CollisionBox.at(i).bl, CollisionBox.at(i).br, CollisionBox.at(i).tl, axis);
+				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
+				if (tmp != false) {
+					return;
+				}
+
+				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
+				if (tmp != false) {
+					return;
+				}
+
+				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
+				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					return;
+				}
+
+				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
 					return;
 				}

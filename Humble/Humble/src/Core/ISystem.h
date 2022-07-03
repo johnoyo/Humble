@@ -2,10 +2,11 @@
 #include <vector>
 #include "Managers/Entities.h"
 #include "Utilities.h"
+#include "HumbleAPI.h"
 
 namespace HBL {
 
-	class ISystem {
+	class HBL_API ISystem {
 	public:
 		virtual void Start() { }
 		virtual void Run()   { }

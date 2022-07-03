@@ -62,8 +62,8 @@ namespace HBL {
 		ENGINE_PROFILE("TextureSystem::Start");
 		Init_Transparent_Texture();
 
-		for (uint32_t i = 0; i < Material.size(); i++) {
-			if (Material.at(i).texture != "-") Load_Texture(Material.at(i).texture);
+		for (uint32_t i = 0; i < Globals::Material.size(); i++) {
+			if (Globals::Material.at(i).texture != "-") Load_Texture(Globals::Material.at(i).texture);
 		}
 	}
 
@@ -72,8 +72,8 @@ namespace HBL {
 		//ENGINE_PROFILE("TextureSystem::Run");
 
 		uint32_t indx = 0;
-		for (uint32_t i = 0; i < Material.size(); i++) {
-			Component::Material& material = Material.at(i);
+		for (uint32_t i = 0; i < Globals::Material.size(); i++) {
+			Component::Material& material = Globals::Material.at(i);
 			if (material.Enabled) {
 				if (material.subTexture.path == "-") {
 					//if (material.old_texture != material.texture) {
@@ -99,7 +99,7 @@ namespace HBL {
 		map.clear();
 		size.clear();
 		current_index = 0;
-		Material.clear();
+		Globals::Material.clear();
 		GLCall(glDeleteTextures(32, texture_slot));
 	}
 

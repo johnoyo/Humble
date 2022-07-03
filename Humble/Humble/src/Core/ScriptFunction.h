@@ -1,8 +1,9 @@
 #pragma once
+#include "HumbleAPI.h"
 
 namespace HBL {
 
-	class ScriptFunction {
+	class HBL_API ScriptFunction {
 	public:
 		ScriptFunction() {}
 		virtual ~ScriptFunction() {}

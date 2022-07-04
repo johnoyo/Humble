@@ -108,7 +108,8 @@ namespace HBL {
 			GlobalSystems::gravitySystem.Start(6.0f, -6.0f);
 			GlobalSystems::transformSystem.Start();
 
-			GlobalSystems::shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
+			glm::vec3 position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+			GlobalSystems::shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
 		}
 
 		void Update()
@@ -118,7 +119,9 @@ namespace HBL {
 			GlobalSystems::transformSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
 			GlobalSystems::collisionSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
 			GlobalSystems::gravitySystem.Run();
-			GlobalSystems::shadowSystem.Run(GET_COMPONENT(Transform, scenes[current]->Get_Player()).position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
+
+			glm::vec3 position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+			GlobalSystems::shadowSystem.Run(position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
 		}
 
 		void Clear() 

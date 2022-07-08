@@ -16,19 +16,22 @@ namespace HBL {
 		void Manage_Scenes()
 		{
 			if (Globals::Scene_Change) {
-				Globals::Scene_Change = false;
-				current++;
+				if (current < scenes.size() - 1)
+				{
+					Globals::Scene_Change = false;
+					current++;
 
-				// Clear Systems and ECS
-				Clear();
+					// Clear Systems and ECS
+					Clear();
 
-				// Initialize Systems
-				scenes[current]->Enroll_Entities();
-				scenes[current]->Add_Components();
-				scenes[current]->Init_Components();
+					// Initialize Systems
+					scenes[current]->Enroll_Entities();
+					scenes[current]->Add_Components();
+					scenes[current]->Init_Components();
 
-				// Initialize Systems
-				Restart_Systems();
+					// Initialize Systems
+					Restart_Systems();
+				}
 			}
 		}
 

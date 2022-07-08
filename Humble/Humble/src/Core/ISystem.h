@@ -21,18 +21,19 @@ namespace HBL {
 			}
 		}
 
-		void Filter(std::vector<IEntity> current_entities)
+		void Filter(std::vector<IEntity>& current_entities)
 		{
 			return;
 		}
 
 		template<typename T, typename... Ts>
-		void Filter(std::vector<IEntity> current_entities, T& param, Ts&... params)
+		void Filter(std::vector<IEntity>& current_entities, T& param, Ts&... params)
 		{
 			FUNCTION_PROFILE();
+			
 			filtered.clear();
 
-			auto lamda = [&](IEntity entt)
+			auto lamda = [&](IEntity& entt)
 			{
 				return entt.components.find(param) != entt.components.end();
 			};
@@ -43,14 +44,19 @@ namespace HBL {
 				it = std::find_if(++it, current_entities.end(), lamda)
 				)
 			{
-				filtered.push_back(*it);
+				filtered.emplace_back(*it);
 			}
 
-			Filter(filtered, params...);
+			current.clear();
+			current.reserve(filtered.size());
+			current.insert(current.end(), filtered.begin(), filtered.end());
+
+			Filter(current, params...);
 		}
 
 	private:
 		std::vector<IEntity> filtered;
+		std::vector<IEntity> current;
 	};
 
 }

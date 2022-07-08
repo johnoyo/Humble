@@ -60,12 +60,6 @@
     <ClCompile Include="src\Core\System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Trie.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\TestApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1307,13 +1301,7 @@
     <ClInclude Include="src\Core\IEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Core\Trie.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Core\ISystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\TestApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\HumbleAPI.h">

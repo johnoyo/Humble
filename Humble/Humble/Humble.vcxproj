@@ -157,10 +157,8 @@
     <ClCompile Include="src\Core\Systems\TextureSystem.cpp" />
     <ClCompile Include="src\Core\Systems\TransformSystem.cpp" />
     <ClCompile Include="src\Core\Systems\WindowSystem.cpp" />
-    <ClCompile Include="src\Core\Trie.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp" />
-    <ClCompile Include="src\Core\TestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -321,7 +319,6 @@
     <ClInclude Include="src\Core\Systems\CameraSystem.h" />
     <ClInclude Include="src\Core\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Core\Systems\GravitySystem.h" />
-    <ClInclude Include="src\Core\Trie.h" />
     <ClInclude Include="src\ecs\Systems\InputSystem.h" />
     <ClInclude Include="src\ecs\Systems\LevelManager.h" />
     <ClInclude Include="src\Core\Systems\RenderingSystem.h" />
@@ -579,7 +576,6 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
     <ClInclude Include="src\Vertex_Buffer.h" />
     <ClInclude Include="src\Window.h" />
-    <ClInclude Include="src\Core\TestApp.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\levels\test.txt" />

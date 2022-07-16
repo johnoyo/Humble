@@ -2,25 +2,32 @@
 
 namespace HBL {
 
-	void GravitySystem::Start(float GravityForce, float thres)
+	void GravitySystem::Start()
 	{
 		FUNCTION_PROFILE();
-
-		force = GravityForce;
-		threshold = thres;
 
 		Filter(Globals::entities, "Transform", "Gravity");
 	}
 
-	void GravitySystem::ResetGravity(float GravityForce, float thres)
+	void GravitySystem::InitializeGravity(float gravityForce, float thres)
+	{
+		FUNCTION_PROFILE();
+
+		// Initialize Gravity forces
+		force = gravityForce;
+		threshold = thres;
+	}
+
+	void GravitySystem::ResetGravity(float gravityForce, float thres)
 	{
 		FUNCTION_PROFILE();
 
 		// Reset Gravity forces
-		force = GravityForce;
+		force = gravityForce;
 		threshold = thres;
 
-		for (uint32_t i = 0; i < Globals::Gravity.size(); i++) {
+		for (uint32_t i = 0; i < Globals::Gravity.size(); i++) 
+		{
 			Globals::Gravity.at(i).appliedForce = 0.0f;
 		}
 	}

@@ -10,9 +10,9 @@ namespace HBL {
 
 	class HBL_API CollisionSystem final : public ISystem {
 	public:
-		void Start();
-		void Run(VertexBuffer& buffer);
-		void Clear();
+		virtual void Start() override;
+		virtual void Run() override;
+		virtual void Clear() override;
 
 		bool CollisionBetween(IEntity& e0, IEntity& e1, VertexBuffer& buffer);
 

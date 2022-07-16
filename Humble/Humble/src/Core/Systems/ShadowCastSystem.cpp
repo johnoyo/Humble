@@ -1,10 +1,14 @@
 #include "ShadowCastSystem.h"
+#include "../SystemsHeader.h"
 
 namespace HBL {
 
-	void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend)
+	void ShadowCastSystem::Start(glm::vec4& shadow_color, glm::vec3& player_position)
 	{
 		FUNCTION_PROFILE();
+
+		RenderingSystem& rend = GlobalSystems::renderingSystem;
+		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
 
 		uint32_t offset = 0;
 		// Init shadow cast component info
@@ -67,9 +71,12 @@ namespace HBL {
 		rend.Invalidate();
 	}
 
-	void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend)
+	void ShadowCastSystem::Run(glm::vec3& player_position)
 	{
 		//ENGINE_PROFILE("ShadowCastSystem::Run");
+
+		RenderingSystem& rend = GlobalSystems::renderingSystem;
+		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
 
 		glm::vec3 O = player_position;
 

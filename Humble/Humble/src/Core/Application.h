@@ -5,13 +5,17 @@
 #include "Utilities.h"
 #include "HumbleAPI.h"
 #include "Scene.h"
+#include "ISystem.h"
 
 namespace HBL {
 
 	class HBL_API Application {
 	public:
+		Application(float width, float height, const std::string& name, bool full_screen);
 
 		void Add_Scene(Scene* scene);
+
+		void Register_System(ISystem* system);
 
 		void Manage_Scenes()
 		{
@@ -19,12 +23,15 @@ namespace HBL {
 				if (current < scenes.size() - 1)
 				{
 					Globals::Scene_Change = false;
+					Globals::Current_Level++;
 					current++;
 
 					// Clear Systems and ECS
 					Clear();
 
 					// Initialize Systems
+					scenes[current]->Init_Systems();
+
 					scenes[current]->Enroll_Entities();
 					scenes[current]->Add_Components();
 					scenes[current]->Init_Components();
@@ -36,6 +43,11 @@ namespace HBL {
 		}
 
 		void Start() {
+
+			Register_Systems();
+
+			scenes[current]->Init_Systems();
+
 			scenes[current]->Enroll_Entities();
 			scenes[current]->Add_Components();
 			scenes[current]->Init_Components();
@@ -81,59 +93,70 @@ namespace HBL {
 
 	private:
 		std::vector<Scene*> scenes;
+		std::vector<ISystem*> systems;
+
 		uint32_t current = 0;
+
+		void Register_Systems()
+		{
+			Register_System(&GlobalSystems::textureSystem);
+			Register_System(&GlobalSystems::scriptingSystem);
+			Register_System(&GlobalSystems::transformSystem);
+			Register_System(&GlobalSystems::collisionSystem);
+			Register_System(&GlobalSystems::gravitySystem);
+		}
 
 		void Initialize() 
 		{
-			GlobalSystems::windowSystem.Start(0);
-			GlobalSystems::cameraSystem.Start();
+			GlobalSystems::windowSystem.Create(0);
+			GlobalSystems::cameraSystem.Create();
+			GlobalSystems::renderingSystem.Initialize(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
+
 			SoundManager::Start();
 
-			GlobalSystems::renderingSystem.Start(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
-			GlobalSystems::textureSystem.Start();
-			GlobalSystems::scriptingSystem.Start(current);
-			GlobalSystems::collisionSystem.Start();
-			GlobalSystems::gravitySystem.Start(6.0f, -6.0f);
-			GlobalSystems::transformSystem.Start();
+			for (ISystem* system : systems)
+			{
+				system->Start();
+			}
 
 			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
-
-			GlobalSystems::shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
+			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
+			GlobalSystems::shadowSystem.Start(color, position);
 		}
 
 		void Restart_Systems() 
 		{
-			GlobalSystems::renderingSystem.Start(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
-			GlobalSystems::cameraSystem.Start();
-			GlobalSystems::textureSystem.Start();
-			GlobalSystems::scriptingSystem.Start(current);
-			GlobalSystems::collisionSystem.Start();
-			GlobalSystems::gravitySystem.Start(6.0f, -6.0f);
-			GlobalSystems::transformSystem.Start();
+			GlobalSystems::cameraSystem.Create();
+			GlobalSystems::renderingSystem.Initialize(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 
-			glm::vec3 position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
-			GlobalSystems::shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
+			for (ISystem* system : systems)
+			{
+				system->Start();
+			}
+
+			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
+			GlobalSystems::shadowSystem.Start(color, position);
 		}
 
 		void Update()
 		{
-			GlobalSystems::scriptingSystem.Run(current);
-			GlobalSystems::textureSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
-			GlobalSystems::transformSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
-			GlobalSystems::collisionSystem.Run(GlobalSystems::renderingSystem.Get_Vertex_Buffer());
-			GlobalSystems::gravitySystem.Run();
+			for (ISystem* system : systems)
+			{
+				system->Run();
+			}
 
-			glm::vec3 position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
-			GlobalSystems::shadowSystem.Run(position, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem);
+			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+			GlobalSystems::shadowSystem.Run(position);
 		}
 
 		void Clear() 
 		{
-			GlobalSystems::scriptingSystem.Clear(current);
-			GlobalSystems::textureSystem.Clear();
-			GlobalSystems::gravitySystem.Clear();
-			GlobalSystems::transformSystem.Clear();
-			GlobalSystems::collisionSystem.Clear();
+			for (ISystem* system : systems)
+			{
+				system->Clear();
+			}
+
 			GlobalSystems::shadowSystem.Clear();
 			GlobalSystems::renderingSystem.Clear();
 
@@ -143,7 +166,7 @@ namespace HBL {
 		void Shutdown() 
 		{
 			GlobalSystems::renderingSystem.Clear();
-			GlobalSystems::scriptingSystem.Clear(current);
+			GlobalSystems::scriptingSystem.Clear();
 			GlobalSystems::textureSystem.Clear();
 			GlobalSystems::windowSystem.Terminate();
 		}

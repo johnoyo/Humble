@@ -122,6 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>HBL_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Humble\src\vendor;$(SolutionDir)Humble\res\shaders;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\irrKlang_1_6\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,10 +159,12 @@
   <ItemGroup>
     <ClInclude Include="src\Levels\Level0.h" />
     <ClInclude Include="src\Levels\Level1.h" />
+    <ClInclude Include="src\MyComponents.h" />
     <ClInclude Include="src\Scripts\EnemyScript.h" />
     <ClInclude Include="src\Scripts\LevelHandlerScript.h" />
     <ClInclude Include="src\Scripts\LevelManager.h" />
     <ClInclude Include="src\Scripts\PlayerScript.h" />
+    <ClInclude Include="src\Systems\HealthSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

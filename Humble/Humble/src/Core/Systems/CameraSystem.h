@@ -12,11 +12,8 @@ namespace HBL {
 
 	class HBL_API CameraSystem {
 	public:
-		CameraSystem() { }
-		CameraSystem(float left, float right, float bottom, float top);
-
-		void Start();
-		void Run();
+		void Initialize(float left, float right, float bottom, float top);
+		void Create();
 
 		void Follow(IEntity& camera, IEntity& player, float offset);
 		void Follow(IEntity& camera, IEntity& player, float offset_x, float offset_y);

@@ -8,7 +8,7 @@
 
 namespace HBL {
 
-	class Level1 : public Scene
+	class Level1 final : public Scene
 	{
 		// This is so the class Level1 also inherits the constructor of class Scene
 		using Scene::Scene;
@@ -36,7 +36,6 @@ namespace HBL {
 			ADD_COMPONENT(Material, background);
 
 			ADD_COMPONENT(Transform, player);
-			ADD_COMPONENT(Health, player);
 			ADD_COMPONENT(Script, player);
 			ADD_COMPONENT(Material, player);
 			ADD_COMPONENT(CollisionBox, player);
@@ -84,6 +83,12 @@ namespace HBL {
 
 			for (uint32_t i = 0; i < 100; i++)
 				GET_COMPONENT(Transform, level[i]).Static = true;
+		}
+
+		void Init_Systems() override
+		{
+			GlobalSystems::cameraSystem.Initialize(0.0f, GlobalSystems::windowSystem.Get_Width(), 0.0f, GlobalSystems::windowSystem.Get_Height());
+			GlobalSystems::gravitySystem.InitializeGravity(6.0f, -6.0f);
 		}
 
 	};

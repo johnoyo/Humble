@@ -8,6 +8,10 @@
 
 #define ADD_COMPONENT(component, entity) Globals::ecs.AddComponent<HBL::Component::component>(entity, #component, Globals::entities, Globals::component)
 #define GET_COMPONENT(component, entity) Globals::ecs.GetComponent<HBL::Component::component>(entity, #component, Globals::component)
+
+#define ADD_MY_COMPONENT(component, entity) Globals::ecs.AddComponent<HBL::Component::component>(entity, #component, Globals::entities, component)
+#define GET_MY_COMPONENT(component, entity) Globals::ecs.GetComponent<HBL::Component::component>(entity, #component, component)
+
 #define TRY_FIND_COMPONENT(component, entity) (entity.components.find(#component) != entity.components.end())
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)

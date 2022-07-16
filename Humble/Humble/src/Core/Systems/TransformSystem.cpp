@@ -1,20 +1,27 @@
 #include "TransformSystem.h"
+#include "../SystemsHeader.h"
 
 namespace HBL {
 
 	void TransformSystem::Start()
 	{
+		FUNCTION_PROFILE();
+
+		Filter(Globals::entities, "Transform");
 	}
 
-	void TransformSystem::Run(VertexBuffer& buffer)
+	void TransformSystem::Run()
 	{
-		//ENGINE_PROFILE("TransformSystem::Run");
+		//FUNCTION_PROFILE();
+		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
 
-		for (uint32_t i = 0; i < Globals::Transform.size(); i++) {
-			if (Globals::Transform.at(i).Static == false) {
-				buffer.Update_Position_On_Quad(Globals::Transform.at(i).bufferIndex, Globals::Transform.at(i));
+		For_Each([&](IEntity& entt)
+		{
+			Component::Transform& tr = GET_COMPONENT(Transform, entt);
+			if (tr.Static == false) {
+				buffer.Update_Position_On_Quad(tr.bufferIndex, tr);
 			}
-		}
+		});
 	}
 
 	void TransformSystem::Clear()

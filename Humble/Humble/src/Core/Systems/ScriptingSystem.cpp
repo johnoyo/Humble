@@ -2,9 +2,11 @@
 
 namespace HBL {
 
-	void ScriptingSystem::Start(int current_level)
+	void ScriptingSystem::Start()
 	{
 		FUNCTION_PROFILE();
+
+		int current_level = Globals::Current_Level;
 
 		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
 			if (Globals::Script.at(i).Enabled) {
@@ -17,9 +19,11 @@ namespace HBL {
 		}
 	}
 
-	void ScriptingSystem::Run(int current_level)
+	void ScriptingSystem::Run()
 	{
 		//FUNCTION_PROFILE();
+
+		int current_level = Globals::Current_Level;
 
 		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
 			if (Globals::Script.at(i).Enabled) {
@@ -32,8 +36,12 @@ namespace HBL {
 		}
 	}
 
-	void ScriptingSystem::Clear(int current_level)
+	void ScriptingSystem::Clear()
 	{
+		FUNCTION_PROFILE();
+
+		int current_level = Globals::Current_Level;
+
 		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
 			for (uint32_t j = 0; j < current_level; j++) {
 				delete Globals::Script.at(i).script[j];

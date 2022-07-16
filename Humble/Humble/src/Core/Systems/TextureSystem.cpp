@@ -1,4 +1,5 @@
 #include "TextureSystem.h"
+#include "../SystemsHeader.h"
 
 namespace HBL {
 
@@ -59,29 +60,35 @@ namespace HBL {
 
 	void TextureSystem::Start()
 	{
-		ENGINE_PROFILE("TextureSystem::Start");
+		FUNCTION_PROFILE();
+
 		Init_Transparent_Texture();
 
-		for (uint32_t i = 0; i < Globals::Material.size(); i++) {
-			if (Globals::Material.at(i).texture != "-") Load_Texture(Globals::Material.at(i).texture);
+		for (uint32_t i = 0; i < Globals::Material.size(); i++) 
+		{
+			if (Globals::Material.at(i).texture != "-") 
+				Load_Texture(Globals::Material.at(i).texture);
 		}
 	}
 
-	void TextureSystem::Run(VertexBuffer& buffer)
+	void TextureSystem::Run()
 	{
-		//ENGINE_PROFILE("TextureSystem::Run");
+		//FUNCTION_PROFILE();
+		
+		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
 
 		uint32_t indx = 0;
-		for (uint32_t i = 0; i < Globals::Material.size(); i++) {
+		for (uint32_t i = 0; i < Globals::Material.size(); i++) 
+		{
 			Component::Material& material = Globals::Material.at(i);
-			if (material.Enabled) {
-				if (material.subTexture.path == "-") {
-					//if (material.old_texture != material.texture) {
-						//material.old_texture = material.texture;
+			if (material.Enabled) 
+			{
+				if (material.subTexture.path == "-") 
+				{
 					buffer.Update_Material_On_Quad(indx, material.color, Find(material.texture));
-					//}
 				}
-				else {
+				else 
+				{
 					float id = Find(material.subTexture.path);
 					buffer.Update_Material_On_Quad(indx, material.color, id, material.subTexture.coords, size.at(id), material.subTexture.sprite_size);
 				}
@@ -89,7 +96,8 @@ namespace HBL {
 			}
 		}
 
-		for (uint32_t i = 0; i < current_index; i++) {
+		for (uint32_t i = 0; i < current_index; i++) 
+		{
 			GLCall(glBindTextureUnit(i, texture_slot[i]));
 		}
 	}

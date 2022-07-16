@@ -2,7 +2,7 @@
 
 namespace HBL {
 
-	void RenderingSystem::Initialize(glm::mat4 m_Camera_vp)
+	void RenderingSystem::Prepare(const glm::mat4& m_Camera_vp)
 	{
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -55,7 +55,7 @@ namespace HBL {
 		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 	}
 
-	void RenderingSystem::Render(glm::mat4 m_Camera_vp)
+	void RenderingSystem::Render(const glm::mat4& m_Camera_vp)
 	{
 		Update_Camera_Uniform(m_Camera_vp);
 
@@ -110,16 +110,7 @@ namespace HBL {
 		Update_Index_Buffer(vbuffer.Get_Size());
 	}
 
-	void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
-	{
-		uint32_t indx = 0;
-		for (uint32_t i = 0; i < Globals::Transform.size() - 1; i++) {
-			if (i != playerTransformID && Globals::Transform.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, Globals::Transform.at(i));
-			indx += 4;
-		}
-	}
-
-	void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
+	void RenderingSystem::Update_Camera_Uniform(const glm::mat4& m_Camera_vp)
 	{
 		GLCall(int location1 = glGetUniformLocation(shader, "u_VP"));
 		if (location1 == -1) {
@@ -128,7 +119,7 @@ namespace HBL {
 		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 	}
 
-	uint32_t RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec4 color)
+	uint32_t RenderingSystem::Draw_Quad(glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
 	{
 		uint32_t vertex_index = vbuffer.Get_Size();
 
@@ -140,7 +131,7 @@ namespace HBL {
 		return vertex_index;
 	}
 
-	uint32_t RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
+	uint32_t RenderingSystem::Draw_Quad(glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3)
 	{
 		uint32_t vertex_index = vbuffer.Get_Size();
 
@@ -245,21 +236,17 @@ namespace HBL {
 	}
 
 
-	void RenderingSystem::Start(glm::mat4 vpMatrix)
+	void RenderingSystem::Initialize(const glm::mat4& vpMatrix)
 	{
-		ENGINE_PROFILE("ShadowCastSystem::Start");
+		FUNCTION_PROFILE();
+
 		vbuffer.total_size = (Globals::entities.size() * 4) + (Globals::Shadow.size() * 12);
 
 		vbuffer.Initialize(vbuffer.total_size);
 		ibuffer.Make_Indecies(vbuffer.Get_Size());
-		Initialize(vpMatrix);
+		Prepare(vpMatrix);
 
 		Init_Vertex_Buffer();
-	}
-
-	void RenderingSystem::Run(int playerTransformID)
-	{
-		Update_Vertex_Buffer_Positions(playerTransformID);
 	}
 
 	/* ------------------------------------------------------------------------ Vertex Buffer --------------------------------------------------------------------------- */

@@ -2,15 +2,16 @@
 #include "../Header.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
+#include "../ISystem.h"
 #include <algorithm>
 
 namespace HBL {
 
-	class HBL_API ScriptingSystem {
+	class HBL_API ScriptingSystem final : public ISystem {
 	public:
-		void Start(int current_level);
-		void Run(int current_level);
-		void Clear(int current_level);
+		virtual void Start() override;
+		virtual void Run() override;
+		virtual void Clear() override;
 	};
 
 }

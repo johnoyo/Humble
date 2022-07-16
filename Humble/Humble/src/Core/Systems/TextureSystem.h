@@ -3,6 +3,7 @@
 #include "../Header.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
+#include "../ISystem.h"
 #include "RenderingSystem.h"
 #include <vector>
 #include <iostream>
@@ -10,11 +11,11 @@
 
 namespace HBL {
 
-	class HBL_API TextureSystem {
+	class HBL_API TextureSystem final : public ISystem {
 	public:
-		void Start();
-		void Run(VertexBuffer& buffer);
-		void Clear();
+		virtual void Start() override;
+		virtual void Run() override;
+		virtual void Clear() override;
 
 	private:
 		uint32_t texture_slot[32] = { 0 };

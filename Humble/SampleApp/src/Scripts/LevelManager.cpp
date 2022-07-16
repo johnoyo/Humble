@@ -97,6 +97,9 @@ namespace HBL {
 			if (TRY_FIND_COMPONENT(Shadow, entt)) {
 				GET_COMPONENT(Shadow, entt).Enabled = false;
 			}
+			if (TRY_FIND_COMPONENT(Gravity, entt)) {
+				GET_COMPONENT(Gravity, entt).Enabled = false;
+			}
 		}
 
 		// Set up background
@@ -163,6 +166,7 @@ namespace HBL {
 				GET_COMPONENT(Material, enemy).texture = "res/textures/enemy.png";
 
 				GET_COMPONENT(Shadow, enemy).Enabled = true;
+				GET_COMPONENT(Gravity, enemy).Enabled = true;
 				enemy_index++;
 			}
 		}

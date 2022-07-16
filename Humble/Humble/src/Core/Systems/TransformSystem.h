@@ -4,14 +4,15 @@
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include "RenderingSystem.h"
+#include "../ISystem.h"
 
 namespace HBL {
 
-	class HBL_API TransformSystem {
+	class HBL_API TransformSystem final : public ISystem {
 	public:
-		void Start();
-		void Run(VertexBuffer& buffer);
-		void Clear();
+		virtual void Start() override;
+		virtual void Run() override;
+		virtual void Clear() override;
 	};
 
 }

@@ -1,4 +1,5 @@
 #include "CollisionSystem.h"
+#include "../SystemsHeader.h"
 
 namespace HBL {
 
@@ -27,8 +28,10 @@ namespace HBL {
 		});
 	}
 
-	void CollisionSystem::Run(VertexBuffer& buffer)
+	void CollisionSystem::Run()
 	{
+		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+
 		// Update collision boxes of non-static objects
 		For_Each([&](IEntity& entt)
 		{

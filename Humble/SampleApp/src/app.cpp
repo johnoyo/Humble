@@ -1,5 +1,6 @@
 #include "../../Humble/src/Humble.h"
 
+// User defined entities
 HBL::IEntity background;
 HBL::IEntity player;
 HBL::IEntity enemy;
@@ -9,17 +10,29 @@ HBL::IEntity camera;
 HBL::IEntity lvlHandler;
 HBL::IEntity sps;
 
+// User defined components
+#include "MyComponents.h"
+
+// User defined component vecctors
+std::vector<HBL::Component::Health> Health;
+
+// User defined systems
+#include "Systems\HealthSystem.h"
+
+// User declared systems
+HBL::HealthSystem healthSystem;
+
 #include "Levels\Level0.h"
 #include "Levels\Level1.h"
 
-int main() {
-	GlobalSystems::windowSystem = HBL::WindowSystem(1920.0f, 1080.0f, "test", false);
-	GlobalSystems::cameraSystem = HBL::CameraSystem(0.0f, GlobalSystems::windowSystem.Get_Width(), 0.0f, GlobalSystems::windowSystem.Get_Height());
-
+int main() 
+{
 	HBL::Level0 level0(player);
 	HBL::Level1 level1(player);
 
-	HBL::Application *app = new HBL::Application();
+	HBL::Application *app = new HBL::Application(1920.0f, 1080.0f, "SampleApp", false);
+
+	app->Register_System(&healthSystem);
 
 	app->Add_Scene(&level0);
 	app->Add_Scene(&level1);

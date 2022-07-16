@@ -67,14 +67,6 @@ namespace HBL {
 				std::cout << "x,y: " << ComponentVector.at(i).position.x << ", " << ComponentVector.at(i).position.y << "\n";
 			}
 		}
-		template<>
-		void PrintComponents<Component::Health>(std::vector<Component::Health> ComponentVector) 
-		{
-			std::cout << "health: \n";
-			for (unsigned int i = 0; i < ComponentVector.size(); i++) {
-				std::cout << "h: " << ComponentVector.at(i).health << "\n";
-			}
-		}
 
 	private:
 		int currentID = 0;

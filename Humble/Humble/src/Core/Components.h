@@ -30,7 +30,6 @@ namespace HBL {
 
 		struct HBL_API Material {
 			std::string texture = "-";
-			std::string old_texture = "--";
 			struct SubTexture {
 				glm::vec2 coords = { -1.0f, -1.0f };
 				glm::vec2 sprite_size = { -1.0f, -1.0f };
@@ -40,6 +39,17 @@ namespace HBL {
 
 			bool Enabled = true;
 		};
+
+		/*struct HBL_API MaterialAtlas {
+			struct SubTexture {
+				glm::vec2 coords = { -1.0f, -1.0f };
+				glm::vec2 sprite_size = { -1.0f, -1.0f };
+				std::string path = "-";
+			} subTexture;
+			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+			bool Enabled = true;
+		};*/
 
 		struct HBL_API Animation {
 			std::string film = "";
@@ -58,12 +68,6 @@ namespace HBL {
 
 		struct HBL_API AudioSource {
 			std::string audio = "";
-
-			bool Enabled = true;
-		};
-
-		struct HBL_API Health {
-			int health = 100;
 
 			bool Enabled = true;
 		};

@@ -67,9 +67,8 @@ namespace HBL {
 	class HBL_API RenderingSystem {
 	public:
 
-		void Start(glm::mat4 vpMatrix);
-		void Run(int playerTransformID);
-		void Render(glm::mat4 m_Camera_vp);
+		void Initialize(const glm::mat4& vpMatrix);
+		void Render(const glm::mat4& m_Camera_vp);
 		void Clear();
 		void Clear_Buffers();
 		inline VertexBuffer& Get_Vertex_Buffer() { return vbuffer; }
@@ -77,8 +76,8 @@ namespace HBL {
 
 		friend class LevelManager;
 
-		uint32_t Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec4 color);
-		uint32_t Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3);
+		uint32_t Draw_Quad(glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color);
+		uint32_t Draw_Quad(glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3);
 		uint32_t Draw_Quad(int index);
 		void Invalidate();
 
@@ -96,11 +95,10 @@ namespace HBL {
 		uint32_t CompileShader(uint32_t type, const std::string& source);
 		uint32_t CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 
-		void Initialize(glm::mat4 m_Camera_vp);
+		void Prepare(const glm::mat4& m_Camera_vp);
 		void Update_Index_Buffer(uint32_t size);
 		void Init_Vertex_Buffer();
-		void Update_Vertex_Buffer_Positions(int playerTransformID);
-		void Update_Camera_Uniform(glm::mat4 m_Camera_vp);
+		void Update_Camera_Uniform(const glm::mat4& m_Camera_vp);
 	};
 
 }

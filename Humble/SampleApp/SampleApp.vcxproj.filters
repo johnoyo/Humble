@@ -41,5 +41,11 @@
     <ClInclude Include="src\Levels\Level1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MyComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\HealthSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

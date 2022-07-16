@@ -1307,6 +1307,9 @@
     <ClInclude Include="src\Core\HumbleAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\levels\test.txt" />

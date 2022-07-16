@@ -47,7 +47,7 @@ namespace HBL {
 			if (InputManager::GetKeyDown(GlobalSystems::windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS))
 				GET_COMPONENT(Transform, player).position.y += 6.0f;
 
-			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy, GlobalSystems::renderingSystem.Get_Vertex_Buffer()))
+			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy))
 				ENGINE_LOG("Player collided with enemy!!!");
 
 		}

@@ -41,7 +41,7 @@ namespace HBL {
 	private:
 		LevelManager() {}
 
-		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity background, bool first);
+		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity& background, bool first);
 		inline uint32_t IGetCurrentLevel() { return m_current_level; }
 		inline const std::string& IGetCurrentPath() { return m_level_path; }
 

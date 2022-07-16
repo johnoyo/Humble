@@ -68,8 +68,10 @@ namespace HBL {
 		Globals::CollisionBox.clear();
 	}
 
-	bool CollisionSystem::CollisionBetween(IEntity& e0, IEntity& e1, VertexBuffer& buffer)
+	bool CollisionSystem::CollisionBetween(IEntity& e0, IEntity& e1)
 	{
+		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+
 		bool collision = false;
 		Component::CollisionBox& collisionBox0 = GET_COMPONENT(CollisionBox, e0);
 		Component::CollisionBox& collisionBox1 = GET_COMPONENT(CollisionBox, e1);

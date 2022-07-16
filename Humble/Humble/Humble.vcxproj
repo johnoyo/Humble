@@ -329,6 +329,7 @@
     <ClInclude Include="src\Core\Systems\TransformSystem.h" />
     <ClInclude Include="src\Core\Systems\WindowSystem.h" />
     <ClInclude Include="src\Core\Utilities.h" />
+    <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\Humble.h" />
     <ClInclude Include="src\Core\ProfilerScope.h" />
     <ClInclude Include="src\Core\Core.h" />

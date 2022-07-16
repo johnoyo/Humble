@@ -1,4 +1,6 @@
 #include "../../Humble/src/Humble.h"
+#include "../../Humble/src/Graphics.h"
+
 
 // User defined entities
 HBL::IEntity background;

@@ -14,7 +14,7 @@ namespace HBL {
 		virtual void Run() override;
 		virtual void Clear() override;
 
-		bool CollisionBetween(IEntity& e0, IEntity& e1, VertexBuffer& buffer);
+		bool CollisionBetween(IEntity& e0, IEntity& e1);
 
 	private:
 		bool check_corner_br_tl_bool(glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br);

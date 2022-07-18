@@ -1,7 +1,6 @@
 #include "../../Humble/src/Humble.h"
 #include "../../Humble/src/Graphics.h"
 
-
 // User defined entities
 HBL::IEntity background;
 HBL::IEntity player;
@@ -15,7 +14,7 @@ HBL::IEntity sps;
 // User defined components
 #include "MyComponents.h"
 
-// User defined component vecctors
+// User declared component vecctors
 std::vector<HBL::Component::Health> Health;
 
 // User defined systems

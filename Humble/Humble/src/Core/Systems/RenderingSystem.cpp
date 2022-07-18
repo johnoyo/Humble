@@ -50,7 +50,7 @@ namespace HBL {
 
 		GLCall(int location1 = glGetUniformLocation(shader, "u_VP"));
 		if (location1 == -1) {
-			std::cout << "Uniform not found!!!\n";
+			ENGINE_LOG("Uniform not found!!!");
 		}
 		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 	}
@@ -95,7 +95,8 @@ namespace HBL {
 	void RenderingSystem::Init_Vertex_Buffer()
 	{
 		vbuffer.Reset();
-		std::cout << "Transform size: " << Globals::Transform.size() << "\n";
+
+		ENGINE_LOG("Transform size: %d", Globals::Transform.size());
 
 		for (uint32_t i = 0; i < Globals::Transform.size(); i++) {
 			if (Globals::Transform.at(i).Enabled) {
@@ -104,7 +105,8 @@ namespace HBL {
 			}
 		}
 
-		std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
+		ENGINE_LOG("Vertex buffer size: %d", vbuffer.Get_Size() / 4);
+
 		ibuffer.Clean();
 		ibuffer.Make_Indecies(vbuffer.Get_Size());
 		Update_Index_Buffer(vbuffer.Get_Size());
@@ -114,7 +116,7 @@ namespace HBL {
 	{
 		GLCall(int location1 = glGetUniformLocation(shader, "u_VP"));
 		if (location1 == -1) {
-			std::cout << "Uniform not found!!!\n";
+			ENGINE_LOG("Uniform not found!!!");
 		}
 		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 	}
@@ -159,7 +161,8 @@ namespace HBL {
 
 	void RenderingSystem::Invalidate()
 	{
-		std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
+		ENGINE_LOG("Vertex buffer size: %d", vbuffer.Get_Size() / 4);
+
 		ibuffer.Clean();
 		ibuffer.Make_Indecies(vbuffer.Get_Size());
 		Update_Index_Buffer(vbuffer.Get_Size());
@@ -268,35 +271,23 @@ namespace HBL {
 
 	void VertexBuffer::Update_Position_On_Quad(uint32_t indx, Component::Transform& tr)
 	{
-		// TODO: add transformation matrix for rotation here
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), tr.position)
 			* glm::rotate(glm::mat4(1.0f), glm::radians(tr.rotation), glm::vec3(0.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(tr.scale.x, tr.scale.y, 1.0f));
 
 		glm::vec4 quad_vertex_position[4];
-		//quad_vertex_position[0] = { 0.0f, 1.0f, 0.0f, 1.0f };
+
 		quad_vertex_position[0] = { -0.5f, 0.5f, 0.0f, 1.0f };
-		//quad_vertex_position[1] = { 1.0f, 1.0f, 0.0f, 1.0f };
 		quad_vertex_position[1] = { 0.5f, 0.5f, 0.0f, 1.0f };
-		//quad_vertex_position[2] = { 1.0f, 0.0f, 0.0f, 1.0f };
 		quad_vertex_position[2] = { 0.5f, -0.5f, 0.0f, 1.0f };
-		//quad_vertex_position[3] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		quad_vertex_position[3] = { -0.5f, -0.5f, 0.0f, 1.0f };
 
-		//buffer[indx].position.x = tr.position.x;
-		//buffer[indx].position.y = tr.position.y + tr.scale.y;
 		buffer[indx].position = transform * quad_vertex_position[0];
 		indx++;
-		//buffer[indx].position.x = tr.position.x + tr.scale.x;
-		//buffer[indx].position.y = tr.position.y + tr.scale.y;
 		buffer[indx].position = transform * quad_vertex_position[1];
 		indx++;
-		//buffer[indx].position.x = tr.position.x + tr.scale.x;
-		//buffer[indx].position.y = tr.position.y;
 		buffer[indx].position = transform * quad_vertex_position[2];
 		indx++;
-		//buffer[indx].position.x = tr.position.x;
-		//buffer[indx].position.y = tr.position.y;
 		buffer[indx].position = transform * quad_vertex_position[3];
 		indx++;
 	}

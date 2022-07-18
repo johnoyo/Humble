@@ -1,8 +1,5 @@
 #pragma once
 
-#include "..\Core\Utilities.h"
-#include "..\Core\ScriptFunction.h"
-
 namespace HBL {
 
 	class EnemyScript : public ScriptFunction

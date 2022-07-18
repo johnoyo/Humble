@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "..\Scripts\LevelManager.h"
-
 #include "..\Scripts\PlayerScript.h"
 #include "..\Scripts\EnemyScript.h"
 #include "..\Scripts\LevelHandlerScript.h"
@@ -39,7 +37,7 @@ namespace HBL {
 			ADD_COMPONENT(Script, player);
 			ADD_COMPONENT(Material, player);
 			ADD_COMPONENT(CollisionBox, player);
-			//ADD_COMPONENT(Gravity, player);
+			ADD_COMPONENT(Animation, player);
 
 			ADD_COMPONENT(Transform, enemy);
 			ADD_COMPONENT(Script, enemy);

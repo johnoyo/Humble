@@ -99,7 +99,8 @@ namespace HBL {
 
 		void Register_Systems()
 		{
-			Register_System(&GlobalSystems::textureSystem);
+			Register_System(&GlobalSystems::materialSystem);
+			Register_System(&GlobalSystems::animationSystem);
 			Register_System(&GlobalSystems::scriptingSystem);
 			Register_System(&GlobalSystems::transformSystem);
 			Register_System(&GlobalSystems::collisionSystem);
@@ -167,7 +168,7 @@ namespace HBL {
 		{
 			GlobalSystems::renderingSystem.Clear();
 			GlobalSystems::scriptingSystem.Clear();
-			GlobalSystems::textureSystem.Clear();
+			GlobalSystems::materialSystem.Clear();
 			GlobalSystems::windowSystem.Terminate();
 		}
 

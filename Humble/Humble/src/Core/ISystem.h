@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "Managers/Entities.h"
 #include "Utilities.h"
 #include "HumbleAPI.h"
 
@@ -52,6 +51,12 @@ namespace HBL {
 			current.insert(current.end(), filtered.begin(), filtered.end());
 
 			Filter(current, params...);
+		}
+
+		void Clean() 
+		{
+			current.clear();
+			filtered.clear();
 		}
 
 	private:

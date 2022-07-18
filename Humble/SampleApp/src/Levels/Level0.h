@@ -1,15 +1,8 @@
 #pragma once
 
-//#include "GlobalsHeader.h"
-//#include "..\Core\Scene.h"
-
 #include "..\Scripts\PlayerScript.h"
 #include "..\Scripts\EnemyScript.h"
 #include "..\Scripts\LevelHandlerScript.h"
-
-//
-//#include "../Core/Managers/Entities.h"
-//#include "../Core/IEntity.h"
 
 namespace HBL {
 
@@ -43,9 +36,9 @@ namespace HBL {
 			ADD_COMPONENT(Transform, player);
 			ADD_COMPONENT(Script, player);
 			ADD_COMPONENT(Material, player);
+			ADD_COMPONENT(Animation, player);
 			ADD_COMPONENT(CollisionBox, player);
 			ADD_MY_COMPONENT(Health, player);
-			//ADD_COMPONENT(Gravity, player);
 			
 			ADD_COMPONENT(Transform, enemy);
 			ADD_COMPONENT(Script, enemy);
@@ -54,7 +47,6 @@ namespace HBL {
 			ADD_COMPONENT(Gravity, enemy);
 			ADD_COMPONENT(Shadow, enemy);
 			ADD_MY_COMPONENT(Health, enemy);
-
 			
 			ADD_COMPONENT(Script, lvlHandler);
 				
@@ -94,6 +86,7 @@ namespace HBL {
 
 			GET_MY_COMPONENT(Health, player).health = 99;
 			GET_MY_COMPONENT(Health, enemy).health = 88;
+			
 		}
 
 		void Init_Systems() override

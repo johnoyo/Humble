@@ -30,30 +30,22 @@ namespace HBL {
 
 		struct HBL_API Material {
 			std::string texture = "-";
-			struct SubTexture {
-				glm::vec2 coords = { -1.0f, -1.0f };
-				glm::vec2 sprite_size = { -1.0f, -1.0f };
-				std::string path = "-";
-			} subTexture;
+			glm::vec2 coords = { -1.0f, -1.0f };
+			glm::vec2 sprite_size = { -1.0f, -1.0f };
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 			bool Enabled = true;
 		};
 
-		/*struct HBL_API MaterialAtlas {
-			struct SubTexture {
-				glm::vec2 coords = { -1.0f, -1.0f };
-				glm::vec2 sprite_size = { -1.0f, -1.0f };
-				std::string path = "-";
-			} subTexture;
-			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
-
-			bool Enabled = true;
-		};*/
-
 		struct HBL_API Animation {
-			std::string film = "";
-			float step = 0.0f;
+			std::string name = "-";
+
+			Material* material;
+
+			double time = 0.0f;
+			double step = 0.0f;
+			int frames = -1;
+			bool loop = false;
 
 			bool Enabled = true;
 		};

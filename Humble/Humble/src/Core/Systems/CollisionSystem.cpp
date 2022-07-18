@@ -43,6 +43,7 @@ namespace HBL {
 				glm::vec3& tr = transfom.position;
 				glm::vec3& sc = transfom.scale;
 
+				// update collision box on x-axis
 				collisionBox.tl.x = tr.x - sc.x / 2.0f;
 				collisionBox.tr.x = tr.x + sc.x / 2.0f;
 				collisionBox.br.x = tr.x + sc.x / 2.0f;

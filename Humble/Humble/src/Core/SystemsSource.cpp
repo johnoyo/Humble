@@ -1,7 +1,8 @@
 #include "SystemsHeader.h"
 
 HBL::WindowSystem GlobalSystems::windowSystem;
-HBL::TextureSystem GlobalSystems::textureSystem;
+HBL::MaterialSystem GlobalSystems::materialSystem;
+HBL::AnimationSystem GlobalSystems::animationSystem;
 HBL::RenderingSystem GlobalSystems::renderingSystem;
 HBL::CameraSystem GlobalSystems::cameraSystem;
 HBL::ScriptingSystem GlobalSystems::scriptingSystem;

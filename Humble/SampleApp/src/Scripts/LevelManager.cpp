@@ -85,7 +85,6 @@ namespace HBL {
 			}
 			if (TRY_FIND_COMPONENT(Material, entt)) {
 				GET_COMPONENT(Material, entt).texture = "-";
-				GET_COMPONENT(Material, entt).subTexture.path = "-";
 				GET_COMPONENT(Material, entt).Enabled = false;
 			}
 			if (TRY_FIND_COMPONENT(Script, entt)) {
@@ -99,6 +98,9 @@ namespace HBL {
 			}
 			if (TRY_FIND_COMPONENT(Gravity, entt)) {
 				GET_COMPONENT(Gravity, entt).Enabled = false;
+			}
+			if (TRY_FIND_COMPONENT(Animation, entt)) {
+				GET_COMPONENT(Animation, entt).Enabled = false;
 			}
 		}
 
@@ -188,7 +190,9 @@ namespace HBL {
 		GET_COMPONENT(Script, player).Enabled = true;
 
 		GET_COMPONENT(Material, player).Enabled = true;
-		GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
+		GET_COMPONENT(Material, player).texture = "res/textures/super_mario_tiles.png";
+		if (first)
+			GET_COMPONENT(Animation, player).Enabled = true;
 
 		// Recalculate all collision boxes
 		for (uint32_t i = 0; i < Globals::entities.size(); i++) {

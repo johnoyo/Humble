@@ -5,10 +5,13 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
-
 #include "Core/Header.h"
 #include "Core/Utilities.h"
 #include "Core/SystemsHeader.h"
+
+#include "Core/ScriptFunction.h"
+#include "Core/Managers/InputManager.h"
+#include "Core/Managers/SoundManager.h"
 
 #include "Core/ISystem.h"
 

@@ -1,8 +1,10 @@
 #pragma once
+
 #include "..\Core\Systems\CameraSystem.h"
 #include "..\Core\Systems\RenderingSystem.h"
 #include "..\Core\Systems\WindowSystem.h"
-#include "..\Core\Systems\TextureSystem.h"
+#include "..\Core\Systems\MaterialSystem.h"
+#include "..\Core\Systems\AnimationSystem.h"
 #include "..\Core\Systems\ScriptingSystem.h"
 #include "..\Core\Systems\CollisionSystem.h"
 #include "..\Core\Systems\GravitySystem.h"
@@ -13,7 +15,8 @@
 struct HBL_API GlobalSystems 
 {
 	static HBL::WindowSystem windowSystem;
-	static HBL::TextureSystem textureSystem;
+	static HBL::MaterialSystem materialSystem;
+	static HBL::AnimationSystem animationSystem;
 	static HBL::RenderingSystem renderingSystem;
 	static HBL::CameraSystem cameraSystem;
 	static HBL::ScriptingSystem scriptingSystem;

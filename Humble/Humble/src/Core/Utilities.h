@@ -23,5 +23,5 @@
 #else
 #define ENGINE_LOG(f_, ...)
 #define ENGINE_PROFILE(...)
-#define FUNCTION_PROFILE(...)
+#define FUNCTION_PROFILE()
 #endif // _DEBUG

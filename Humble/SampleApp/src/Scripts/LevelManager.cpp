@@ -191,6 +191,7 @@ namespace HBL {
 
 		GET_COMPONENT(Material, player).Enabled = true;
 		GET_COMPONENT(Material, player).texture = "res/textures/super_mario_tiles.png";
+
 		if (first)
 			GET_COMPONENT(Animation, player).Enabled = true;
 

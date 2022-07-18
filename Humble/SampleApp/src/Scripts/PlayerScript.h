@@ -2,7 +2,7 @@
 
 namespace HBL {
 
-	class PlayerScript : public ScriptFunction
+	class PlayerScript final : public ScriptFunction
 	{
 	public:
 		PlayerScript() {}
@@ -11,49 +11,86 @@ namespace HBL {
 		virtual void Init() override {
 
 			//GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
-			GET_COMPONENT(Material, player).texture = "res/textures/super_mario_tiles.png";
-			GET_COMPONENT(Material, player).coords = { 6.0f, 1.0f };
-			GET_COMPONENT(Material, player).sprite_size = { 16.0f, 16.0f };
+			Component::Material& material = GET_COMPONENT(Material, player);
+			material.texture = "res/textures/super_mario_tiles.png";
+			material.coords = { 6.0f, 1.0f };
+			material.sprite_size = { 16.0f, 16.0f };
 
-			GET_COMPONENT(Animation, player).material = &GET_COMPONENT(Material, player);
-			GET_COMPONENT(Animation, player).frames = 5;
-			GET_COMPONENT(Animation, player).step = 0.5f;
-			GET_COMPONENT(Animation, player).loop = true;
-			GET_COMPONENT(Animation, player).Enabled = false;
+			Component::Animation& animation = GET_COMPONENT(Animation, player);
 
+			animation.animations.push_back({
+				"WalkAnim",
+				&material,
+				{ 6.0f, 1.0f },
+				0.0,
+				0.5,
+				5,
+				5,
+				true,
+				false
+			});
+
+			animation.animations.push_back({
+				"JumpAnim",
+				&material,
+				{ 5.0f, 2.0f },
+				0.0,
+				0.5,
+				5,
+				5,
+				true,
+				false
+			});
+
+			animation.animations[0].Enabled = false;
+			animation.animations[1].Enabled = false;
 		}
 
 		virtual void Update() override {
 
+			Component::Transform& transform_p = GET_COMPONENT(Transform, player);
+			Component::Transform& transform_bg = GET_COMPONENT(Transform, background);
+			Component::Animation& animation_p = GET_COMPONENT(Animation, player);
+
 			// Background follow player
-			GET_COMPONENT(Transform, background).position.x = GET_COMPONENT(Transform, player).position.x;
-			GET_COMPONENT(Transform, background).position.y = GET_COMPONENT(Transform, player).position.y;
+			transform_bg.position.x = transform_p.position.x;
+			transform_bg.position.y = transform_p.position.y;
 
 			// Camera follow player
 			GlobalSystems::cameraSystem.Follow(camera, player, (-GlobalSystems::windowSystem.Get_Width() / 2.0f), (-GlobalSystems::windowSystem.Get_Height() / 2.0f));
-
+			
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) {
-				GET_COMPONENT(Transform, player).position.x += 6.0f;
-				GET_COMPONENT(Animation, player).Enabled = true;
+				transform_p.position.x += 6.0f;
+				animation_p.animations[0].Enabled = true;
 			}
 			else
 			{
-				GET_COMPONENT(Animation, player).Enabled = false;
+				animation_p.animations[0].Enabled = false;
 			}
 
 			if (InputManager::GetKeyPress(GLFW_KEY_SPACE))
 				SoundManager::PlaySound("res/audio/bleep.mp3");
 
 			if (InputManager::GetKeyDown(GLFW_KEY_A)) {
-				GET_COMPONENT(Transform, player).position.x -= 6.0f;
+				transform_p.position.x -= 6.0f;
 			}
 
 			if (InputManager::GetKeyDown(GLFW_KEY_S))
-				GET_COMPONENT(Transform, player).position.y -= 6.0f;
+				transform_p.position.y -= 6.0f;
 
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
-				GET_COMPONENT(Transform, player).position.y += 6.0f;
+			{
+				transform_p.position.y += 6.0f;
+				animation_p.animations[1].Enabled = true;
+			}
+			else
+			{
+				animation_p.animations[1].Enabled = false;
+			}
+
+			if (InputManager::GetKeyPress(GLFW_KEY_F))
+				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
 
 			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy))
 				ENGINE_LOG("Player collided with enemy!!!");

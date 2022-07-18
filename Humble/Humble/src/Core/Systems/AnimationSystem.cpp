@@ -10,9 +10,10 @@ namespace HBL {
 
 		For_Each([&](IEntity& entt)
 		{
-			Component::Animation& anim = GET_COMPONENT(Animation, entt);
+			Component::Animation& animation = GET_COMPONENT(Animation, entt);
 
-			anim.time = glfwGetTime();
+			for (auto anim : animation.animations)
+				anim.time = glfwGetTime();
 		});
 	}
 
@@ -20,37 +21,45 @@ namespace HBL {
 	{
 		For_Each([&](IEntity& entt)
 		{
-			Component::Animation& anim = GET_COMPONENT(Animation, entt);
+			Component::Animation& animation = GET_COMPONENT(Animation, entt);
 
-			if (anim.Enabled)
+			if (animation.Enabled)
 			{
-				double current_time = glfwGetTime();
-
-				// Repeat texture swap every time step.
-				if (current_time - anim.time >= anim.step)
+				for (auto& anim : animation.animations)
 				{
-					if (anim.frames != 0)
+					if (anim.Enabled)
 					{
-						// If animation has not ended yet, progress it.
-						anim.material->coords.x++;
-						anim.frames--;
-					}
-					else 
-					{
-						// If is looping animation, reset component state.
-						if (anim.loop)
+						double current_time = glfwGetTime();
+
+						// Repeat texture swap every time step.
+						if (current_time - anim.time >= anim.step)
 						{
-							anim.frames = 5;
-							anim.material->coords.x = 6.0f;
+							if (anim.frames != 0)
+							{
+								// If animation has not ended yet, progress it.
+								anim.start_coords.x++;
+								anim.material->coords = anim.start_coords;
+								anim.frames--;
+							}
+							else
+							{
+								// If is looping animation, reset component state.
+								if (anim.loop)
+								{
+									anim.frames = anim.cached_frames;
+									anim.start_coords.x -= anim.frames;
+									anim.material->coords = anim.start_coords;
+								}
+							}
+
+							anim.time = current_time;
 						}
+
+						double new_time = glfwGetTime();
+						double frame_time = new_time - current_time;
+						current_time = new_time;
 					}
-
-					anim.time = current_time;
 				}
-
-				float new_time = glfwGetTime();
-				float frame_time = new_time - current_time;
-				current_time = new_time;
 			}
 		});
 	}
@@ -61,6 +70,20 @@ namespace HBL {
 
 		Clean();
 		Globals::Animation.clear();
+	}
+
+	void AnimationSystem::ResetAnimation(Component::Animation& animation, int index, int frame)
+	{
+		FUNCTION_PROFILE();
+
+		int prev = animation.animations[index].frames;
+		int diff = frame - prev;
+
+		animation.animations[index].frames = frame;
+		animation.animations[index].cached_frames = frame;
+
+		animation.animations[index].start_coords.x -= diff;
+		animation.animations[index].material->coords = animation.animations[index].start_coords;
 	}
 
 }

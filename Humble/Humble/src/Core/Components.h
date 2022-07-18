@@ -38,14 +38,22 @@ namespace HBL {
 		};
 
 		struct HBL_API Animation {
-			std::string name = "-";
+			struct Animations {
+				std::string name = "-";
 
-			Material* material;
+				Material* material;
 
-			double time = 0.0f;
-			double step = 0.0f;
-			int frames = -1;
-			bool loop = false;
+				glm::vec2 start_coords = { -1.0f, -1.0f };
+				double time = 0.0;
+				double step = 0.0;
+				int frames = -1;
+				int cached_frames = -1;
+				bool loop = false;
+
+				bool Enabled = true;
+			};
+
+			std::vector<Animations> animations;
 
 			bool Enabled = true;
 		};

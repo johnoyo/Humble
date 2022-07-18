@@ -4,7 +4,7 @@
 
 namespace HBL {
 
-	class LevelHandlerScript : public ScriptFunction
+	class LevelHandlerScript final : public ScriptFunction
 	{
 	public:
 		LevelHandlerScript() {}

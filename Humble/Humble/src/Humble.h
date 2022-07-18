@@ -9,7 +9,7 @@
 #include "Core/Utilities.h"
 #include "Core/SystemsHeader.h"
 
-#include "Core/ScriptFunction.h"
+#include "Core/IScript.h"
 #include "Core/Managers/InputManager.h"
 #include "Core/Managers/SoundManager.h"
 

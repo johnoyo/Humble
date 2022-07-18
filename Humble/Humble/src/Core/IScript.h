@@ -3,10 +3,10 @@
 
 namespace HBL {
 
-	class HBL_API ScriptFunction {
+	class HBL_API IScript {
 	public:
-		ScriptFunction() {}
-		virtual ~ScriptFunction() {}
+		IScript() {}
+		virtual ~IScript() {}
 
 		virtual void Init() = 0;
 		virtual void Update() = 0;

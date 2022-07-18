@@ -2,7 +2,7 @@
 
 namespace HBL {
 
-	class EnemyScript final : public ScriptFunction
+	class EnemyScript final : public IScript
 	{
 	public:
 		EnemyScript() {}

@@ -4,7 +4,7 @@
 #include "SystemsHeader.h"
 #include "Utilities.h"
 #include "HumbleAPI.h"
-#include "Scene.h"
+#include "IScene.h"
 #include "ISystem.h"
 
 namespace HBL {
@@ -13,7 +13,7 @@ namespace HBL {
 	public:
 		Application(float width, float height, const std::string& name, bool full_screen);
 
-		void Add_Scene(Scene* scene);
+		void Add_Scene(IScene* scene);
 
 		void Register_System(ISystem* system);
 
@@ -92,7 +92,7 @@ namespace HBL {
 		}
 
 	private:
-		std::vector<Scene*> scenes;
+		std::vector<IScene*> scenes;
 		std::vector<ISystem*> systems;
 
 		uint32_t current = 0;

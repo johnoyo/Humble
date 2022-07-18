@@ -1274,12 +1274,6 @@
     <ClInclude Include="src\Core\Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Core\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\ScriptFunction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Core\System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1317,6 +1311,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Systems\MaterialSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\IScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\IScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

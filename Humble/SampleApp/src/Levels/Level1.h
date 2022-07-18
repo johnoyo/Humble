@@ -6,10 +6,10 @@
 
 namespace HBL {
 
-	class Level1 final : public Scene
+	class Level1 final : public IScene
 	{
 		// This is so the class Level1 also inherits the constructor of class Scene
-		using Scene::Scene;
+		using IScene::IScene;
 
 	public:
 		void Enroll_Entities() override

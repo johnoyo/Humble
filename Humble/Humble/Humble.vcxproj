@@ -313,8 +313,8 @@
     <ClInclude Include="src\Application\Scripts\LevelManager.h" />
     <ClInclude Include="src\Core\Managers\SoundManager.h" />
     <ClInclude Include="src\Core\Managers\TextureManager.h" />
-    <ClInclude Include="src\Core\Scene.h" />
-    <ClInclude Include="src\Core\ScriptFunction.h" />
+    <ClInclude Include="src\Core\IScene.h" />
+    <ClInclude Include="src\Core\IScript.h" />
     <ClInclude Include="src\Core\System.h" />
     <ClInclude Include="src\Application\GlobalsHeader.h" />
     <ClInclude Include="src\Core\SystemsHeader.h" />

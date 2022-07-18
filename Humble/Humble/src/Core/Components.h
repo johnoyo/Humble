@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 #include "glm/glm.hpp"
-#include "ScriptFunction.h"
+#include "IScript.h"
 #include "HumbleAPI.h"
 
 namespace HBL {
@@ -73,7 +73,7 @@ namespace HBL {
 		};
 
 		struct HBL_API Script {
-			std::vector<HBL::ScriptFunction*> script;
+			std::vector<HBL::IScript*> script;
 
 			bool Enabled = true;
 		};

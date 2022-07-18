@@ -49,6 +49,8 @@ namespace HBL {
 
 	void MaterialSystem::Clear()
 	{
+		FUNCTION_PROFILE();
+
 		TextureManager::GetTextureMap().clear();
 		TextureManager::GetTextureSize().clear();
 		TextureManager::GetTextureIndex() = 0;

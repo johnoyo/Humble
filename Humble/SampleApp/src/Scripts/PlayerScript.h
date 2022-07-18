@@ -2,7 +2,7 @@
 
 namespace HBL {
 
-	class PlayerScript final : public ScriptFunction
+	class PlayerScript final : public IScript
 	{
 	public:
 		PlayerScript() {}

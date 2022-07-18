@@ -72,6 +72,8 @@ namespace HBL {
 
 	void RenderingSystem::Clear()
 	{
+		FUNCTION_PROFILE();
+
 		GLCall(glDeleteBuffers(1, &vb));
 		GLCall(glDeleteBuffers(1, &ib));
 		GLCall(glDeleteProgram(shader));

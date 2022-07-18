@@ -7,7 +7,7 @@ namespace HBL {
 		GlobalSystems::windowSystem.Initialize(width, height, name, full_screen);
 	}
 
-	void Application::Add_Scene(Scene* scene)
+	void Application::Add_Scene(IScene* scene)
 	{
 		scenes.push_back(scene);
 	}

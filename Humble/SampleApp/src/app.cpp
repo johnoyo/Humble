@@ -14,7 +14,7 @@ HBL::IEntity sps;
 // User defined components
 #include "MyComponents.h"
 
-// User declared component vecctors
+// User declared component vectors
 std::vector<HBL::Component::Health> Health;
 
 // User defined systems

@@ -63,7 +63,7 @@ namespace HBL {
 
 		void Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path);
 
-		void UpdateIndexBuffer(uint32_t size);
+		void UpdateIndexBuffer(uint32_t size, uint32_t vindex);
 		void UpdateCameraUniform(const glm::mat4& m_Camera_vp);
 
 		ShaderProgramSource ParseShader(const std::string& filepath);

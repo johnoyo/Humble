@@ -103,7 +103,7 @@ namespace HBL {
 
 		rendererData[vindex]->ibuffer.Clean();
 		rendererData[vindex]->ibuffer.Make_Indecies(rendererData[vindex]->vbuffer.Get_Size());
-		UpdateIndexBuffer(rendererData[vindex]->vbuffer.Get_Size());
+		UpdateIndexBuffer(rendererData[vindex]->vbuffer.Get_Size(), vindex);
 	}
 
 	void Renderer::Clear()
@@ -119,7 +119,12 @@ namespace HBL {
 
 			data->vbuffer.Clean();
 			data->ibuffer.Clean();
+
+			delete data;
 		}
+
+		size = 0;
+		rendererData.clear();
 	}
 
 	void Renderer::Clear_Buffers()
@@ -186,9 +191,9 @@ namespace HBL {
 		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 	}
 
-	void Renderer::UpdateIndexBuffer(uint32_t size)
+	void Renderer::UpdateIndexBuffer(uint32_t size, uint32_t vindex)
 	{
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[currentIndex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
 	}
 
 	void Renderer::UpdateCameraUniform(const glm::mat4& m_Camera_vp)

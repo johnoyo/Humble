@@ -32,7 +32,7 @@ namespace HBL {
 
 		static void Load_Level(const std::string& level_path, bool first) {
 			Get().m_current_level++;
-			return Get().ILoadLevel(level_path, GlobalSystems::scriptingSystem, GlobalSystems::gravitySystem, GlobalSystems::renderingSystem, GlobalSystems::renderingSystem.Get_Vertex_Buffer(), GlobalSystems::renderingSystem.Get_Index_Buffer(), background, first);
+			return Get().ILoadLevel(level_path, GlobalSystems::scriptingSystem, GlobalSystems::gravitySystem, GlobalSystems::renderingSystem, Renderer::Get().GetVertexBuffer(0), Renderer::Get().GetIndexBuffer(0), background, first);
 		}
 
 		inline static uint32_t GetCurrentLevel() { return Get().IGetCurrentLevel(); }

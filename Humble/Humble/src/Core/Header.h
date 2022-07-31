@@ -23,4 +23,5 @@ struct HBL_API Globals
 	static std::vector<HBL::Component::Script> Script;
 	static std::vector<HBL::Component::Gravity> Gravity;
 	static std::vector<HBL::Component::Shadow> Shadow;
+	static std::vector<HBL::Component::Text> Text;
 };

@@ -68,6 +68,8 @@ namespace HBL {
 			{
 				animation_p.animations[0].Enabled = false;
 			}
+			if (InputManager::GetKeyRelease(GLFW_KEY_D))
+				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
 
 			if (InputManager::GetKeyPress(GLFW_KEY_SPACE))
 				SoundManager::PlaySound("res/audio/bleep.mp3");
@@ -88,9 +90,8 @@ namespace HBL {
 			{
 				animation_p.animations[1].Enabled = false;
 			}
-
-			if (InputManager::GetKeyPress(GLFW_KEY_F))
-				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
+			if (InputManager::GetKeyRelease(GLFW_KEY_W))
+				GlobalSystems::animationSystem.ResetAnimation(animation_p, 1, 5);
 
 			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy))
 				ENGINE_LOG("Player collided with enemy!!!");

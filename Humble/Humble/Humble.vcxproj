@@ -146,6 +146,9 @@
     <ClCompile Include="src\Core\Managers\InputManager.cpp" />
     <ClCompile Include="src\Core\Managers\SoundManager.cpp" />
     <ClCompile Include="src\Core\Managers\TextureManager.cpp" />
+    <ClCompile Include="src\Core\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Core\Rendering\Renderer.cpp" />
+    <ClCompile Include="src\Core\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Core\Source.cpp" />
     <ClCompile Include="src\Core\System.cpp" />
     <ClCompile Include="src\Core\SystemsSource.cpp" />
@@ -157,6 +160,7 @@
     <ClCompile Include="src\Core\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\Core\Systems\ShadowCastSystem.cpp" />
     <ClCompile Include="src\Core\Systems\MaterialSystem.cpp" />
+    <ClCompile Include="src\Core\Systems\TextSystem.cpp" />
     <ClCompile Include="src\Core\Systems\TransformSystem.cpp" />
     <ClCompile Include="src\Core\Systems\WindowSystem.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
@@ -315,6 +319,9 @@
     <ClInclude Include="src\Core\Managers\TextureManager.h" />
     <ClInclude Include="src\Core\IScene.h" />
     <ClInclude Include="src\Core\IScript.h" />
+    <ClInclude Include="src\Core\Rendering\IndexBuffer.h" />
+    <ClInclude Include="src\Core\Rendering\Renderer.h" />
+    <ClInclude Include="src\Core\Rendering\VertexBuffer.h" />
     <ClInclude Include="src\Core\System.h" />
     <ClInclude Include="src\Application\GlobalsHeader.h" />
     <ClInclude Include="src\Core\SystemsHeader.h" />
@@ -322,6 +329,7 @@
     <ClInclude Include="src\Core\Systems\CameraSystem.h" />
     <ClInclude Include="src\Core\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Core\Systems\GravitySystem.h" />
+    <ClInclude Include="src\Core\Systems\TextSystem.h" />
     <ClInclude Include="src\ecs\Systems\InputSystem.h" />
     <ClInclude Include="src\ecs\Systems\LevelManager.h" />
     <ClInclude Include="src\Core\Systems\RenderingSystem.h" />

@@ -30,7 +30,7 @@ namespace HBL {
 
 	void CollisionSystem::Run()
 	{
-		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		// Update collision boxes of non-static objects
 		For_Each([&](IEntity& entt)
@@ -71,7 +71,7 @@ namespace HBL {
 
 	bool CollisionSystem::CollisionBetween(IEntity& e0, IEntity& e1)
 	{
-		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		bool collision = false;
 		Component::CollisionBox& collisionBox0 = GET_COMPONENT(CollisionBox, e0);

@@ -13,15 +13,17 @@ namespace HBL {
 	void TransformSystem::Run()
 	{
 		//FUNCTION_PROFILE();
-		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
 
-		For_Each([&](IEntity& entt)
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
+
+		for (int i = 0; i < Globals::Transform.size(); i++)
 		{
-			Component::Transform& tr = GET_COMPONENT(Transform, entt);
-			if (tr.Static == false) {
+			Component::Transform& tr = Globals::Transform[i];
+			if (tr.Static == false) 
+			{
 				buffer.Update_Position_On_Quad(tr.bufferIndex, tr);
 			}
-		});
+		}
 	}
 
 	void TransformSystem::Clear()

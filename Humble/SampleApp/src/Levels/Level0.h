@@ -58,7 +58,7 @@ namespace HBL {
 				ADD_COMPONENT(Transform, wall[i]);
 				ADD_COMPONENT(CollisionBox, wall[i]);
 				ADD_COMPONENT(Material, wall[i]);
-				//ADD_COMPONENT(Shadow, wall[i]);
+				ADD_COMPONENT(Shadow, wall[i]);
 			}
 			
 			for (uint32_t i = 0; i < 1000; i++) {

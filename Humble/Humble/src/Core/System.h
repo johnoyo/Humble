@@ -15,7 +15,6 @@ namespace HBL {
 
 		void EnrollEntity(IEntity& Entity, std::vector<IEntity>& entities) 
 		{
-			//Entity.components = new Trie();
 			Entity.ID = currentID++;
 			entities.push_back(Entity);
 		}

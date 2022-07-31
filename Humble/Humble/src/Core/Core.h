@@ -20,13 +20,6 @@
 #define GLCall(x) x
 #endif // DEBUG
 
-struct Vertex_Array {
-	glm::vec2 position;
-	glm::vec4 color;
-	glm::vec2 tex_coord;
-	float tex_id;
-};
-
 static void GLClearErrors()
 {
 	while (glGetError() != GL_NO_ERROR);

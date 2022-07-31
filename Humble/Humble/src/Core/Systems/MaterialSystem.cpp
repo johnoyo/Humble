@@ -20,7 +20,7 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 		
-		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		uint32_t indx = 0;
 		for (uint32_t i = 0; i < Globals::Material.size(); i++) 

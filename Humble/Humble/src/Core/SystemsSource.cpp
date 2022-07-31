@@ -10,3 +10,4 @@ HBL::CollisionSystem GlobalSystems::collisionSystem;
 HBL::GravitySystem GlobalSystems::gravitySystem;
 HBL::TransformSystem GlobalSystems::transformSystem;
 HBL::ShadowCastSystem GlobalSystems::shadowSystem;
+HBL::TextSystem GlobalSystems::textSystem;

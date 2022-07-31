@@ -8,7 +8,7 @@ namespace HBL {
 		FUNCTION_PROFILE();
 
 		RenderingSystem& rend = GlobalSystems::renderingSystem;
-		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		uint32_t offset = 0;
 		// Init shadow cast component info
@@ -61,22 +61,22 @@ namespace HBL {
 				}
 
 				// Set shadow quad positions
-				rend.Draw_Quad(vertices[3], shadow_points[3], shadow_points[0], vertices[0], Globals::Shadow.at(i).color);
-				rend.Draw_Quad(vertices[0], shadow_points[0], shadow_points[1], vertices[1], Globals::Shadow.at(i).color);
-				rend.Draw_Quad(vertices[1], shadow_points[1], shadow_points[2], vertices[2], Globals::Shadow.at(i).color);
+				Renderer::Get().Draw_Quad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], Globals::Shadow.at(i).color);
+				Renderer::Get().Draw_Quad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], Globals::Shadow.at(i).color);
+				Renderer::Get().Draw_Quad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], Globals::Shadow.at(i).color);
 			}
 		}
 
 		// Reset rendering buffers
-		rend.Invalidate();
+		Renderer::Get().Invalidate(0);
 	}
 
 	void ShadowCastSystem::Run(glm::vec3& player_position)
 	{
-		//ENGINE_PROFILE("ShadowCastSystem::Run");
+		//FUNCTION_PROFILE();
 
 		RenderingSystem& rend = GlobalSystems::renderingSystem;
-		VertexBuffer& buffer = GlobalSystems::renderingSystem.Get_Vertex_Buffer();
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		glm::vec3 O = player_position;
 

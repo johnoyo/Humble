@@ -11,6 +11,7 @@
 #include "..\Core\Managers\SoundManager.h"
 #include "..\Core\Systems\TransformSystem.h"
 #include "..\Core\Systems\ShadowCastSystem.h"
+#include "..\Core\Systems\TextSystem.h"
 
 struct HBL_API GlobalSystems 
 {
@@ -24,4 +25,5 @@ struct HBL_API GlobalSystems
 	static HBL::GravitySystem gravitySystem;
 	static HBL::TransformSystem transformSystem;
 	static HBL::ShadowCastSystem shadowSystem;
+	static HBL::TextSystem textSystem;
 };

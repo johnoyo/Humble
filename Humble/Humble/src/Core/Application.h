@@ -74,7 +74,7 @@ namespace HBL {
 				}
 
 				// - Render at maximum possible frames
-				GlobalSystems::renderingSystem.Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
+				Renderer::Get().Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 				frames++;
 
 				// - Reset after one second
@@ -99,19 +99,20 @@ namespace HBL {
 
 		void Register_Systems()
 		{
+			Register_System(&GlobalSystems::renderingSystem);
 			Register_System(&GlobalSystems::materialSystem);
 			Register_System(&GlobalSystems::animationSystem);
 			Register_System(&GlobalSystems::scriptingSystem);
 			Register_System(&GlobalSystems::transformSystem);
 			Register_System(&GlobalSystems::collisionSystem);
 			Register_System(&GlobalSystems::gravitySystem);
+			Register_System(&GlobalSystems::textSystem);
 		}
 
 		void Initialize() 
 		{
 			GlobalSystems::windowSystem.Create(0);
 			GlobalSystems::cameraSystem.Create();
-			GlobalSystems::renderingSystem.Initialize(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 
 			SoundManager::Start();
 
@@ -128,7 +129,6 @@ namespace HBL {
 		void Restart_Systems() 
 		{
 			GlobalSystems::cameraSystem.Create();
-			GlobalSystems::renderingSystem.Initialize(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 
 			for (ISystem* system : systems)
 			{
@@ -159,14 +159,14 @@ namespace HBL {
 			}
 
 			GlobalSystems::shadowSystem.Clear();
-			GlobalSystems::renderingSystem.Clear();
+			Renderer::Get().Clear();
 
 			Globals::ecs.Flush(Globals::entities);
 		}
 
 		void Shutdown() 
 		{
-			GlobalSystems::renderingSystem.Clear();
+			Renderer::Get().Clear();
 			GlobalSystems::scriptingSystem.Clear();
 			GlobalSystems::materialSystem.Clear();
 			GlobalSystems::windowSystem.Terminate();

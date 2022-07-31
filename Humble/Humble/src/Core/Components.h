@@ -86,6 +86,12 @@ namespace HBL {
 
 			bool Enabled = true;
 		};
+
+		struct HBL_API Text {
+			std::string text = "Sample text";
+
+			bool Enabled = true;
+		};
 	}
 
 }

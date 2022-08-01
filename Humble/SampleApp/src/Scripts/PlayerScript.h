@@ -62,11 +62,11 @@ namespace HBL {
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) {
 				transform_p.position.x += 6.0f;
-				animation_p.animations[0].Enabled = true;
+				GlobalSystems::animationSystem.PlayAnimation(animation_p, 0);
 			}
 			else
 			{
-				animation_p.animations[0].Enabled = false;
+				GlobalSystems::animationSystem.StopAnimation(animation_p, 0);
 			}
 			if (InputManager::GetKeyRelease(GLFW_KEY_D))
 				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
@@ -84,11 +84,11 @@ namespace HBL {
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
 				transform_p.position.y += 6.0f;
-				animation_p.animations[1].Enabled = true;
+				GlobalSystems::animationSystem.PlayAnimation(animation_p, 1);
 			}
 			else
 			{
-				animation_p.animations[1].Enabled = false;
+				GlobalSystems::animationSystem.StopAnimation(animation_p, 1);
 			}
 			if (InputManager::GetKeyRelease(GLFW_KEY_W))
 				GlobalSystems::animationSystem.ResetAnimation(animation_p, 1, 5);

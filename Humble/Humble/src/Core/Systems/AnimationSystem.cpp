@@ -72,6 +72,22 @@ namespace HBL {
 		Globals::Animation.clear();
 	}
 
+	void AnimationSystem::PlayAnimation(Component::Animation& animation, int index)
+	{
+		animation.animations[index].Enabled = true;
+
+		for (uint32_t i = 0; i < animation.animations.size(); i++)
+		{
+			if (i != index)
+				animation.animations[i].Enabled = false;
+		}
+	}
+
+	void AnimationSystem::StopAnimation(Component::Animation& animation, int index)
+	{
+		animation.animations[index].Enabled = false;
+	}
+
 	void AnimationSystem::ResetAnimation(Component::Animation& animation, int index, int frame)
 	{
 		FUNCTION_PROFILE();

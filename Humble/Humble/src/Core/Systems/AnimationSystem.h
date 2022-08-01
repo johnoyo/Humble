@@ -12,6 +12,8 @@ namespace HBL {
 		virtual void Run() override;
 		virtual void Clear() override;
 
+		void PlayAnimation(Component::Animation& animation, int index);
+		void StopAnimation(Component::Animation& animation, int index);
 		void ResetAnimation(Component::Animation& animation, int index, int frame);
 	};
 

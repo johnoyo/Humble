@@ -9,9 +9,16 @@ namespace HBL {
 
 		SDF_Importer("res/textures/testFont.fnt");
 		TextureManager::Load_Texture("res/textures/testFont.png");
+		uint32_t buffer_size = 0;
+
+		For_Each([&](IEntity& entt)
+		{
+			Component::Text& text = GET_COMPONENT(Text, entt);
+			buffer_size += text.text.size();
+		});
 
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", (Globals::Text.size() * 96), vpMatrix);
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", (buffer_size * 4), vpMatrix);
 		
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
 

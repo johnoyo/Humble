@@ -87,6 +87,16 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
+		struct HBL_API TextTransform {
+			glm::vec3 position = { 0.0f, 0.0f, 0.0f };
+			float rotation = 0.0f;
+			glm::vec3 scale = { 10.0f, 10.0f, 10.0f };
+
+			int bufferIndex = -1;
+
+			bool Enabled = true;
+		};
+
 		struct HBL_API Text {
 			std::string text = "Sample text";
 

@@ -68,7 +68,9 @@ namespace HBL {
 		}
 
 		// Reset rendering buffers
+		Renderer::Get().Bind(0);
 		Renderer::Get().Invalidate(0);
+		Renderer::Get().UnBind();
 	}
 
 	void ShadowCastSystem::Run(glm::vec3& player_position)

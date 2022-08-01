@@ -43,12 +43,14 @@ namespace HBL {
 		void AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, const glm::mat4& m_Camera_vp);
 		void Render(const glm::mat4& m_Camera_vp);
 
+		void Bind(uint32_t index);
 		void Bind();
 		void UnBind();
 
 		uint32_t Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color);
 		uint32_t Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3);
-		uint32_t Draw_Quad(uint32_t vindex, int index);
+		uint32_t Draw_Quad(uint32_t vindex, Component::Transform& tr);
+		uint32_t Draw_Quad(uint32_t vindex, Component::TextTransform& tr);
 
 		void Invalidate(uint32_t vindex);
 
@@ -60,6 +62,9 @@ namespace HBL {
 
 	private:
 		Renderer() {}
+
+		void BeginFrame();
+		void EndFrame();
 
 		void Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path);
 

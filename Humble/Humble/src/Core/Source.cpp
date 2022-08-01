@@ -14,5 +14,6 @@ std::vector<HBL::Component::Animation> Globals::Animation;
 std::vector<HBL::Component::Script> Globals::Script;
 std::vector<HBL::Component::Gravity> Globals::Gravity;
 std::vector<HBL::Component::Shadow> Globals::Shadow;
+std::vector<HBL::Component::TextTransform> Globals::TextTransform;
 std::vector<HBL::Component::Text> Globals::Text;
 

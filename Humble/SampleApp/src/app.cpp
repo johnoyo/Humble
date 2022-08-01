@@ -10,6 +10,7 @@ HBL::IEntity level[1000];
 HBL::IEntity camera;
 HBL::IEntity lvlHandler;
 HBL::IEntity sps;
+HBL::IEntity text;
 
 // User defined components
 #include "MyComponents.h"

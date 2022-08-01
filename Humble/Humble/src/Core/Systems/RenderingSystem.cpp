@@ -31,11 +31,13 @@ namespace HBL {
 		for (uint32_t i = 0; i < Globals::Transform.size(); i++) {
 			if (Globals::Transform.at(i).Enabled) {
 				Globals::Transform.at(i).bufferIndex = Renderer::Get().GetVertexBuffer(0).index;
-				Renderer::Get().Draw_Quad(0, i);
+				Renderer::Get().Draw_Quad(0, Globals::Transform.at(i));
 			}
 		}
 
+		Renderer::Get().Bind(0);
 		Renderer::Get().Invalidate(0);
+		Renderer::Get().UnBind();
 	}
 
 }

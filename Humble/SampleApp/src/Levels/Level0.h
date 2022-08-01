@@ -20,6 +20,7 @@ namespace HBL {
 			ENROLL_ENTITY(camera);
 			ENROLL_ENTITY(lvlHandler);
 			ENROLL_ENTITY(sps);
+			ENROLL_ENTITY(text);
 			
 			for (uint32_t i = 0; i < 400; i++)
 				ENROLL_ENTITY(wall[i]);
@@ -66,6 +67,9 @@ namespace HBL {
 				ADD_COMPONENT(CollisionBox, level[i]);
 				ADD_COMPONENT(Material, level[i]);
 			}
+
+			ADD_COMPONENT(TextTransform, text);
+			ADD_COMPONENT(Text, text);
 		}
 
 		void Init_Components() override
@@ -83,6 +87,12 @@ namespace HBL {
 			
 			for (uint32_t i = 0; i < 1000; i++)
 				GET_COMPONENT(Transform, level[i]).Static = true;
+
+			GET_COMPONENT(TextTransform, text).position.x -= 10;
+			GET_COMPONENT(TextTransform, text).scale.x = 43;
+			GET_COMPONENT(TextTransform, text).scale.y = 73;
+
+			GET_COMPONENT(Text, text).text = "Score: 100";
 
 			GET_MY_COMPONENT(Health, player).health = 99;
 			GET_MY_COMPONENT(Health, enemy).health = 88;

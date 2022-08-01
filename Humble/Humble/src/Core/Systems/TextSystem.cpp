@@ -1,10 +1,68 @@
 #include "TextSystem.h"
+#include "../SystemsHeader.h"
 
 namespace HBL {
 
 	void TextSystem::Start()
 	{
+		Filter(Globals::entities, "Text", "TextTransform");
+
 		SDF_Importer("res/textures/testFont.fnt");
+		TextureManager::Load_Texture("res/textures/testFont.png");
+
+		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", (Globals::Text.size() * 96), vpMatrix);
+		
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
+
+		For_Each([&](IEntity& entt)
+		{
+			Component::Text& text = GET_COMPONENT(Text, entt);
+			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
+
+			if (text.Enabled)
+			{
+				const std::string& t = text.text;
+
+				for (uint32_t i = 0; i < t.size(); i++)
+				{
+					// Retrieve index for sdf vector
+					uint32_t sdfIndex = GetLetterIndex(t[i]);
+
+					// move cursor and position current letter
+					Component::TextTransform tTr = textTransform;
+					tTr.position.x += cursorPosition;
+					cursorPosition += sdfData[sdfIndex].xAdvance;
+
+					// Draw the current letter as a new quad
+					int indx = Renderer::Get().Draw_Quad(1, tTr);
+
+					// Retrieve font atlas texture id
+					float id = TextureManager::Find("res/textures/testFont.png");
+
+					// Calculate some offsets
+					float line_width = (TextureManager::GetTextureSize().at(id).x / sdfData[sdfIndex].width);
+					float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndex].height);
+					float line_offset = line_height - 1.0f;
+
+					// Calculate leter position
+					glm::vec4 color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+					float x = (sdfData[sdfIndex].xCoord == 0.0f ? 0.0f : (GetPositionX(line_width, sdfIndex, id)));// + GetPositionX(sdfData[sdfIndex].xOffset, sdfIndex, id)));
+					float y = (sdfData[sdfIndex].yCoord == 0.0f ? 0.0f : (GetPositionY(line_height, sdfIndex, id)));// + GetPositionY(sdfData[sdfIndex].yOffset, sdfIndex, id)));
+
+					// Letter position and coordinates inside the font atlas
+					glm::vec2 coords = glm::vec2(x, line_offset - y);
+					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
+
+					// Update texture from font atlas info
+					buffer.Update_Material_On_Quad(indx, color, id, coords, TextureManager::GetTextureSize().at(id), size);
+				}
+			}
+		});
+
+		Renderer::Get().Bind(1);
+		Renderer::Get().Invalidate(1);
+		Renderer::Get().UnBind();
 	}
 
 	void TextSystem::Run()
@@ -13,6 +71,28 @@ namespace HBL {
 
 	void TextSystem::Clear()
 	{
+	}
+
+	float TextSystem::GetPositionX(float position, uint32_t sdfIndex, float id)
+	{
+		return (sdfData[sdfIndex].xCoord / (TextureManager::GetTextureSize().at(id).x / position));
+	}
+
+	float TextSystem::GetPositionY(float position, uint32_t sdfIndex, float id)
+	{
+		return (sdfData[sdfIndex].yCoord / (TextureManager::GetTextureSize().at(id).y / position));
+	}
+
+	uint32_t TextSystem::GetLetterIndex(char c)
+	{
+		int character = c;
+		for (uint32_t i = 0; i < sdfData.size(); i++)
+		{
+			if (character == sdfData[i].code)
+				return i;
+		}
+		std::cout << "Error! Illegal character used.\n";
+		return 35;
 	}
 
 	void TextSystem::SDF_Importer(const std::string& path)
@@ -38,7 +118,6 @@ namespace HBL {
 		for (int i = 0; i < count; i++)
 		{
 			std::getline(is, line);
-
 			std::vector<std::string> words{};
 
 			std::stringstream sstream(line);
@@ -58,6 +137,7 @@ namespace HBL {
 				}
 			}
 
+			// Convert string data to integer and store them to vector
 			sdfData.push_back({
 				stoi(words[0]),
 				stoi(words[1]),

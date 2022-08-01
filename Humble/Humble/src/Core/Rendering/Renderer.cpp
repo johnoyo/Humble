@@ -14,12 +14,16 @@ namespace HBL {
 
 		rendererData[size]->vbuffer.Reset();
 
+		UnBind();
+
 		size++;
 	}
 
 	void Renderer::Render(const glm::mat4& m_Camera_vp)
 	{
 		currentIndex = 0;
+
+		BeginFrame();
 
 		for (RendererData* data : rendererData)
 		{
@@ -31,9 +35,6 @@ namespace HBL {
 			GLCall(glBindBuffer(GL_ARRAY_BUFFER, data->vb));
 			GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.Get_Size() * sizeof(Vertex_Array), data->vbuffer.Get_Buffer()));
 
-			/* Render here */
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
 
 			GLCall(glDrawElements(GL_TRIANGLES, (data->vbuffer.Get_Size() / 4) * 6, GL_UNSIGNED_INT, NULL));
 
@@ -41,6 +42,16 @@ namespace HBL {
 
 			currentIndex++;
 		}
+
+		EndFrame();
+	}
+
+	void Renderer::Bind(uint32_t index)
+	{
+		GLCall(glBindVertexArray(rendererData[index]->vao));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, rendererData[index]->vb));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[index]->ib));
+		GLCall(glUseProgram(rendererData[index]->shader));
 	}
 
 	void Renderer::Bind()
@@ -83,11 +94,21 @@ namespace HBL {
 		return vertex_index;
 	}
 
-	uint32_t Renderer::Draw_Quad(uint32_t vindex, int index)
+	uint32_t Renderer::Draw_Quad(uint32_t vindex, Component::Transform& tr)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
 
-		Component::Transform& tr = Globals::Transform.at(index);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+
+		return vertex_index;
+	}
+
+	uint32_t Renderer::Draw_Quad(uint32_t vindex, Component::TextTransform& tr)
+	{
+		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
 
 		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
 		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
@@ -133,7 +154,22 @@ namespace HBL {
 		{
 			data->vbuffer.Clean();
 			data->ibuffer.Clean();
+
+			delete data;
 		}
+
+		size = 0;
+		rendererData.clear();
+	}
+
+	void HBL::Renderer::BeginFrame()
+	{
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void HBL::Renderer::EndFrame()
+	{
 	}
 
 	void Renderer::Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path)

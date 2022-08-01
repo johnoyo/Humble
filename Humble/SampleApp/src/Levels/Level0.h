@@ -88,11 +88,9 @@ namespace HBL {
 			for (uint32_t i = 0; i < 1000; i++)
 				GET_COMPONENT(Transform, level[i]).Static = true;
 
-			GET_COMPONENT(TextTransform, text).position.x -= 10;
-			GET_COMPONENT(TextTransform, text).scale.x = 43;
-			GET_COMPONENT(TextTransform, text).scale.y = 73;
-
-			GET_COMPONENT(Text, text).text = "Score: 100";
+			GET_COMPONENT(TextTransform, text).scale.x = 1.0f;
+			GET_COMPONENT(TextTransform, text).scale.y = 1.0f;
+			GET_COMPONENT(Text, text).text = "tizllllllllllloghkqp";
 
 			GET_MY_COMPONENT(Health, player).health = 99;
 			GET_MY_COMPONENT(Health, enemy).health = 88;

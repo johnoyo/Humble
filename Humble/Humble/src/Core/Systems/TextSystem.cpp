@@ -36,6 +36,10 @@ namespace HBL {
 					// Retrieve index for sdf vector
 					uint32_t sdfIndex = GetLetterIndex(t[i]);
 
+					// Adjust letter scale
+					textTransform.scale.x = sdfData[sdfIndex].width;
+					textTransform.scale.y = sdfData[sdfIndex].height;
+
 					// move cursor and position current letter
 					Component::TextTransform tTr = textTransform;
 					tTr.position.x += cursorPosition;
@@ -54,8 +58,8 @@ namespace HBL {
 
 					// Calculate leter position
 					glm::vec4 color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
-					float x = (sdfData[sdfIndex].xCoord == 0.0f ? 0.0f : (GetPositionX(line_width, sdfIndex, id)));// + GetPositionX(sdfData[sdfIndex].xOffset, sdfIndex, id)));
-					float y = (sdfData[sdfIndex].yCoord == 0.0f ? 0.0f : (GetPositionY(line_height, sdfIndex, id)));// + GetPositionY(sdfData[sdfIndex].yOffset, sdfIndex, id)));
+					float x = (GetPositionX(line_width, sdfIndex, id));
+					float y = (GetPositionY(line_height, sdfIndex, id));
 
 					// Letter position and coordinates inside the font atlas
 					glm::vec2 coords = glm::vec2(x, line_offset - y);

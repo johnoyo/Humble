@@ -50,7 +50,7 @@ namespace HBL {
 		uint32_t Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color);
 		uint32_t Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3);
 		uint32_t Draw_Quad(uint32_t vindex, Component::Transform& tr);
-		uint32_t Draw_Quad(uint32_t vindex, Component::TextTransform& tr);
+		uint32_t Draw_Quad(uint32_t vindex, Component::TextTransform& tr, float width, float height);
 
 		void Invalidate(uint32_t vindex);
 

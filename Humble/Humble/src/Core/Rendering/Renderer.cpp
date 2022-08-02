@@ -106,14 +106,14 @@ namespace HBL {
 		return vertex_index;
 	}
 
-	uint32_t Renderer::Draw_Quad(uint32_t vindex, Component::TextTransform& tr)
+	uint32_t Renderer::Draw_Quad(uint32_t vindex, Component::TextTransform& tr, float width, float height)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
 
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
 	}

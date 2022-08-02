@@ -20,6 +20,8 @@ namespace HBL {
 		int xAdvance;
 	};
 
+	#define INVALID_INDEX 99999
+
 	class HBL_API TextSystem final : public ISystem{
 	public:
 		virtual void Start() override;

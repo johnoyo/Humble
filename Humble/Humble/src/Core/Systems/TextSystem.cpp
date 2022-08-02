@@ -27,6 +27,8 @@ namespace HBL {
 			Component::Text& text = GET_COMPONENT(Text, entt);
 			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
 
+			uint32_t prevIndex = INVALID_INDEX;
+
 			if (text.Enabled)
 			{
 				const std::string& t = text.text;
@@ -36,17 +38,17 @@ namespace HBL {
 					// Retrieve index for sdf vector
 					uint32_t sdfIndex = GetLetterIndex(t[i]);
 
-					// Adjust letter scale
-					textTransform.scale.x = sdfData[sdfIndex].width;
-					textTransform.scale.y = sdfData[sdfIndex].height;
-
-					// move cursor and position current letter
 					Component::TextTransform tTr = textTransform;
+
+					// if its not the first letter calculate correct offset
+					if (prevIndex != INVALID_INDEX)
+						cursorPosition += ((sdfData[sdfIndex].xAdvance / 2.0f) * tTr.scale.x) + ((sdfData[prevIndex].xAdvance / 2.0f) * tTr.scale.x);
+
+					// Move cursor and position current letter
 					tTr.position.x += cursorPosition;
-					cursorPosition += sdfData[sdfIndex].xAdvance;
 
 					// Draw the current letter as a new quad
-					int indx = Renderer::Get().Draw_Quad(1, tTr);
+					int indx = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Retrieve font atlas texture id
 					float id = TextureManager::Find("res/textures/testFont.png");
@@ -57,7 +59,6 @@ namespace HBL {
 					float line_offset = line_height - 1.0f;
 
 					// Calculate leter position
-					glm::vec4 color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
 					float x = (GetPositionX(line_width, sdfIndex, id));
 					float y = (GetPositionY(line_height, sdfIndex, id));
 
@@ -66,7 +67,9 @@ namespace HBL {
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.Update_Material_On_Quad(indx, color, id, coords, TextureManager::GetTextureSize().at(id), size);
+					buffer.Update_Material_On_Quad(indx, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+
+					prevIndex = sdfIndex;
 				}
 			}
 		});

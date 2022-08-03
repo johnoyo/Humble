@@ -7,19 +7,25 @@ namespace HBL {
 	{
 		Filter(Globals::entities, "Text", "TextTransform");
 
+		// Import SDF data
 		SDF_Importer("res/textures/testFont.fnt");
-		TextureManager::Load_Texture("res/textures/testFont.png");
-		uint32_t buffer_size = 0;
 
+		// Load texture font atlas
+		TextureManager::Load_Texture("res/textures/testFont.png");
+
+		// Calculate buffer size for text vertex buffer
+		uint32_t buffer_size = 0;
 		For_Each([&](IEntity& entt)
 		{
 			Component::Text& text = GET_COMPONENT(Text, entt);
 			buffer_size += text.text.size();
 		});
 
+		// Add another batch for text rendering
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
 		Renderer::Get().AddBatch("res/shaders/Basic.shader", (buffer_size * 4), vpMatrix);
 		
+		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
 
 		For_Each([&](IEntity& entt)
@@ -35,12 +41,12 @@ namespace HBL {
 
 				for (uint32_t i = 0; i < t.size(); i++)
 				{
-					// Retrieve index for sdf vector
+					// Retrieve index for SDF vector
 					uint32_t sdfIndex = GetLetterIndex(t[i]);
 
 					Component::TextTransform tTr = textTransform;
 
-					// if its not the first letter calculate correct offset
+					// If its not the first letter calculate correct offset
 					if (prevIndex != INVALID_INDEX)
 						cursorPosition += ((sdfData[sdfIndex].xAdvance / 2.0f) * tTr.scale.x) + ((sdfData[prevIndex].xAdvance / 2.0f) * tTr.scale.x);
 
@@ -69,6 +75,7 @@ namespace HBL {
 					// Update texture from font atlas info
 					buffer.Update_Material_On_Quad(indx, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
+					// Store previous index
 					prevIndex = sdfIndex;
 				}
 			}

@@ -31,11 +31,10 @@ namespace HBL {
 
 			UpdateCameraUniform(m_Camera_vp);
 
-			/* set dynamic vertex buffer */
-			GLCall(glBindBuffer(GL_ARRAY_BUFFER, data->vb));
+			// Set dynamic vertex buffer
 			GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.Get_Size() * sizeof(Vertex_Array), data->vbuffer.Get_Buffer()));
 
-
+			// Draw batch
 			GLCall(glDrawElements(GL_TRIANGLES, (data->vbuffer.Get_Size() / 4) * 6, GL_UNSIGNED_INT, NULL));
 
 			UnBind();

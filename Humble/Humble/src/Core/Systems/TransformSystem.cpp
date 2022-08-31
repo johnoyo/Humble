@@ -7,7 +7,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Filter(Globals::entities, "Transform");
+		Filter({ "Transform" });
 	}
 
 	void TransformSystem::Run()
@@ -28,6 +28,7 @@ namespace HBL {
 
 	void TransformSystem::Clear()
 	{
+		Clean();
 		Globals::Transform.clear();
 	}
 

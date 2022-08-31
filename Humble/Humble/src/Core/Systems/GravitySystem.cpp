@@ -6,7 +6,14 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Filter(Globals::entities, "Transform", "Gravity");
+		//{
+		//	ENGINE_PROFILE("OLD FILTER");
+			//Filter(Globals::entities, "Transform", "Gravity");
+		//}
+		//{
+		//	ENGINE_PROFILE("NEW FILTER + FOR EACH");
+			Filter({ "Transform", "Gravity" });// .For_Each([&](IEntity& entt) {});
+		//}
 	}
 
 	void GravitySystem::InitializeGravity(float gravityForce, float thres)
@@ -26,17 +33,18 @@ namespace HBL {
 		force = gravityForce;
 		threshold = thres;
 
-		for (uint32_t i = 0; i < Globals::Gravity.size(); i++) 
+		Filter({ "Gravity" }).For_Each([&](IEntity& entt)
 		{
-			Globals::Gravity.at(i).appliedForce = 0.0f;
-		}
+			Component::Gravity& gravity = GET_COMPONENT(Gravity, entt);
+			gravity.appliedForce = 0.0f;
+		});
 	}
 
 	void GravitySystem::Run()
 	{
 		//ENGINE_PROFILE("GravitySystem::Run");
 
-		For_Each([&](IEntity& entt)
+		Filter({ "Transform", "Gravity" }).For_Each([&](IEntity& entt)
 		{
 			Component::Gravity& gravity = GET_COMPONENT(Gravity, entt);
 			Component::Transform& transfom = GET_COMPONENT(Transform, entt);
@@ -59,6 +67,7 @@ namespace HBL {
 
 	void GravitySystem::Clear()
 	{
+		Clean();
 		Globals::Gravity.clear();
 	}
 

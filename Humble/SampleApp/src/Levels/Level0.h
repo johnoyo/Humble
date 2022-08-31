@@ -4,6 +4,8 @@
 #include "..\Scripts\EnemyScript.h"
 #include "..\Scripts\LevelHandlerScript.h"
 
+#include <time.h>
+
 namespace HBL {
 
 	class Level0 final : public IScene
@@ -25,7 +27,7 @@ namespace HBL {
 			for (uint32_t i = 0; i < 400; i++)
 				ENROLL_ENTITY(wall[i]);
 			
-			for (uint32_t i = 0; i < 1000; i++)
+			for (uint32_t i = 0; i < 10000; i++)
 				ENROLL_ENTITY(level[i]);
 		}
 
@@ -62,7 +64,7 @@ namespace HBL {
 				ADD_COMPONENT(Shadow, wall[i]);
 			}
 			
-			for (uint32_t i = 0; i < 1000; i++) {
+			for (uint32_t i = 0; i < 10000; i++) {
 				ADD_COMPONENT(Transform, level[i]);
 				ADD_COMPONENT(CollisionBox, level[i]);
 				ADD_COMPONENT(Material, level[i]);
@@ -84,12 +86,18 @@ namespace HBL {
 			
 			for (uint32_t i = 0; i < 400; i++)
 				GET_COMPONENT(Transform, wall[i]).Static = true;
-			
-			for (uint32_t i = 0; i < 1000; i++)
-				GET_COMPONENT(Transform, level[i]).Static = true;
 
-			GET_COMPONENT(TextTransform, text).scale.x = 1.0f;
-			GET_COMPONENT(TextTransform, text).scale.y = 1.0f;
+			srand(time(NULL));
+			
+			for (uint32_t i = 0; i < 10000; i++)
+			{
+				GET_COMPONENT(Transform, level[i]).Static = true;
+				GET_COMPONENT(Transform, level[i]).position.x = rand() % 270;
+				GET_COMPONENT(Transform, level[i]).position.y = rand() % 270;
+			}
+
+			GET_COMPONENT(TextTransform, text).scale.x = 1.5f;
+			GET_COMPONENT(TextTransform, text).scale.y = 1.5f;
 			GET_COMPONENT(Text, text).text = "tizllllllllllloghkqp";
 
 			GET_MY_COMPONENT(Health, player).health = 99;

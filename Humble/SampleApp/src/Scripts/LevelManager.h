@@ -5,7 +5,7 @@ extern HBL::IEntity background;
 extern HBL::IEntity player;
 extern HBL::IEntity enemy;
 extern HBL::IEntity wall[400];
-extern HBL::IEntity level[1000];
+extern HBL::IEntity level[10000];
 extern HBL::IEntity camera;
 extern HBL::IEntity lvlHandler;
 extern HBL::IEntity sps;

@@ -7,9 +7,11 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Filter(Globals::entities, "Transform", "CollisionBox");
+		srand(time(NULL));
 
-		For_Each([&](IEntity& entt)
+		CreateSectors(3, { 30, 30 });
+
+		Filter({ "Transform", "CollisionBox" }).For_Each([&](IEntity& entt)
 		{
 			Component::Transform& transfom = GET_COMPONENT(Transform, entt);
 			Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, entt);
@@ -25,48 +27,132 @@ namespace HBL {
 													  
 			collisionBox.bl.x = transfom.position.x - transfom.scale.x / 2.0f;
 			collisionBox.bl.y = transfom.position.y - transfom.scale.y / 2.0f;
+
+			Categorize(entt);
 		});
+
 	}
 
 	void CollisionSystem::Run()
 	{
+		//FUNCTION_PROFILE();
+
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		// Update collision boxes of non-static objects
 		For_Each([&](IEntity& entt)
 		{
-			if (GET_COMPONENT(Transform, entt).Static == false) 
+			Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, entt);
+
+			if (collisionBox.Enabled)
 			{
 				Component::Transform& transfom = GET_COMPONENT(Transform, entt);
-				Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, entt);
 
-				glm::vec3& tr = transfom.position;
-				glm::vec3& sc = transfom.scale;
+				if (transfom.Static == false)
+				{
+					//ENGINE_PROFILE("For_Each CollisionSystem::Run");
 
-				// update collision box on x-axis
-				collisionBox.tl.x = tr.x - sc.x / 2.0f;
-				collisionBox.tr.x = tr.x + sc.x / 2.0f;
-				collisionBox.br.x = tr.x + sc.x / 2.0f;
-				collisionBox.bl.x = tr.x - sc.x / 2.0f;
+					glm::vec3& tr = transfom.position;
+					glm::vec3& sc = transfom.scale;
 
-				// collision check on x-axis
-				Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, X_AXIS);
+					int index = FindSector(entt);
 
-				// update collision box on y-axis
-				collisionBox.tl.y = tr.y + sc.y / 2.0f;
-				collisionBox.tr.y = tr.y + sc.y / 2.0f;
-				collisionBox.br.y = tr.y - sc.y / 2.0f;
-				collisionBox.bl.y = tr.y - sc.y / 2.0f;
+					if (index != -1)
+					{
+						// update collision box on x-axis
+						collisionBox.tl.x = tr.x - sc.x / 2.0f;
+						collisionBox.tr.x = tr.x + sc.x / 2.0f;
+						collisionBox.br.x = tr.x + sc.x / 2.0f;
+						collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
-				// collision check on y-axis
-				Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, Y_AXIS);
+						// collision check on x-axis
+						Check_For_Sector_Collisions(entt, index, buffer, X_AXIS);
+						//Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, X_AXIS);
+
+						// update collision box on y-axis
+						collisionBox.tl.y = tr.y + sc.y / 2.0f;
+						collisionBox.tr.y = tr.y + sc.y / 2.0f;
+						collisionBox.br.y = tr.y - sc.y / 2.0f;
+						collisionBox.bl.y = tr.y - sc.y / 2.0f;
+
+						// collision check on y-axis
+						Check_For_Sector_Collisions(entt, index, buffer, Y_AXIS);
+						//Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, Y_AXIS);
+					}
+				}
 			}
 		});
 	}
 
 	void CollisionSystem::Clear()
 	{
+		Clean();
 		Globals::CollisionBox.clear();
+	}
+
+	void CollisionSystem::CreateSectors(uint32_t dimension, glm::vec2 worldSize)
+	{
+		sectorDimension = dimension;
+		sectorSize = { (worldSize.x * 30.0f) / sectorDimension, (worldSize.y * 30.0f) / sectorDimension };
+
+		for (uint32_t i = 0; i < (sectorDimension * sectorDimension); i++)
+		{
+			sectors.push_back(std::vector<IEntity>());
+		}
+
+		return;
+	}
+
+	void CollisionSystem::Categorize(IEntity& entt)
+	{
+		//FUNCTION_PROFILE();
+
+		Component::Transform& transfom = GET_COMPONENT(Transform, entt);
+
+		if (transfom.Enabled)
+		{
+			for (uint32_t i = 0; i < sectorDimension; i++)
+			{
+				for (uint32_t j = 0; j < sectorDimension; j++)
+				{
+					int index = (i * sectorDimension) + j;
+
+					if (transfom.position.x <= (sectorSize.x * j) + sectorSize.x && transfom.position.x >= (sectorSize.x * j) 
+					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
+					{
+						sectors[index].push_back(entt);
+					}
+				}
+			}
+		}
+
+		return;
+	}
+
+	int CollisionSystem::FindSector(IEntity& entt)
+	{
+		//FUNCTION_PROFILE();
+
+		Component::Transform& transfom = GET_COMPONENT(Transform, entt);
+
+		if (transfom.Enabled)
+		{
+			for (uint32_t i = 0; i < sectorDimension; i++)
+			{
+				for (uint32_t j = 0; j < sectorDimension; j++)
+				{
+					int index = (i * sectorDimension) + j;
+
+					if (transfom.position.x <= (sectorSize.x * j) + sectorSize.x && transfom.position.x >= (sectorSize.x * j)
+						&& transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
+					{
+						return index;
+					}
+				}
+			}
+		}
+
+		return -1;
 	}
 
 	bool CollisionSystem::CollisionBetween(IEntity& e0, IEntity& e1)
@@ -342,6 +428,80 @@ namespace HBL {
 			GET_COMPONENT(Gravity, p).collides = false;
 			GET_COMPONENT(Gravity, p).isGrounded = false;
 		}
+		return;
+	}
+
+	void CollisionSystem::Check_For_Sector_Collisions(IEntity& p, int index, VertexBuffer& buffer, int axis)
+	{
+		//FUNCTION_PROFILE();
+
+		uint32_t i = 0;
+		if (TRY_FIND_COMPONENT(Gravity, p)) 
+		{
+			GET_COMPONENT(Gravity, p).collides = true;
+			GET_COMPONENT(Gravity, p).isGrounded = false;
+		}
+
+		for (IEntity& entt : sectors[index])
+		{
+			bool tmp = false;
+			if (p.ID != entt.ID && GET_COMPONENT(CollisionBox, entt).Enabled) {
+
+				Component::CollisionBox& cb_i = GET_COMPONENT(CollisionBox, entt);
+				Component::CollisionBox& cb_p = GET_COMPONENT(CollisionBox, p);
+				Component::Gravity& gr_p = GET_COMPONENT(Gravity, p);
+
+				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
+				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					return;
+				}
+
+				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
+				if (tmp != false) {
+					return;
+				}
+
+				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
+				if (tmp != false) {
+					return;
+				}
+
+				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
+				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					return;
+				}
+
+				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
+				if (tmp != false) {
+					return;
+				}
+
+				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
+				if (tmp != false) {
+					return;
+				}
+
+				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
+				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					return;
+				}
+
+				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
+				if (tmp != false) {
+					return;
+				}
+			}
+		}
+
+		if (TRY_FIND_COMPONENT(Gravity, p)) 
+		{
+			GET_COMPONENT(Gravity, p).collides = false;
+			GET_COMPONENT(Gravity, p).isGrounded = false;
+		}
+
 		return;
 	}
 

@@ -6,7 +6,7 @@ HBL::IEntity background;
 HBL::IEntity player;
 HBL::IEntity enemy;
 HBL::IEntity wall[400];
-HBL::IEntity level[1000];
+HBL::IEntity level[10000];
 HBL::IEntity camera;
 HBL::IEntity lvlHandler;
 HBL::IEntity sps;

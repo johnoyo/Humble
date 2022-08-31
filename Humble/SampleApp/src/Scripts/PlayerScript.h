@@ -46,7 +46,7 @@ namespace HBL {
 			animation.animations[1].Enabled = false;
 		}
 
-		virtual void Update() override {
+		virtual void Update(float dt) override {
 
 			Component::Transform& transform_p = GET_COMPONENT(Transform, player);
 			Component::Transform& transform_bg = GET_COMPONENT(Transform, background);
@@ -61,7 +61,7 @@ namespace HBL {
 			
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) {
-				transform_p.position.x += 6.0f;
+				transform_p.position.x += 120.0f * dt;
 				GlobalSystems::animationSystem.PlayAnimation(animation_p, 0);
 			}
 			else
@@ -75,15 +75,15 @@ namespace HBL {
 				SoundManager::PlaySound("res/audio/bleep.mp3");
 
 			if (InputManager::GetKeyDown(GLFW_KEY_A)) {
-				transform_p.position.x -= 6.0f;
+				transform_p.position.x -= 120.0f * dt;
 			}
 
 			if (InputManager::GetKeyDown(GLFW_KEY_S))
-				transform_p.position.y -= 6.0f;
+				transform_p.position.y -= 120.0f * dt;
 
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
-				transform_p.position.y += 6.0f;
+				transform_p.position.y += 120.0f * dt;
 				GlobalSystems::animationSystem.PlayAnimation(animation_p, 1);
 			}
 			else
@@ -95,7 +95,6 @@ namespace HBL {
 
 			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy))
 				ENGINE_LOG("Player collided with enemy!!!");
-
 		}
 
 	};

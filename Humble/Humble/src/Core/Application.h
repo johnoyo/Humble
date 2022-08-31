@@ -53,35 +53,38 @@ namespace HBL {
 			scenes[current]->Init_Components();
 
 			// Initialize Systems
-			Initialize();
+			Initialize_Systems();
 
-			while (!GlobalSystems::windowSystem.Window_Should_Close()) {
-				// - Measure time
-				nowTime = glfwGetTime();
-				deltaTime += (nowTime - lastTime) / limitFPS;
-				lastTime = nowTime;
+			while (!GlobalSystems::windowSystem.Window_Should_Close()) 
+			{
+				// Measure time and delta time
+				float time = (float)glfwGetTime();
+				deltaTime = time - lastTime;
+				lastTime = time;
 
-				// - Only update at 60 frames / s
-				while (deltaTime >= 1.0) {
+				// Manage scenes and level switching 
+				Manage_Scenes();
 
-					Manage_Scenes();
+				// Update Registered Systems
+				Update_Systems(deltaTime);
 
-					// Update Systems
-					Update();
-
-					updates++;
-					deltaTime--;
-				}
-
-				// - Render at maximum possible frames
+				// Render
 				Renderer::Get().Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 				frames++;
 
-				// - Reset after one second
-				if (glfwGetTime() - timer > 1.0) {
+				// Reset after one second
+				if (glfwGetTime() - timer > 1.0) 
+				{
+					// Display frame rate at window bar
+					std::stringstream ss;
+					ss << GlobalSystems::windowSystem.Get_Title() << " [" << frames << " FPS]";
+					glfwSetWindowTitle(GlobalSystems::windowSystem.Get_Window(), ss.str().c_str());
+
+					// Log framerate and delta time to console
+					ENGINE_LOG("FPS: %d DeltaTime: %f", frames, deltaTime);
+
 					timer++;
-					ENGINE_LOG("FPS: %d Updates: %d", frames, updates);
-					updates = 0, frames = 0;
+					frames = 0;
 				}
 
 				GlobalSystems::windowSystem.Swap_Buffers();
@@ -109,7 +112,7 @@ namespace HBL {
 			Register_System(&GlobalSystems::textSystem);
 		}
 
-		void Initialize() 
+		void Initialize_Systems() 
 		{
 			GlobalSystems::windowSystem.Create(0);
 			GlobalSystems::cameraSystem.Create();
@@ -140,11 +143,11 @@ namespace HBL {
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
 
-		void Update()
+		void Update_Systems(float dt)
 		{
 			for (ISystem* system : systems)
 			{
-				system->Run();
+				system->Run(dt);
 			}
 
 			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
@@ -173,9 +176,9 @@ namespace HBL {
 		}
 
 		double limitFPS = 1.0 / 60.0;
-		double lastTime = glfwGetTime();
-		double timer = lastTime;
-		double deltaTime = 0, nowTime = 0;
+		float lastTime = 0.0f;
+		float timer = lastTime;
+		float deltaTime = 0.0f, nowTime = 0.0f;
 		int frames = 0, updates = 0;
 
 	};

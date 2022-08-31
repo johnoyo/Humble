@@ -9,9 +9,9 @@ namespace HBL {
 
 	class HBL_API GravitySystem final : public ISystem {
 	public:
-		void Start();
-		void Run();
-		void Clear();
+		virtual void Start() override;
+		virtual void Run(float dt) override;
+		virtual void Clear() override;
 
 		void InitializeGravity(float gravityForce, float thres);
 		void ResetGravity(float gravityForce, float thres);

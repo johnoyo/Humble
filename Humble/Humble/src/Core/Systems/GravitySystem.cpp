@@ -40,7 +40,7 @@ namespace HBL {
 		});
 	}
 
-	void GravitySystem::Run()
+	void GravitySystem::Run(float dt)
 	{
 		//ENGINE_PROFILE("GravitySystem::Run");
 
@@ -52,11 +52,11 @@ namespace HBL {
 			if (gravity.Enabled && !gravity.isGrounded) {
 
 				if (!gravity.collides)
-					gravity.appliedForce += -0.1f * force;
+					gravity.appliedForce += -1.0f * force;
 				else
 					gravity.appliedForce = -1.0f;
 
-				transfom.position.y += 2.0f * gravity.appliedForce;
+				transfom.position.y += 2.0f * gravity.appliedForce * dt;
 			}
 			else if (gravity.Enabled && gravity.isGrounded) {
 				if (gravity.appliedForce <= threshold)

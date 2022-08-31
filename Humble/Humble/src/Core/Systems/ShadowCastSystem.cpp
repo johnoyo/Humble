@@ -29,9 +29,10 @@ namespace HBL {
 		// Init shadow cast positions
 		glm::vec3 O = player_position;
 
-		for (uint32_t i = 0; i < Globals::Shadow.size(); i++) {
-			if (Globals::Shadow.at(i).Enabled) {
-
+		for (uint32_t i = 0; i < Globals::Shadow.size(); i++) 
+		{
+			if (Globals::Shadow.at(i).Enabled) 
+			{
 				std::vector<glm::vec2> shadow_points;
 				std::vector<glm::vec2> edge_points;
 				std::vector<glm::vec2> vertices;
@@ -43,8 +44,8 @@ namespace HBL {
 				vertices.push_back(buffer.Get_Buffer()[Globals::Shadow.at(i).parentBufferIndex + 3].position);
 
 				// Find all shadow points
-				for (int j = 0; j < 4; j++) {
-
+				for (int j = 0; j < 4; j++) 
+				{
 					glm::vec2 E = vertices[j];
 
 					float rdx, rdy;
@@ -57,7 +58,6 @@ namespace HBL {
 					rdy = Globals::Shadow.at(i).shadowDistance * sinf(base_ang);
 
 					shadow_points.push_back({ rdx, rdy });
-
 				}
 
 				// Set shadow quad positions
@@ -82,8 +82,10 @@ namespace HBL {
 
 		glm::vec3 O = player_position;
 
-		for (uint32_t i = 0; i < Globals::Shadow.size(); i++) {
-			if (Globals::Shadow.at(i).Enabled) {
+		for (uint32_t i = 0; i < Globals::Shadow.size(); i++) 
+		{
+			if (Globals::Shadow.at(i).Enabled) 
+			{
 				std::vector<glm::vec2> shadow_points;
 				std::vector<glm::vec2> edge_points;
 
@@ -94,8 +96,8 @@ namespace HBL {
 				vertices.push_back(buffer.Get_Buffer()[Globals::Shadow.at(i).parentBufferIndex + 3].position);
 
 				// Find all shadow points
-				for (int j = 0; j < 4; j++) {
-
+				for (int j = 0; j < 4; j++) 
+				{
 					glm::vec2 E = vertices[j];
 
 					float rdx, rdy;

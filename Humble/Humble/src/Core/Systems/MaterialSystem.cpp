@@ -16,7 +16,7 @@ namespace HBL {
 		}
 	}
 
-	void MaterialSystem::Run()
+	void MaterialSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 		

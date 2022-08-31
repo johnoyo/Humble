@@ -11,13 +11,13 @@ namespace HBL {
 	class HBL_API CollisionSystem final : public ISystem {
 	public:
 		virtual void Start() override;
-		virtual void Run() override;
+		virtual void Run(float dt) override;
 		virtual void Clear() override;
 
 		void CreateSectors(uint32_t dimension, glm::vec2 worldSize);
 
 		void Categorize(IEntity& entt);
-		int FindSector(IEntity& entt);
+		int FindSector(Component::Transform& transfom);
 
 		bool CollisionBetween(IEntity& e0, IEntity& e1);
 

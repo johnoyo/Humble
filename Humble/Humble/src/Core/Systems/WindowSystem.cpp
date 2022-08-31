@@ -97,4 +97,9 @@ namespace HBL {
 		return refresh_rate;
 	}
 
+	const std::string& WindowSystem::Get_Title()
+	{
+		return title;
+	}
+
 }

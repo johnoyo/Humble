@@ -10,7 +10,7 @@ namespace HBL {
 		Filter({ "Transform" });
 	}
 
-	void TransformSystem::Run()
+	void TransformSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 

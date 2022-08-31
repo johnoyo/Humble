@@ -86,7 +86,7 @@ namespace HBL {
 		Renderer::Get().UnBind();
 	}
 
-	void TextSystem::Run()
+	void TextSystem::Run(float dt)
 	{
 	}
 

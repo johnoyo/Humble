@@ -16,10 +16,10 @@ namespace HBL {
 
 		}
 
-		virtual void Update() override {
+		virtual void Update(float dt) override {
 
 			//std::cout << "Calling enemy update 0 \n";
-			//GET_COMPONENT(Transform, enemy).position.x--;
+			GET_COMPONENT(Transform, enemy).position.x -= 30.0f * dt;
 			//GET_COMPONENT(Transform, enemy).rotation++;
 			//GET_COMPONENT(Gravity, enemy).Enabled = false;
 

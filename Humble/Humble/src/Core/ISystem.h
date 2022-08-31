@@ -8,7 +8,7 @@ namespace HBL {
 	class HBL_API ISystem {
 	public:
 		virtual void Start() { }
-		virtual void Run()   { }
+		virtual void Run(float dt)   { }
 		virtual void Clear() { }
 
 		// TODO: Clear filtered vector on clear

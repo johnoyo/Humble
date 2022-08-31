@@ -17,7 +17,7 @@ namespace HBL {
 		});
 	}
 
-	void AnimationSystem::Run()
+	void AnimationSystem::Run(float dt)
 	{
 		For_Each([&](IEntity& entt)
 		{

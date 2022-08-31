@@ -18,7 +18,7 @@ namespace HBL {
 				LevelManager::Load_Level("res/levels/test2.txt", false);
 		}
 
-		virtual void Update() override {
+		virtual void Update(float dt) override {
 			if (InputManager::GetKeyPress(GLFW_KEY_K))
 				Globals::Scene_Change = true;
 

@@ -7,8 +7,6 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		srand(time(NULL));
-
 		CreateSectors(3, { 30, 30 });
 
 		Filter({ "Transform", "CollisionBox" }).For_Each([&](IEntity& entt)
@@ -33,7 +31,7 @@ namespace HBL {
 
 	}
 
-	void CollisionSystem::Run()
+	void CollisionSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 
@@ -43,7 +41,7 @@ namespace HBL {
 		For_Each([&](IEntity& entt)
 		{
 			Component::CollisionBox& collisionBox = GET_COMPONENT(CollisionBox, entt);
-
+			
 			if (collisionBox.Enabled)
 			{
 				Component::Transform& transfom = GET_COMPONENT(Transform, entt);
@@ -55,7 +53,7 @@ namespace HBL {
 					glm::vec3& tr = transfom.position;
 					glm::vec3& sc = transfom.scale;
 
-					int index = FindSector(entt);
+					int index = FindSector(transfom);
 
 					if (index != -1)
 					{
@@ -120,7 +118,7 @@ namespace HBL {
 					if (transfom.position.x <= (sectorSize.x * j) + sectorSize.x && transfom.position.x >= (sectorSize.x * j) 
 					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
 					{
-						sectors[index].push_back(entt);
+						sectors[index].emplace_back(entt);
 					}
 				}
 			}
@@ -129,11 +127,9 @@ namespace HBL {
 		return;
 	}
 
-	int CollisionSystem::FindSector(IEntity& entt)
+	int CollisionSystem::FindSector(Component::Transform& transfom)
 	{
 		//FUNCTION_PROFILE();
-
-		Component::Transform& transfom = GET_COMPONENT(Transform, entt);
 
 		if (transfom.Enabled)
 		{

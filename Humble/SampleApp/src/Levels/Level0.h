@@ -108,7 +108,7 @@ namespace HBL {
 		void Init_Systems() override
 		{
 			GlobalSystems::cameraSystem.Initialize(0.0f, GlobalSystems::windowSystem.Get_Width(), 0.0f, GlobalSystems::windowSystem.Get_Height());
-			GlobalSystems::gravitySystem.InitializeGravity(6.0f, -6.0f);
+			GlobalSystems::gravitySystem.InitializeGravity(4000.0f, -4000.0f);
 		}
 
 	};

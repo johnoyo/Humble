@@ -10,7 +10,7 @@ namespace HBL {
 	class HBL_API ScriptingSystem final : public ISystem {
 	public:
 		virtual void Start() override;
-		virtual void Run() override;
+		virtual void Run(float dt) override;
 		virtual void Clear() override;
 	};
 

@@ -19,7 +19,7 @@ namespace HBL {
 		}
 	}
 
-	void ScriptingSystem::Run()
+	void ScriptingSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 
@@ -29,9 +29,9 @@ namespace HBL {
 			if (Globals::Script.at(i).Enabled) {
 				int size = Globals::Script.at(i).script.size();
 				if (current_level < size)
-					Globals::Script.at(i).script[current_level]->Update();
+					Globals::Script.at(i).script[current_level]->Update(dt);
 				else
-					Globals::Script.at(i).script[size - 1]->Update();
+					Globals::Script.at(i).script[size - 1]->Update(dt);
 			}
 		}
 	}

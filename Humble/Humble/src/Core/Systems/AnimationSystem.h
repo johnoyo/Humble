@@ -9,7 +9,7 @@ namespace HBL {
 	class HBL_API AnimationSystem final : public ISystem {
 	public:
 		virtual void Start() override;
-		virtual void Run() override;
+		virtual void Run(float dt) override;
 		virtual void Clear() override;
 
 		void PlayAnimation(Component::Animation& animation, int index);

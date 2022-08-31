@@ -25,7 +25,7 @@ namespace HBL {
 	class HBL_API TextSystem final : public ISystem{
 	public:
 		virtual void Start() override;
-		virtual void Run() override;
+		virtual void Run(float dt) override;
 		virtual void Clear() override;
 
 		float GetPositionX(float position, uint32_t sdfIndex, float id);

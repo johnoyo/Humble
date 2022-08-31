@@ -10,7 +10,7 @@ namespace HBL
 			FUNCTION_PROFILE();
 			Filter(Globals::entities, "Health");
 		}
-		virtual void Run() override
+		virtual void Run(float dt) override
 		{
 			For_Each([&](IEntity& entt)
 			{

@@ -14,7 +14,7 @@ namespace HBL {
 		Init_Vertex_Buffer();
 	}
 
-	void RenderingSystem::Run()
+	void RenderingSystem::Run(float dt)
 	{
 	}
 

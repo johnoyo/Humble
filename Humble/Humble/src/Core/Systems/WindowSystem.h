@@ -20,6 +20,7 @@ namespace HBL {
 		float Get_Width();
 		float Get_Height();
 		float Get_RefreshRate();
+		const std::string& Get_Title();
 
 	private:
 		void Init();

@@ -53,10 +53,10 @@ namespace HBL {
 					glm::vec3& tr = transfom.position;
 					glm::vec3& sc = transfom.scale;
 
-					int index = FindSector(transfom);
+					//int index = FindSector(transfom);
 
-					if (index != -1)
-					{
+					//if (index != -1)
+					//{
 						// update collision box on x-axis
 						collisionBox.tl.x = tr.x - sc.x / 2.0f;
 						collisionBox.tr.x = tr.x + sc.x / 2.0f;
@@ -64,8 +64,8 @@ namespace HBL {
 						collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 						// collision check on x-axis
-						Check_For_Sector_Collisions(entt, index, buffer, X_AXIS);
-						//Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, X_AXIS);
+						//Check_For_Sector_Collisions(entt, index, buffer, X_AXIS);
+						Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, X_AXIS);
 
 						// update collision box on y-axis
 						collisionBox.tl.y = tr.y + sc.y / 2.0f;
@@ -74,9 +74,9 @@ namespace HBL {
 						collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 						// collision check on y-axis
-						Check_For_Sector_Collisions(entt, index, buffer, Y_AXIS);
-						//Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, Y_AXIS);
-					}
+						//Check_For_Sector_Collisions(entt, index, buffer, Y_AXIS);
+						Check_For_Collisions(entt, entt.components["CollisionBox"], buffer, Y_AXIS);
+					//}
 				}
 			}
 		});
@@ -364,21 +364,24 @@ namespace HBL {
 	void CollisionSystem::Check_For_Collisions(IEntity& p, int collisionBox, VertexBuffer& buffer, int axis)
 	{
 		uint32_t i = 0;
-		if (TRY_FIND_COMPONENT(Gravity, p)) {
+
+		if (TRY_FIND_COMPONENT(Gravity, p)) 
+		{
 			GET_COMPONENT(Gravity, p).collides = true;
 			GET_COMPONENT(Gravity, p).isGrounded = false;
 		}
-		for (i = 0; i < Globals::CollisionBox.size(); i++) {
-			bool tmp = false;
-			if (i != collisionBox && Globals::CollisionBox.at(i).Enabled) {
 
+		for (i = 0; i < Globals::CollisionBox.size(); i++) 
+		{
+			bool tmp = false;
+			if (i != collisionBox && Globals::CollisionBox.at(i).Enabled) 
+			{
 				Component::CollisionBox& cb_p = Globals::CollisionBox.at(collisionBox);
-				Component::Gravity& gr_p = GET_COMPONENT(Gravity, p);
 				Component::CollisionBox& cb_i = Globals::CollisionBox.at(i);
 
 				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
 					return;
 				}
 
@@ -394,7 +397,7 @@ namespace HBL {
 
 				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
 					return;
 				}
 
@@ -410,7 +413,7 @@ namespace HBL {
 
 				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
 					return;
 				}
 
@@ -420,10 +423,13 @@ namespace HBL {
 				}
 			}
 		}
-		if (TRY_FIND_COMPONENT(Gravity, p)) {
+
+		if (TRY_FIND_COMPONENT(Gravity, p)) 
+		{
 			GET_COMPONENT(Gravity, p).collides = false;
 			GET_COMPONENT(Gravity, p).isGrounded = false;
 		}
+
 		return;
 	}
 

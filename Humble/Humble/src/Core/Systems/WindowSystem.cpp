@@ -2,12 +2,13 @@
 
 namespace HBL {
 
-	void WindowSystem::Initialize(float w, float h, const std::string& name, bool full_screen)
+	void WindowSystem::Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync)
 	{
 		width = w;
 		height = h;
 		title = name;
 		fullscreen = full_screen;
+		vSync = v_sync;
 	}
 
 	void WindowSystem::Init()
@@ -18,7 +19,7 @@ namespace HBL {
 		}
 	}
 
-	void WindowSystem::Create(int Vsync)
+	void WindowSystem::Create()
 	{
 		Init();
 
@@ -44,7 +45,10 @@ namespace HBL {
 			exit(-1);
 		}
 
-		Make_Context_Current(Vsync);
+		if (vSync)
+			Make_Context_Current(1);
+		else 
+			Make_Context_Current(0);
 
 		if (glewInit() != GLEW_OK) {
 			std::cout << "Error initializing GLEW\n";

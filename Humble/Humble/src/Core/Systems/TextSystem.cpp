@@ -64,7 +64,7 @@ namespace HBL {
 					float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndex].height);
 					float line_offset = line_height - 1.0f;
 
-					// Calculate leter position
+					// Calculate letter position
 					float x = (GetPositionX(line_width, sdfIndex, id));
 					float y = (GetPositionY(line_height, sdfIndex, id));
 

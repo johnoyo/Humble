@@ -99,6 +99,7 @@ namespace HBL {
 			std::string text = "Sample text";
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 			uint32_t line_length = 32;
+			bool screenSpace = false;
 
 			bool Enabled = true;
 		};

@@ -61,7 +61,7 @@ namespace HBL {
 			
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) {
-				transform_p.position.x += 120.0f * dt;
+				transform_p.position.x += 210.0f * dt;
 				GlobalSystems::animationSystem.PlayAnimation(animation_p, 0);
 			}
 			else
@@ -75,15 +75,15 @@ namespace HBL {
 				SoundManager::PlaySound("res/audio/bleep.mp3");
 
 			if (InputManager::GetKeyDown(GLFW_KEY_A)) {
-				transform_p.position.x -= 120.0f * dt;
+				transform_p.position.x -= 210.0f * dt;
 			}
 
 			if (InputManager::GetKeyDown(GLFW_KEY_S))
-				transform_p.position.y -= 120.0f * dt;
+				transform_p.position.y -= 210.0f * dt;
 
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
-				transform_p.position.y += 120.0f * dt;
+				transform_p.position.y += 210.0f * dt;
 				GlobalSystems::animationSystem.PlayAnimation(animation_p, 1);
 			}
 			else

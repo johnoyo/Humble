@@ -11,11 +11,13 @@ namespace HBL {
 
 	class HBL_API Application {
 	public:
-		Application(float width, float height, const std::string& name, bool full_screen);
+		Application(float width, float height, const std::string& name, bool full_screen, bool vSync);
 
 		void Add_Scene(IScene* scene);
 
 		void Register_System(ISystem* system);
+
+		void Register_Physics_System(ISystem* system);
 
 		void Manage_Scenes()
 		{
@@ -45,6 +47,7 @@ namespace HBL {
 		void Start() {
 
 			Register_Systems();
+			Register_Physics_Systems();
 
 			scenes[current]->Init_Systems();
 
@@ -68,6 +71,12 @@ namespace HBL {
 				// Update Registered Systems
 				Update_Systems(deltaTime);
 
+				// Update Registered Physics Systems
+				Update_Physics_Systems(deltaTime);
+
+				// Update collision system
+				Update_Collision_System(deltaTime);
+
 				// Render
 				Renderer::Get().Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 				frames++;
@@ -85,6 +94,7 @@ namespace HBL {
 
 					timer++;
 					frames = 0;
+					fixedUpdates = 0;
 				}
 
 				GlobalSystems::windowSystem.Swap_Buffers();
@@ -97,6 +107,7 @@ namespace HBL {
 	private:
 		std::vector<IScene*> scenes;
 		std::vector<ISystem*> systems;
+		std::vector<ISystem*> physicsSystems;
 
 		uint32_t current = 0;
 
@@ -107,14 +118,17 @@ namespace HBL {
 			Register_System(&GlobalSystems::animationSystem);
 			Register_System(&GlobalSystems::scriptingSystem);
 			Register_System(&GlobalSystems::transformSystem);
-			Register_System(&GlobalSystems::collisionSystem);
-			Register_System(&GlobalSystems::gravitySystem);
 			Register_System(&GlobalSystems::textSystem);
+		}
+
+		void Register_Physics_Systems()
+		{
+			Register_Physics_System(&GlobalSystems::gravitySystem);
 		}
 
 		void Initialize_Systems() 
 		{
-			GlobalSystems::windowSystem.Create(0);
+			GlobalSystems::windowSystem.Create();
 			GlobalSystems::cameraSystem.Create();
 
 			SoundManager::Start();
@@ -124,9 +138,16 @@ namespace HBL {
 				system->Start();
 			}
 
+			GlobalSystems::collisionSystem.Start();
+
 			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
+
+			for (ISystem* system : physicsSystems)
+			{
+				system->Start();
+			}
 		}
 
 		void Restart_Systems() 
@@ -138,9 +159,37 @@ namespace HBL {
 				system->Start();
 			}
 
+			GlobalSystems::collisionSystem.Start();
+
 			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
+
+			for (ISystem* system : physicsSystems)
+			{
+				system->Start();
+			}
+		}
+
+		void Update_Physics_Systems(float dt)
+		{
+			// - Measure fixed time
+			fixedNowTime = glfwGetTime();
+			fixedDeltaTime += (fixedNowTime - fixedLastTime) / limitFPS;
+			fixedLastTime = fixedNowTime;
+
+			// - Only update at 30 frames / s
+			while (fixedDeltaTime >= 1.0)
+			{
+				// Update physics systems
+				for (ISystem* system : physicsSystems)
+				{
+					system->Run(0.033f);
+				}
+
+				fixedUpdates++;
+				fixedDeltaTime--;
+			}
 		}
 
 		void Update_Systems(float dt)
@@ -154,6 +203,11 @@ namespace HBL {
 			GlobalSystems::shadowSystem.Run(position);
 		}
 
+		void Update_Collision_System(float dt) 
+		{
+			GlobalSystems::collisionSystem.Run(dt);
+		}
+
 		void Clear() 
 		{
 			for (ISystem* system : systems)
@@ -161,6 +215,12 @@ namespace HBL {
 				system->Clear();
 			}
 
+			for (ISystem* system : physicsSystems)
+			{
+				system->Clear();
+			}
+
+			GlobalSystems::collisionSystem.Clear();
 			GlobalSystems::shadowSystem.Clear();
 			Renderer::Get().Clear();
 
@@ -175,11 +235,16 @@ namespace HBL {
 			GlobalSystems::windowSystem.Terminate();
 		}
 
-		double limitFPS = 1.0 / 60.0;
 		float lastTime = 0.0f;
 		float timer = lastTime;
 		float deltaTime = 0.0f, nowTime = 0.0f;
 		int frames = 0, updates = 0;
+
+		double limitFPS = 1.0 / 30.0;
+		double fixedLastTime = glfwGetTime();
+		double fixedTimer = fixedLastTime;
+		double fixedDeltaTime = 0, fixedNowTime = 0;
+		int fixedUpdates = 0;
 
 	};
 

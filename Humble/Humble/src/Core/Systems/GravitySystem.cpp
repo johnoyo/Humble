@@ -6,14 +6,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		//{
-		//	ENGINE_PROFILE("OLD FILTER");
-			//Filter(Globals::entities, "Transform", "Gravity");
-		//}
-		//{
-		//	ENGINE_PROFILE("NEW FILTER + FOR EACH");
-			Filter({ "Transform", "Gravity" });// .For_Each([&](IEntity& entt) {});
-		//}
+		Filter({ "Transform", "Gravity" });
 	}
 
 	void GravitySystem::InitializeGravity(float gravityForce, float thres)
@@ -42,23 +35,24 @@ namespace HBL {
 
 	void GravitySystem::Run(float dt)
 	{
-		//ENGINE_PROFILE("GravitySystem::Run");
+		//FUNCTION_PROFILE();
 
 		Filter({ "Transform", "Gravity" }).For_Each([&](IEntity& entt)
 		{
 			Component::Gravity& gravity = GET_COMPONENT(Gravity, entt);
 			Component::Transform& transfom = GET_COMPONENT(Transform, entt);
 
-			if (gravity.Enabled && !gravity.isGrounded) {
-
+			if (gravity.Enabled && !gravity.isGrounded)
+			{
 				if (!gravity.collides)
-					gravity.appliedForce += -1.0f * force;
+					gravity.appliedForce += -0.1f * force;
 				else
 					gravity.appliedForce = -1.0f;
 
 				transfom.position.y += 2.0f * gravity.appliedForce * dt;
 			}
-			else if (gravity.Enabled && gravity.isGrounded) {
+			else if (gravity.Enabled && gravity.isGrounded)
+			{
 				if (gravity.appliedForce <= threshold)
 					gravity.appliedForce = threshold;
 			}

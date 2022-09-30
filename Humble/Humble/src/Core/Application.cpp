@@ -2,9 +2,9 @@
 
 namespace HBL {
 
-	Application::Application(float width, float height, const std::string& name, bool full_screen)
+	Application::Application(float width, float height, const std::string& name, bool full_screen, bool vSync)
 	{
-		GlobalSystems::windowSystem.Initialize(width, height, name, full_screen);
+		GlobalSystems::windowSystem.Initialize(width, height, name, full_screen, vSync);
 	}
 
 	void Application::Add_Scene(IScene* scene)
@@ -15,6 +15,11 @@ namespace HBL {
 	void Application::Register_System(ISystem* system)
 	{
 		systems.push_back(system);
+	}
+
+	void Application::Register_Physics_System(ISystem* system)
+	{
+		physicsSystems.push_back(system);
 	}
 
 }

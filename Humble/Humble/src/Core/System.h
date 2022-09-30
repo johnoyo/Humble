@@ -31,7 +31,7 @@ namespace HBL {
 		template<typename T>
 		T& GetComponent(int ComponenetEntityID, std::vector<T>& ComponentVector) 
 		{
-			return ComponentVector.at(ComponenetEntityID);
+			return ComponentVector[ComponenetEntityID];
 		}
 
 		template<typename T>

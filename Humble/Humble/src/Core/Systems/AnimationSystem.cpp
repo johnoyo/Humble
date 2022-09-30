@@ -6,9 +6,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE()
 
-		Filter(Globals::entities, "Animation");
-
-		For_Each([&](IEntity& entt)
+		Filter( { "Animation" } ).For_Each([&](IEntity& entt)
 		{
 			Component::Animation& animation = GET_COMPONENT(Animation, entt);
 

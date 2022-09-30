@@ -7,8 +7,8 @@ namespace HBL {
 
 	class HBL_API WindowSystem {
 	public:
-		void Initialize(float w, float h, const std::string& name, bool full_screen);
-		void Create(int Vsync);
+		void Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync);
+		void Create();
 
 		void Make_Context_Current(int Vsync);
 		int Window_Should_Close();
@@ -31,6 +31,7 @@ namespace HBL {
 		float width;
 		float height;
 		bool fullscreen;
+		bool vSync;
 	};
 
 }

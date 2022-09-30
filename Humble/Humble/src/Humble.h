@@ -12,6 +12,7 @@
 #include "Core/IScript.h"
 #include "Core/Managers/InputManager.h"
 #include "Core/Managers/SoundManager.h"
+#include "Core/Managers/Random.h"
 
 #include "Core/ISystem.h"
 

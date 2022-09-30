@@ -153,6 +153,7 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Managers\InputManager.cpp" />
     <ClCompile Include="src\Core\Managers\SoundManager.cpp" />
+    <ClCompile Include="src\Core\Managers\Random.cpp" />
     <ClCompile Include="src\Core\Managers\TextureManager.cpp" />
     <ClCompile Include="src\Core\Rendering\IndexBuffer.cpp" />
     <ClCompile Include="src\Core\Rendering\Renderer.cpp" />
@@ -323,6 +324,7 @@
     <ClInclude Include="src\Core\ISystem.h" />
     <ClInclude Include="src\Core\Managers\InputManager.h" />
     <ClInclude Include="src\Application\Scripts\LevelManager.h" />
+    <ClInclude Include="src\Core\Managers\Random.h" />
     <ClInclude Include="src\Core\Managers\SoundManager.h" />
     <ClInclude Include="src\Core\Managers\TextureManager.h" />
     <ClInclude Include="src\Core\IScene.h" />

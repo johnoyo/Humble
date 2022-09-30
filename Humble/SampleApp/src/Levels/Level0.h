@@ -16,6 +16,12 @@ namespace HBL {
 	public:
 		void Enroll_Entities() override
 		{
+			HBL::Random::Init();
+
+			std::cout << "Random Float: " << Random::Float(10.0f) << "\n";
+			std::cout << "Random Double: " << Random::Double(10.0) << "\n";
+			std::cout << "Random Int: " << Random::Int(10) << "\n";
+
 			ENROLL_ENTITY(background);
 			ENROLL_ENTITY(player);
 			ENROLL_ENTITY(enemy);

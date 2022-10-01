@@ -40,6 +40,14 @@ namespace HBL {
         system->update();
     }
 
+    void SoundManager::IClean()
+    {
+        for (auto const& sound : sounds)
+        {
+            sound.second->release();
+        }
+    }
+
     bool SoundManager::IExists(const std::string& soundName)
     {
         return (sounds.find(soundName) != sounds.end());

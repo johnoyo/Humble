@@ -22,6 +22,7 @@ namespace HBL {
 
 		static void Start() { Get().IStart(); }
 		static void Update() { Get().IUpdate(); }
+		static void Clean() { Get().IClean(); }
 		static void Play(const std::string& source, bool playLooped = false, bool startPaused = false) { Get().IPlay(source, playLooped, startPaused); }
 
 	private:
@@ -29,6 +30,7 @@ namespace HBL {
 
 		void IStart();
 		void IUpdate();
+		void IClean();
 		bool IExists(const std::string& soundName);
 		void IPlay(const std::string& source, bool playLooped = false, bool startPaused = false);
 		bool ISucceededOrWarn(const std::string& message, FMOD_RESULT result);

@@ -201,6 +201,7 @@ namespace HBL {
 
 		void Shutdown() 
 		{
+			SoundManager::Clean();
 			Renderer::Get().Clear();
 			GlobalSystems::scriptingSystem.Clear();
 			GlobalSystems::materialSystem.Clear();

@@ -2,94 +2,71 @@
 
 namespace HBL {
 
+    bool SoundManager::ISucceededOrWarn(const std::string& message, FMOD_RESULT result)
+    {
+        if (result != FMOD_OK) {
+            std::cerr << message << ": " << result << " " << FMOD_ErrorString(result) << std::endl;
+            return false;
+        }
+        return true;
+    }
+
 	void SoundManager::IStart()
 	{
-		// Initialize sound Engine
+        // Create the main system object.
+        result = FMOD::System_Create(&system);
+        if (result != FMOD_OK)
+        {
+            printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+            return;
+        }
 
-		/*m_SoundEngine = irrklang::createIrrKlangDevice();
-		if (!m_SoundEngine)
-		{
-			std::cout << "Error: Could not create Sound Engine" << std::endl;
-		}*/
+        // Initialize FMOD.
+        result = system->init(512, FMOD_INIT_NORMAL, 0);    
+        if (result != FMOD_OK)
+        {
+            printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+            return;
+        }
 
-		m_Result = ma_engine_init(NULL, &m_SoundEngine);
-
-		if (m_Result != MA_SUCCESS)
-		{
-			std::cout << "Error: Could not create Sound Engine." << std::endl;
-		}
+        // Create the channel group.
+        result = system->createChannelGroup("inGameSoundEffects", &channelGroup);
+        if (!ISucceededOrWarn("FMOD: Failed to create in-game sound effects channel group", result))
+            return;
 	}
 
-    void data_callback(ma_device * pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
+    void SoundManager::IUpdate()
     {
-        ma_decoder* pDecoder = (ma_decoder*)pDevice->pUserData;
-        if (pDecoder == NULL) 
-        {
-            return;
-        }
-
-        /* Reading PCM frames will loop based on what we specified when called ma_data_source_set_looping(). */
-        ma_data_source_read_pcm_frames(pDecoder, pOutput, frameCount, NULL);
-
-        (void)pInput;
+        system->update();
     }
 
-    void PlaySoundLooping(const std::string& source)
+    bool SoundManager::IExists(const std::string& soundName)
     {
-        ma_result result;
-        ma_decoder decoder;
-        ma_device_config deviceConfig;
-        ma_device device;
-
-        result = ma_decoder_init_file(source.c_str(), NULL, &decoder);
-        if (result != MA_SUCCESS) {
-            return;
-        }
-
-        // A decoder is a data source which means we just use ma_data_source_set_looping() to set the
-        // looping state. We will read data using ma_data_source_read_pcm_frames() in the data callback.
-        ma_data_source_set_looping(&decoder, MA_TRUE);
-
-        deviceConfig = ma_device_config_init(ma_device_type_playback);
-        deviceConfig.playback.format = decoder.outputFormat;
-        deviceConfig.playback.channels = decoder.outputChannels;
-        deviceConfig.sampleRate = decoder.outputSampleRate;
-        deviceConfig.dataCallback = data_callback;
-        deviceConfig.pUserData = &decoder;
-
-        if (ma_device_init(NULL, &deviceConfig, &device) != MA_SUCCESS) {
-            printf("Failed to open playback device.\n");
-            ma_decoder_uninit(&decoder);
-            return;
-        }
-
-        if (ma_device_start(&device) != MA_SUCCESS) {
-            printf("Failed to start playback device.\n");
-            ma_device_uninit(&device);
-            ma_decoder_uninit(&decoder);
-            return;
-        }
-
-        printf("Press Enter to quit...");
-        getchar();
-
-        ma_device_uninit(&device);
-        ma_decoder_uninit(&decoder);
-
-        return;
+        return (sounds.find(soundName) != sounds.end());
     }
 
-	void SoundManager::IPlaySound(const std::string& source, bool playLooped, bool startPaused)
+	void SoundManager::IPlay(const std::string& source, bool playLooped, bool startPaused)
 	{
-		//m_SoundEngine->play2D(source.c_str(), playLooped, startPaused);
-
-        if (playLooped)
+        // Create the sound if it does not exist.
+        if (!IExists(source))
         {
-            std::thread audioThread(PlaySoundLooping, source);
-            audioThread.detach();
+            FMOD::Sound* sound = nullptr;
+            result = system->createSound(source.c_str(), FMOD_DEFAULT, nullptr, &sound);
+            if (!ISucceededOrWarn("FMOD: Failed to create sound", result))
+                return;
+
+            if (playLooped)
+                sound->setMode(FMOD_LOOP_NORMAL);
+            else
+                sound->setMode(FMOD_LOOP_OFF);
+
+            sounds[source] = sound;
         }
-        else
-		    ma_engine_play_sound(&m_SoundEngine, source.c_str(), NULL);
+
+        // Play the sound.
+        result = system->playSound(sounds[source], nullptr, startPaused, &channel);
+        if (!ISucceededOrWarn("FMOD: Failed to play sound", result))
+            return;
 	}
 
 }

@@ -7,6 +7,8 @@
 #include <irrKlang.h>
 #include "Miniaudio\miniaudio.h"
 #include <thread>
+#include "fmod.hpp"
+#include <fmod_errors.h>
 
 namespace HBL {
 
@@ -21,17 +23,23 @@ namespace HBL {
 		}
 
 		static void Start() { Get().IStart(); }
-		static void PlaySound(const std::string& source, bool playLooped = false, bool startPaused = false) { Get().IPlaySound(source, playLooped, startPaused); }
+		static void Update() { Get().IUpdate(); }
+		static void Play(const std::string& source, bool playLooped = false, bool startPaused = false) { Get().IPlay(source, playLooped, startPaused); }
 
 	private:
 		SoundManager() {}
 
 		void IStart();
-		void IPlaySound(const std::string& source, bool playLooped = false, bool startPaused = false);
-		//irrklang::ISoundEngine* m_SoundEngine = nullptr;
-		ma_engine m_SoundEngine;
-		ma_decoder m_Decoder;
-		ma_result m_Result;
+		void IUpdate();
+		bool IExists(const std::string& soundName);
+		void IPlay(const std::string& source, bool playLooped = false, bool startPaused = false);
+		bool ISucceededOrWarn(const std::string& message, FMOD_RESULT result);
+
+		FMOD::System* system = nullptr;
+		FMOD::Channel* channel = nullptr;
+		FMOD::ChannelGroup* channelGroup = nullptr;
+		FMOD_RESULT result;
+		std::unordered_map<std::string, FMOD::Sound*> sounds;
 	};
 
 }

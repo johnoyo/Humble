@@ -67,7 +67,8 @@ namespace HBL {
 		};
 
 		struct HBL_API AudioSource {
-			std::string audio = "";
+			std::vector<std::string> audioSources;
+			std::function<void(std::string)> Play;
 
 			bool Enabled = true;
 		};

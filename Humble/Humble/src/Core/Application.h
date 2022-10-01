@@ -69,6 +69,9 @@ namespace HBL {
 				// Update Registered Systems
 				Update_Systems(m_DeltaTime);
 
+				// Update sound system
+				SoundManager::Update();
+
 				// Render
 				Renderer::Get().Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
 				m_Frames++;

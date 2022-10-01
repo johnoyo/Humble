@@ -78,9 +78,6 @@
     <ClCompile Include="src\Core\Rendering\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\vendor\Miniaudio\miniaudio.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Utilities\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1338,9 +1335,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Rendering\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vendor\Miniaudio\miniaudio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Utilities\ProfilerScope.h">

@@ -4,8 +4,6 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include <irrKlang.h>
-#include "Miniaudio\miniaudio.h"
 #include <thread>
 #include "fmod.hpp"
 #include <fmod_errors.h>

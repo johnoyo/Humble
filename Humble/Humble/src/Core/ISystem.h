@@ -11,8 +11,6 @@ namespace HBL {
 		virtual void Run(float dt)   { }
 		virtual void Clear() { }
 
-		// TODO: Clear filtered vector on clear
-
 		void For_Each(std::function<void(IEntity&)> func) 
 		{
 			//FUNCTION_PROFILE();

@@ -11,7 +11,7 @@ namespace HBL {
 
 	class HBL_API Application {
 	public:
-		Application(float width, float height, const std::string& name, bool full_screen, bool vSync);
+		Application(float width, float height, const std::string& name, bool full_screen, bool vSync, bool fixedTimeStep, float fixedUpdates = 60.0f);
 
 		void Add_Scene(IScene* scene);
 
@@ -20,21 +20,21 @@ namespace HBL {
 		void Manage_Scenes()
 		{
 			if (Globals::Scene_Change) {
-				if (current < scenes.size() - 1)
+				if (m_Current < m_Scenes.size() - 1)
 				{
 					Globals::Scene_Change = false;
 					Globals::Current_Level++;
-					current++;
+					m_Current++;
 
 					// Clear Systems and ECS
 					Clear();
 
 					// Initialize Systems
-					scenes[current]->Init_Systems();
+					m_Scenes[m_Current]->Init_Systems();
 
-					scenes[current]->Enroll_Entities();
-					scenes[current]->Add_Components();
-					scenes[current]->Init_Components();
+					m_Scenes[m_Current]->Enroll_Entities();
+					m_Scenes[m_Current]->Add_Components();
+					m_Scenes[m_Current]->Init_Components();
 
 					// Initialize Systems
 					Restart_Systems();
@@ -46,11 +46,11 @@ namespace HBL {
 
 			Register_Systems();
 
-			scenes[current]->Init_Systems();
+			m_Scenes[m_Current]->Init_Systems();
 
-			scenes[current]->Enroll_Entities();
-			scenes[current]->Add_Components();
-			scenes[current]->Init_Components();
+			m_Scenes[m_Current]->Enroll_Entities();
+			m_Scenes[m_Current]->Add_Components();
+			m_Scenes[m_Current]->Init_Components();
 
 			// Initialize Systems
 			Initialize_Systems();
@@ -59,37 +59,34 @@ namespace HBL {
 			{
 				// Measure time and delta time
 				float time = (float)glfwGetTime();
-				deltaTime = time - lastTime;
-				fixedDeltaTime += (time - lastTime) / limitFPS;
-				lastTime = time;
+				m_DeltaTime = time - m_LastTime;
+				m_FixedDeltaTime += (time - m_LastTime) / m_LimitFPS;
+				m_LastTime = time;
 
 				// Manage scenes and level switching 
 				Manage_Scenes();
 
 				// Update Registered Systems
-				Update_Systems(deltaTime);
-
-				// Update Registered Physics Systems
-				Update_Physics_Systems(deltaTime);
+				Update_Systems(m_DeltaTime);
 
 				// Render
 				Renderer::Get().Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
-				frames++;
+				m_Frames++;
 
 				// Reset after one second
-				if (glfwGetTime() - timer > 1.0) 
+				if (glfwGetTime() - m_Timer > 1.0)
 				{
 					// Display frame rate at window bar
 					std::stringstream ss;
-					ss << GlobalSystems::windowSystem.Get_Title() << " [" << frames << " FPS]";
+					ss << GlobalSystems::windowSystem.Get_Title() << " [" << m_Frames << " FPS]";
 					glfwSetWindowTitle(GlobalSystems::windowSystem.Get_Window(), ss.str().c_str());
 
 					// Log framerate and delta time to console
-					ENGINE_LOG("FPS: %d DeltaTime: %f", frames, deltaTime);
+					ENGINE_LOG("FPS: %d DeltaTime: %f", m_Frames, m_DeltaTime);
 
-					timer++;
-					frames = 0;
-					fixedUpdates = 0;
+					m_Timer++;
+					m_Frames = 0;
+					m_FixedUpdates = 0;
 				}
 
 				GlobalSystems::windowSystem.Swap_Buffers();
@@ -100,11 +97,11 @@ namespace HBL {
 		}
 
 	private:
-		std::vector<IScene*> scenes;
-		std::vector<ISystem*> systems;
-		std::vector<ISystem*> physicsSystems;
+		std::vector<IScene*> m_Scenes;
+		std::vector<ISystem*> m_Systems;
 
-		uint32_t current = 0;
+		uint32_t m_Current = 0;
+		bool m_FixedTimeStep = false;
 
 		void Register_Systems()
 		{
@@ -125,12 +122,12 @@ namespace HBL {
 
 			SoundManager::Start();
 
-			for (ISystem* system : systems)
+			for (ISystem* system : m_Systems)
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -139,51 +136,56 @@ namespace HBL {
 		{
 			GlobalSystems::cameraSystem.Create();
 
-			for (ISystem* system : systems)
+			for (ISystem* system : m_Systems)
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
+			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
 
-		void Update_Physics_Systems(float dt)
+		void Update_Fixed_Systems(float dt)
 		{
 			// - Only update at 30 frames / s
-			while (fixedDeltaTime >= 1.0)
+			while (m_FixedDeltaTime >= 1.0f)
 			{
-				// Update physics systems
-				for (ISystem* system : physicsSystems)
+				// Update fixed systems
+				for (ISystem* system : m_Systems)
 				{
-					system->Run(limitFPS);
+					system->Run(dt);
 				}
 
-				fixedUpdates++;
-				fixedDeltaTime--;
+				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
+				GlobalSystems::shadowSystem.Run(position);
+
+				m_FixedUpdates++;
+				m_FixedDeltaTime--;
 			}
 		}
 
 		void Update_Systems(float dt)
 		{
-			for (ISystem* system : systems)
+			if (!m_FixedTimeStep)
 			{
-				system->Run(dt);
-			}
+				for (ISystem* system : m_Systems)
+				{
+					system->Run(dt);
+				}
 
-			glm::vec3& position = GET_COMPONENT(Transform, scenes[current]->Get_Player()).position;
-			GlobalSystems::shadowSystem.Run(position);
+				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
+				GlobalSystems::shadowSystem.Run(position);
+			}
+			else 
+			{
+				Update_Fixed_Systems(m_LimitFPS);
+			}
 		}
 
 		void Clear() 
 		{
-			for (ISystem* system : systems)
-			{
-				system->Clear();
-			}
-
-			for (ISystem* system : physicsSystems)
+			for (ISystem* system : m_Systems)
 			{
 				system->Clear();
 			}
@@ -202,14 +204,14 @@ namespace HBL {
 			GlobalSystems::windowSystem.Terminate();
 		}
 
-		float lastTime = 0.0f;
-		float timer = lastTime;
-		float deltaTime = 0.0f, nowTime = 0.0f;
-		int frames = 0, updates = 0;
+		float m_LastTime = 0.0f;
+		float m_Timer = m_LastTime;
+		float m_DeltaTime = 0.0f;
+		int m_Frames = 0, m_Updates = 0;
 
-		float limitFPS = 1.0f / 30.0f;
-		float fixedDeltaTime = 0.0f;
-		int fixedUpdates = 0;
+		float m_LimitFPS = 1.0f / 60.0f;
+		float m_FixedDeltaTime = 0.0f;
+		int m_FixedUpdates = 0;
 	};
 
 }

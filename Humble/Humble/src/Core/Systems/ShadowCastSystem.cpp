@@ -1,5 +1,5 @@
 #include "ShadowCastSystem.h"
-#include "../SystemsHeader.h"
+#include "../GlobalSystems.h"
 
 namespace HBL {
 

@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "GlobalArrays.h"
 
 HBL::System Globals::ecs;
 

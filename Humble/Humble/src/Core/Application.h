@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "Header.h"
-#include "SystemsHeader.h"
+#include "GlobalArrays.h"
+#include "GlobalSystems.h"
 #include "Utilities.h"
 #include "HumbleAPI.h"
 #include "IScene.h"

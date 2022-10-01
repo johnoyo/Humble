@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Header.h"
-#include "ProfilerScope.h"
+#include "GlobalArrays.h"
+#include "Utilities/ProfilerScope.h"
 #include <string>
 
 #define ENROLL_ENTITY(entity) Globals::ecs.EnrollEntity(entity, Globals::entities)

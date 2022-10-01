@@ -2,7 +2,7 @@
 
 #include "../HumbleAPI.h"
 #include "../Core.h"
-#include "../Header.h"
+#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include "../Systems/RenderingSystem.h"
@@ -17,7 +17,8 @@ namespace HBL {
 	public:
 		TextureManager(const TextureManager&) = delete;
 
-		static TextureManager& Get() {
+		static TextureManager& Get() 
+		{
 			static TextureManager instance;
 			return instance;
 		}

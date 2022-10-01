@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../Core.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
@@ -9,7 +10,8 @@ namespace HBL {
 	public:
 		InputManager(const InputManager&) = delete;
 
-		static InputManager& Get() {
+		static InputManager& Get() 
+		{
 			static InputManager instance;
 			return instance;
 		}

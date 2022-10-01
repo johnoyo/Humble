@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Core.h"
-#include "../Header.h"
+#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include <iostream>

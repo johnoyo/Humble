@@ -1,6 +1,7 @@
 #pragma once
+
 #include "../Core.h"
-#include "../Header.h"
+#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include <irrKlang.h>
@@ -13,7 +14,8 @@ namespace HBL {
 	public:
 		SoundManager(const SoundManager&) = delete;
 
-		static SoundManager& Get() {
+		static SoundManager& Get() 
+		{
 			static SoundManager instance;
 			return instance;
 		}

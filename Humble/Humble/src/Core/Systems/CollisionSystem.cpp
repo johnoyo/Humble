@@ -236,8 +236,9 @@ namespace HBL {
 
 	bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br, int axis)
 	{
-		if (p_br.y < e_tl.y && p_br.x > e_tl.x && p_br.y > e_br.y && p_br.x < e_br.x) {
-			//std::cout << "bottom right\n";
+		if (p_br.y < e_tl.y && p_br.x > e_tl.x && p_br.y > e_br.y && p_br.x < e_br.x) 
+		{
+			//ENGINE_LOG("bottom right");
 			if (axis == X_AXIS) {
 				GET_COMPONENT(Transform, p).position.x += e_tl.x - p_br.x;
 				change_position_x(p, buffer);
@@ -253,13 +254,16 @@ namespace HBL {
 
 	bool CollisionSystem::check_corner_tr_bl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr, int axis)
 	{
-		if (p_tr.y > e_bl.y && p_tr.x > e_bl.x && p_tr.y < e_tr.y && p_tr.x < e_tr.x) {
-			//std::cout << "top right\n";
-			if (axis == X_AXIS) {
+		if (p_tr.y > e_bl.y && p_tr.x > e_bl.x && p_tr.y < e_tr.y && p_tr.x < e_tr.x) 
+		{
+			//ENGINE_LOG("top right");
+			if (axis == X_AXIS) 
+			{
 				GET_COMPONENT(Transform, p).position.x += e_bl.x - p_tr.x;
 				change_position_x(p, buffer);
 			}
-			else if (axis == Y_AXIS) {
+			else if (axis == Y_AXIS) 
+			{
 				//Transform.at(p.Transform).position.y += e_bl.y - 0.5f - p_tr.y;
 				GET_COMPONENT(Transform, p).position.y += e_bl.y - p_tr.y;
 				change_position_y(p, buffer);
@@ -271,14 +275,16 @@ namespace HBL {
 
 	bool CollisionSystem::check_corner_tl_br(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
 	{
-		if (p_tl.y > e_br.y && p_tl.x < e_br.x && p_tl.y < e_tl.y && p_tl.x > e_tl.x) {
-			//std::cout << "top left\n";
-			if (axis == X_AXIS) {
+		if (p_tl.y > e_br.y && p_tl.x < e_br.x && p_tl.y < e_tl.y && p_tl.x > e_tl.x) 
+		{
+			//ENGINE_LOG("top left");
+			if (axis == X_AXIS) 
+			{
 				GET_COMPONENT(Transform, p).position.x += e_br.x - p_tl.x;
 				change_position_x(p, buffer);
 			}
-			else if (axis == Y_AXIS) {
-				//Transform.at(p.Transform).position.y += e_br.y - 0.5f - p_tl.y;
+			else if (axis == Y_AXIS) 
+			{
 				GET_COMPONENT(Transform, p).position.y += e_br.y - p_tl.y;
 				change_position_y(p, buffer);
 			}
@@ -289,13 +295,16 @@ namespace HBL {
 
 	bool CollisionSystem::check_corner_bl_tr(VertexBuffer& buffer, IEntity& p, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl, int axis)
 	{
-		if (p_bl.y < e_tr.y && p_bl.x < e_tr.x && p_bl.y > e_bl.y && p_bl.x > e_bl.x) {
-			//std::cout << "bottom left\n";
-			if (axis == X_AXIS) {
+		if (p_bl.y < e_tr.y && p_bl.x < e_tr.x && p_bl.y > e_bl.y && p_bl.x > e_bl.x) 
+		{
+			//ENGINE_LOG("bottom left");
+			if (axis == X_AXIS) 
+			{
 				GET_COMPONENT(Transform, p).position.x += e_tr.x - p_bl.x;
 				change_position_x(p, buffer);
 			}
-			else if (axis == Y_AXIS) {
+			else if (axis == Y_AXIS) 
+			{
 				GET_COMPONENT(Transform, p).position.y += e_tr.y - p_bl.y;
 				change_position_y(p, buffer);
 			}
@@ -306,9 +315,11 @@ namespace HBL {
 
 	bool CollisionSystem::check_side_l_r(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tl, glm::vec3& e_tr, int axis)
 	{
-		if (p_br.y <= e_bl.y && p_tr.y >= e_tl.y && p_br.x > e_bl.x && p_tr.x > e_tl.x && p_tr.x < e_tr.x) {
-			if (axis == X_AXIS) {
-				//std::cout << "left to right\n";
+		if (p_br.y <= e_bl.y && p_tr.y >= e_tl.y && p_br.x > e_bl.x && p_tr.x > e_tl.x && p_tr.x < e_tr.x) 
+		{
+			if (axis == X_AXIS) 
+			{
+				//ENGINE_LOG("left to right");
 				GET_COMPONENT(Transform, p).position.x += e_bl.x - p_br.x;
 				change_position_x(p, buffer);
 			}
@@ -320,9 +331,11 @@ namespace HBL {
 
 	bool CollisionSystem::check_side_r_l(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_br, glm::vec3& e_bl, int axis)
 	{
-		if (p_tl.y >= e_tr.y && p_bl.y <= e_br.y && p_tl.x < e_tr.x && p_bl.x < e_br.x && p_tl.x > e_bl.x) {
-			if (axis == X_AXIS) {
-				//std::cout << "right to left\n";
+		if (p_tl.y >= e_tr.y && p_bl.y <= e_br.y && p_tl.x < e_tr.x && p_bl.x < e_br.x && p_tl.x > e_bl.x) 
+		{
+			if (axis == X_AXIS) 
+			{
+				//ENGINE_LOG("right to left");
 				GET_COMPONENT(Transform, p).position.x += e_br.x - p_bl.x;
 				change_position_x(p, buffer);
 			}
@@ -334,10 +347,11 @@ namespace HBL {
 
 	bool CollisionSystem::check_side_b_t(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
 	{
-		if (p_tl.x <= e_bl.x && p_tl.y > e_bl.y && p_tr.x >= e_br.x && p_tr.y > e_br.y && p_tl.y < e_tl.y) {
-			if (axis == Y_AXIS) {
-				//std::cout << "bottom to top\n";
-				//Transform.at(p.Transform).position.y += e_bl.y - 0.5f - p_tl.y;
+		if (p_tl.x <= e_bl.x && p_tl.y > e_bl.y && p_tr.x >= e_br.x && p_tr.y > e_br.y && p_tl.y < e_tl.y) 
+		{
+			if (axis == Y_AXIS) 
+			{
+				//ENGINE_LOG("bottom to top");
 				GET_COMPONENT(Transform, p).position.y += e_bl.y - p_tl.y;
 				change_position_y(p, buffer);
 			}
@@ -349,9 +363,11 @@ namespace HBL {
 
 	bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_tl, glm::vec3& e_bl, int axis)
 	{
-		if (p_bl.x <= e_tl.x && p_bl.y < e_tl.y && p_br.y < e_tr.y && p_br.x >= e_tr.x && p_bl.y > e_bl.y) {
-			if (axis == Y_AXIS) {
-				//std::cout << "top to bottom\n";
+		if (p_bl.x <= e_tl.x && p_bl.y < e_tl.y && p_br.y < e_tr.y && p_br.x >= e_tr.x && p_bl.y > e_bl.y) 
+		{
+			if (axis == Y_AXIS) 
+			{
+				//ENGINE_LOG("top to bottom");
 				GET_COMPONENT(Transform, p).position.y += e_tl.y - p_bl.y;
 				change_position_y(p, buffer);
 			}
@@ -365,12 +381,6 @@ namespace HBL {
 	{
 		uint32_t i = 0;
 
-		if (TRY_FIND_COMPONENT(Gravity, p)) 
-		{
-			GET_COMPONENT(Gravity, p).collides = true;
-			GET_COMPONENT(Gravity, p).isGrounded = false;
-		}
-
 		for (i = 0; i < Globals::CollisionBox.size(); i++) 
 		{
 			bool tmp = false;
@@ -381,44 +391,81 @@ namespace HBL {
 
 				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
 				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 
 				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 
 				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
 				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 
 				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
 				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
 				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) GET_COMPONENT(Gravity, p).isGrounded = true;
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 			}
@@ -437,13 +484,6 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 
-		uint32_t i = 0;
-		if (TRY_FIND_COMPONENT(Gravity, p)) 
-		{
-			GET_COMPONENT(Gravity, p).collides = true;
-			GET_COMPONENT(Gravity, p).isGrounded = false;
-		}
-
 		for (IEntity& entt : sectors[index])
 		{
 			bool tmp = false;
@@ -451,48 +491,92 @@ namespace HBL {
 
 				Component::CollisionBox& cb_i = GET_COMPONENT(CollisionBox, entt);
 				Component::CollisionBox& cb_p = GET_COMPONENT(CollisionBox, p);
-				Component::Gravity& gr_p = GET_COMPONENT(Gravity, p);
 
 				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
-				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
-				if (tmp != false) {
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 
 				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
-				if (tmp != false) {
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 
 				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
-				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
-				if (tmp != false) {
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 
 				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
-				if (tmp != false) {
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
-				if (tmp != false) {
-					if (TRY_FIND_COMPONENT(Gravity, p)) gr_p.isGrounded = true;
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = true;
+					}
 					return;
 				}
 
 				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
-				if (tmp != false) {
+				if (tmp != false) 
+				{
+					if (TRY_FIND_COMPONENT(Gravity, p))
+					{
+						GET_COMPONENT(Gravity, p).collides = true;
+						GET_COMPONENT(Gravity, p).isGrounded = false;
+					}
 					return;
 				}
 			}

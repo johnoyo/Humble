@@ -72,7 +72,7 @@ namespace HBL {
 				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
 
 			if (InputManager::GetKeyPress(GLFW_KEY_SPACE))
-				SoundManager::PlaySound("res/audio/bleep.mp3");
+				SoundManager::PlaySound("res/audio/bleep.mp3", false, false);
 
 			if (InputManager::GetKeyDown(GLFW_KEY_A)) {
 				transform_p.position.x -= 210.0f * dt;

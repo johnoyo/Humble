@@ -17,9 +17,4 @@ namespace HBL {
 		systems.push_back(system);
 	}
 
-	void Application::Register_Physics_System(ISystem* system)
-	{
-		physicsSystems.push_back(system);
-	}
-
 }

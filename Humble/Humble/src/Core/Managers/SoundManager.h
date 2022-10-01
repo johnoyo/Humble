@@ -4,6 +4,8 @@
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include <irrKlang.h>
+#include "Miniaudio\miniaudio.h"
+#include <thread>
 
 namespace HBL {
 
@@ -24,7 +26,10 @@ namespace HBL {
 
 		void IStart();
 		void IPlaySound(const std::string& source, bool playLooped = false, bool startPaused = false);
-		irrklang::ISoundEngine* m_SoundEngine = nullptr;
+		//irrklang::ISoundEngine* m_SoundEngine = nullptr;
+		ma_engine m_SoundEngine;
+		ma_decoder m_Decoder;
+		ma_result m_Result;
 	};
 
 }

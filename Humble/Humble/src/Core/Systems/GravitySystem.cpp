@@ -45,7 +45,7 @@ namespace HBL {
 			if (gravity.Enabled && !gravity.isGrounded)
 			{
 				if (!gravity.collides)
-					gravity.appliedForce += -0.1f * force;
+					gravity.appliedForce += -0.1f * force * dt;
 				else
 					gravity.appliedForce = -1.0f;
 

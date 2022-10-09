@@ -32,10 +32,10 @@ namespace HBL {
 			UpdateCameraUniform(m_Camera_vp);
 
 			// Set dynamic vertex buffer
-			GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.Get_Size() * sizeof(Vertex_Array), data->vbuffer.Get_Buffer()));
+			glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.Get_Size() * sizeof(Vertex_Array), data->vbuffer.Get_Buffer());
 
 			// Draw batch
-			GLCall(glDrawElements(GL_TRIANGLES, (data->vbuffer.Get_Size() / 4) * 6, GL_UNSIGNED_INT, NULL));
+			glDrawElements(GL_TRIANGLES, (data->vbuffer.Get_Size() / 4) * 6, GL_UNSIGNED_INT, NULL);
 
 			UnBind();
 
@@ -47,26 +47,26 @@ namespace HBL {
 
 	void Renderer::Bind(uint32_t index)
 	{
-		GLCall(glBindVertexArray(rendererData[index]->vao));
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, rendererData[index]->vb));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[index]->ib));
-		GLCall(glUseProgram(rendererData[index]->shader));
+		glBindVertexArray(rendererData[index]->vao);
+		glBindBuffer(GL_ARRAY_BUFFER, rendererData[index]->vb);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[index]->ib);
+		glUseProgram(rendererData[index]->shader);
 	}
 
 	void Renderer::Bind()
 	{
-		GLCall(glBindVertexArray(rendererData[currentIndex]->vao));
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, rendererData[currentIndex]->vb));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[currentIndex]->ib));
-		GLCall(glUseProgram(rendererData[currentIndex]->shader));
+		glBindVertexArray(rendererData[currentIndex]->vao);
+		glBindBuffer(GL_ARRAY_BUFFER, rendererData[currentIndex]->vb);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[currentIndex]->ib);
+		glUseProgram(rendererData[currentIndex]->shader);
 	}
 
 	void Renderer::UnBind()
 	{
-		GLCall(glBindVertexArray(0));
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-		GLCall(glUseProgram(0));
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glUseProgram(0);
 	}
 
 	uint32_t Renderer::Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
@@ -132,10 +132,10 @@ namespace HBL {
 
 		for (RendererData* data : rendererData)
 		{
-			GLCall(glDeleteBuffers(1, &data->vb));
-			GLCall(glDeleteBuffers(1, &data->ib));
-			GLCall(glDeleteProgram(data->shader));
-			GLCall(glDeleteVertexArrays(1, &data->vao));
+			glDeleteBuffers(1, &data->vb);
+			glDeleteBuffers(1, &data->ib);
+			glDeleteProgram(data->shader);
+			glDeleteVertexArrays(1, &data->vao);
 
 			data->vbuffer.Clean();
 			data->ibuffer.Clean();
@@ -171,73 +171,76 @@ namespace HBL {
 	{
 	}
 
-	void Renderer::Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path)
+	void Renderer::Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path, bool debug)
 	{
 		FUNCTION_PROFILE();
 
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		if (debug)
+			GLDebug::EnableGLDebugging();
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		/* vertex array object */
-		GLCall(glGenVertexArrays(1, &rendererData[size]->vao));
-		GLCall(glBindVertexArray(rendererData[size]->vao));
+		glGenVertexArrays(1, &rendererData[size]->vao);
+		glBindVertexArray(rendererData[size]->vao);
 
 		/* vertex buffer */
-		GLCall(glGenBuffers(1, &rendererData[size]->vb));
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, rendererData[size]->vb));
-		GLCall(glBufferData(GL_ARRAY_BUFFER, rendererData[size]->vbuffer.Get_Total_Size() * sizeof(struct Vertex_Array), nullptr, GL_DYNAMIC_DRAW));
+		glGenBuffers(1, &rendererData[size]->vb);
+		glBindBuffer(GL_ARRAY_BUFFER, rendererData[size]->vb);
+		glBufferData(GL_ARRAY_BUFFER, rendererData[size]->vbuffer.Get_Total_Size() * sizeof(struct Vertex_Array), nullptr, GL_DYNAMIC_DRAW);
 
 		/* vertex attrib positions*/
-		GLCall(glEnableVertexAttribArray(0));
-		GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, position)));
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, position));
 
 		/* vertex attrib colors*/
-		GLCall(glEnableVertexAttribArray(1));
-		GLCall(glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, color)));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, color));
 
 		/* vertex attrib texture coordinates*/
-		GLCall(glEnableVertexAttribArray(2));
-		GLCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, tex_coord)));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, tex_coord));
 
 		/* vertex attrib texture id*/
-		GLCall(glEnableVertexAttribArray(3));
-		GLCall(glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, tex_id)));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(struct Vertex_Array), (const void*)offsetof(Vertex_Array, tex_id));
 
 		/* index buffer */
-		GLCall(glGenBuffers(1, &rendererData[size]->ib));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[size]->ib));
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.Get_Size() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
+		glGenBuffers(1, &rendererData[size]->ib);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[size]->ib);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.Get_Size() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
 
 		/* shaders */
 		ShaderProgramSource shaderSource = ParseShader(shader_path);
 		rendererData[size]->shader = CreateShader(shaderSource.VertexSource, shaderSource.FragmentSource);
-		GLCall(glUseProgram(rendererData[size]->shader));
+		glUseProgram(rendererData[size]->shader);
 
-		GLCall(auto loc = glGetUniformLocation(rendererData[size]->shader, "u_textures"));
+		auto loc = glGetUniformLocation(rendererData[size]->shader, "u_textures");
 		int samplers[32];
 		for (uint32_t i = 0; i < 32; i++)
 			samplers[i] = i;
-		GLCall(glUniform1iv(loc, 32, samplers));
+		glUniform1iv(loc, 32, samplers);
 
-		GLCall(auto location1 = glGetUniformLocation(rendererData[size]->shader, "u_VP"));
+		auto location1 = glGetUniformLocation(rendererData[size]->shader, "u_VP");
 		if (location1 == -1) {
 			ENGINE_LOG("Uniform not found!!!");
 		}
-		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
+		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp));
 	}
 
 	void Renderer::UpdateIndexBuffer(uint32_t size, uint32_t vindex)
 	{
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW));
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
 	}
 
 	void Renderer::UpdateCameraUniform(const glm::mat4& m_Camera_vp)
 	{
-		GLCall(auto location1 = glGetUniformLocation(rendererData[currentIndex]->shader, "u_VP"));
+		auto location1 = glGetUniformLocation(rendererData[currentIndex]->shader, "u_VP");
 		if (location1 == -1) {
 			ENGINE_LOG("Uniform not found!!!");
 		}
-		GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
+		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp));
 	}
 
 	ShaderProgramSource Renderer::ParseShader(const std::string& filepath)
@@ -271,22 +274,22 @@ namespace HBL {
 
 	uint32_t Renderer::CompileShader(uint32_t type, const std::string& source)
 	{
-		GLCall(uint32_t id = glCreateShader(type));
+		uint32_t id = glCreateShader(type);
 		const char* src = source.c_str();
-		GLCall(glShaderSource(id, 1, &src, nullptr));
-		GLCall(glCompileShader(id));
+		glShaderSource(id, 1, &src, nullptr);
+		glCompileShader(id);
 
 		int result;
-		GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
+		glGetShaderiv(id, GL_COMPILE_STATUS, &result);
 		if (result == GL_FALSE)
 		{
 			int lenght;
-			GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght));
+			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght);
 			char* message = (char*)alloca(lenght * sizeof(char));
-			GLCall(glGetShaderInfoLog(id, lenght, &lenght, message));
+			glGetShaderInfoLog(id, lenght, &lenght, message);
 			std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "shader!" << "\n";
 			std::cout << message << "\n";
-			GLCall(glDeleteShader(id));
+			glDeleteShader(id);
 			return 0;
 		}
 
@@ -295,17 +298,17 @@ namespace HBL {
 
 	uint32_t Renderer::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 	{
-		GLCall(uint32_t program = glCreateProgram());
-		GLCall(uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader));
-		GLCall(uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader));
+		uint32_t program = glCreateProgram();
+		uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+		uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-		GLCall(glAttachShader(program, vs));
-		GLCall(glAttachShader(program, fs));
-		GLCall(glLinkProgram(program));
-		GLCall(glValidateProgram(program));
+		glAttachShader(program, vs);
+		glAttachShader(program, fs);
+		glLinkProgram(program);
+		glValidateProgram(program);
 
-		GLCall(glDeleteShader(vs));
-		GLCall(glDeleteShader(fs));
+		glDeleteShader(vs);
+		glDeleteShader(fs);
 
 		return program;
 	}

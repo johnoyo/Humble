@@ -87,6 +87,9 @@
     <ClCompile Include="src\Core\GlobalSystems.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Utilities\OpenGLDebug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -1347,6 +1350,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\GlobalSystems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Utilities\OpenGLDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

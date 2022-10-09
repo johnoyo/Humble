@@ -28,6 +28,7 @@ namespace HBL {
 		virtual void Run(float dt) override;
 		virtual void Clear() override;
 
+	private:
 		float GetPositionX(float position, uint32_t sdfIndex, float id);
 		float GetPositionY(float position, uint32_t sdfIndex, float id);
 		uint32_t GetLetterIndex(char c);

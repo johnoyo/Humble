@@ -171,6 +171,7 @@
     <ClCompile Include="src\Core\Systems\TextSystem.cpp" />
     <ClCompile Include="src\Core\Systems\TransformSystem.cpp" />
     <ClCompile Include="src\Core\Systems\WindowSystem.cpp" />
+    <ClCompile Include="src\Core\Utilities\OpenGLDebug.cpp" />
     <ClCompile Include="src\Core\Utilities\Random.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp" />
@@ -339,6 +340,7 @@
     <ClInclude Include="src\Core\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Core\Systems\GravitySystem.h" />
     <ClInclude Include="src\Core\Systems\TextSystem.h" />
+    <ClInclude Include="src\Core\Utilities\OpenGLDebug.h" />
     <ClInclude Include="src\Core\Utilities\ProfilerScope.h" />
     <ClInclude Include="src\Core\Utilities\Random.h" />
     <ClInclude Include="src\ecs\Systems\InputSystem.h" />

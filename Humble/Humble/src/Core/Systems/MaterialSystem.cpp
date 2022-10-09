@@ -43,7 +43,7 @@ namespace HBL {
 
 		for (uint32_t i = 0; i < TextureManager::GetTextureIndex(); i++)
 		{
-			GLCall(glBindTextureUnit(i, TextureManager::GetTextureSlot()[i]));
+			glBindTextureUnit(i, TextureManager::GetTextureSlot()[i]);
 		}
 	}
 
@@ -55,7 +55,7 @@ namespace HBL {
 		TextureManager::GetTextureSize().clear();
 		TextureManager::GetTextureIndex() = 0;
 		Globals::Material.clear();
-		GLCall(glDeleteTextures(32, TextureManager::GetTextureSlot()));
+		glDeleteTextures(32, TextureManager::GetTextureSlot());
 	}
 
 }

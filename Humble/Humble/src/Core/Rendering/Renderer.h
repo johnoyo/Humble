@@ -3,6 +3,7 @@
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include "../Core.h"
+#include "../Utilities/OpenGLDebug.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -66,7 +67,7 @@ namespace HBL {
 		void BeginFrame();
 		void EndFrame();
 
-		void Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path);
+		void Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path, bool debug = true);
 
 		void UpdateIndexBuffer(uint32_t size, uint32_t vindex);
 		void UpdateCameraUniform(const glm::mat4& m_Camera_vp);

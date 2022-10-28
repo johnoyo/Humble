@@ -13,17 +13,9 @@ namespace HBL {
 		// Load texture font atlas
 		TextureManager::Load_Texture("res/textures/testFont.png");
 
-		// Calculate buffer size for text vertex buffer
-		uint32_t buffer_size = 0;
-		For_Each([&](IEntity& entt)
-		{
-			Component::Text& text = GET_COMPONENT(Text, entt);
-			buffer_size += text.text.size();
-		});
-
-		// Add another batch for text rendering
+		// Add another batch for text rendering (200 characters for each text component).
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", 10 * (buffer_size * 4), vpMatrix);
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Globals::Text.size() * 4), vpMatrix);
 		
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
@@ -110,6 +102,7 @@ namespace HBL {
 			Component::Text& text = GET_COMPONENT(Text, entt);
 			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
 
+			// If screen space text follow camera.
 			if (textTransform.screenSpace)
 			{
 				textTransform.position.x = GET_COMPONENT(Transform, Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
@@ -140,6 +133,7 @@ namespace HBL {
 					// Retrieve font atlas texture id
 					float id = TextureManager::Find("res/textures/testFont.png");
 
+					// Register new quad if max numbers of currently available characters is exceeded.
 					if (i >= textTransform.bufferIndex.size())
 					{
 						invalidate = true;

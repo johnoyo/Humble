@@ -19,7 +19,7 @@ namespace HBL {
 		size++;
 	}
 
-	void Renderer::Render(const glm::mat4& m_Camera_vp)
+	void Renderer::Render(const glm::mat4& camera_vp)
 	{
 		currentIndex = 0;
 
@@ -29,7 +29,7 @@ namespace HBL {
 		{
 			Bind();
 
-			UpdateCameraUniform(m_Camera_vp);
+			UpdateCameraUniform(camera_vp);
 
 			// Set dynamic vertex buffer
 			glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.Get_Size() * sizeof(Vertex_Array), data->vbuffer.Get_Buffer());

@@ -42,7 +42,7 @@ namespace HBL {
 		}
 
 		void AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, const glm::mat4& m_Camera_vp);
-		void Render(const glm::mat4& m_Camera_vp);
+		void Render(const glm::mat4& camera_vp);
 
 		void Bind(uint32_t index);
 		void Bind();

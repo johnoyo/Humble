@@ -11,10 +11,10 @@ struct HBL_API Globals
 	static HBL::System ecs;
 
 	static std::vector<HBL::IEntity> entities;
-	static std::vector<void *> components;
 
 	static bool Scene_Change;
 	static uint32_t Current_Level;
+	static HBL::IEntity Camera;
 
 	// Component Vector Declaration
 	static std::vector<HBL::Component::Transform> Transform;

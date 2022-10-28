@@ -8,12 +8,7 @@ namespace HBL {
 
 	namespace Component {
 
-		struct HBL_API IComponent 
-		{
-
-		};
-
-		struct HBL_API Transform : IComponent {
+		struct HBL_API Transform {
 			glm::vec3 position = { 0.0f, 0.0f, 0.0f };
 			float rotation = 0.0f;
 			glm::vec3 scale = { 10.0f, 10.0f, 10.0f };
@@ -98,14 +93,19 @@ namespace HBL {
 			float rotation = 0.0f;
 			glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
 
+			std::vector<uint32_t> bufferIndex;
+
+			glm::vec2 sreenSpaceOffset = { 0.0f, 0.0f };
+
+			bool screenSpace = false;
+
 			bool Enabled = true;
 		};
 
 		struct HBL_API Text {
 			std::string text = "Sample text";
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
-			uint32_t line_length = 32;
-			bool screenSpace = false;
+			uint32_t lineLength = 32;
 
 			bool Enabled = true;
 		};

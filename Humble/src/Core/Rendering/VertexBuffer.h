@@ -18,6 +18,7 @@ namespace HBL {
 		void Initialize(int total_buffer_size);
 
 		void Update_Position_On_Quad(uint32_t indx, Component::Transform& tr);
+		void Update_Position_On_Quad(uint32_t indx, glm::vec3& position, float rotation, glm::vec3& scale);
 		void Update_Position_On_Quad(uint32_t indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3);
 		void Update_PositionX_On_Quad(uint32_t indx, Component::Transform& tr);
 		void Update_PositionY_On_Quad(uint32_t indx, Component::Transform& tr);

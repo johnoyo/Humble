@@ -130,7 +130,7 @@ namespace HBL {
 
 				GET_COMPONENT(Material, level[level_index]).Enabled = true;
 				GET_COMPONENT(Material, level[level_index]).texture = "res/textures/coinA.png";
-				//GET_COMPONENT(CollisionBox, level[level_index]).Enabled = true;
+				GET_COMPONENT(CollisionBox, level[level_index]).Enabled = true;
 
 				level_index++;
 			}

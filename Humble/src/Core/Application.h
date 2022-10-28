@@ -116,14 +116,14 @@ namespace HBL {
 			Register_System(&GlobalSystems::gravitySystem);
 			Register_System(&GlobalSystems::collisionSystem);
 			Register_System(&GlobalSystems::textSystem);
-
-			REGISTER_COMPONENT_ARRAY(Globals::Transform);
 		}
 
 		void Initialize_Systems() 
 		{
 			GlobalSystems::windowSystem.Create();
 			GlobalSystems::cameraSystem.Create();
+
+			Globals::Camera = m_Scenes[m_Current]->GetCamera();
 
 			SoundManager::Start();
 
@@ -132,7 +132,7 @@ namespace HBL {
 				system->Start();
 			}
 
-			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
+			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -141,12 +141,14 @@ namespace HBL {
 		{
 			GlobalSystems::cameraSystem.Create();
 
+			Globals::Camera = m_Scenes[m_Current]->GetCamera();
+
 			for (ISystem* system : m_Systems)
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
+			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -162,7 +164,7 @@ namespace HBL {
 					system->Run(dt);
 				}
 
-				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
+				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
 				GlobalSystems::shadowSystem.Run(position);
 
 				m_FixedUpdates++;
@@ -179,7 +181,7 @@ namespace HBL {
 					system->Run(dt);
 				}
 
-				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->Get_Player()).position;
+				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
 				GlobalSystems::shadowSystem.Run(position);
 			}
 			else 

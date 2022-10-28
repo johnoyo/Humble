@@ -14,9 +14,6 @@
 
 #define TRY_FIND_COMPONENT(component, entity) (entity.components.find(#component) != entity.components.end())
 
-#define REGISTER_COMPONENT_ARRAY(component_array) Globals::components.push_back((void *)&component_array);
-#define GET_COMPONENT_ARRAY(component) *((std::vector<HBL::Component::component>*)Globals::components[0]);
-
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 
 #ifdef DEBUG

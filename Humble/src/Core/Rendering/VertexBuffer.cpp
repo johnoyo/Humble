@@ -42,6 +42,31 @@ namespace HBL {
 		indx++;
 	}
 
+	void VertexBuffer::Update_Position_On_Quad(uint32_t indx, glm::vec3& position, float rotation, glm::vec3& scale)
+	{
+		//FUNCTION_PROFILE();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+
+		glm::vec4 quad_vertex_position[4];
+
+		quad_vertex_position[0] = { -0.5f,  0.5f, 0.0f, 1.0f };
+		quad_vertex_position[1] = { 0.5f,  0.5f, 0.0f, 1.0f };
+		quad_vertex_position[2] = { 0.5f, -0.5f, 0.0f, 1.0f };
+		quad_vertex_position[3] = { -0.5f, -0.5f, 0.0f, 1.0f };
+
+		buffer[indx].position = transform * quad_vertex_position[0];
+		indx++;
+		buffer[indx].position = transform * quad_vertex_position[1];
+		indx++;
+		buffer[indx].position = transform * quad_vertex_position[2];
+		indx++;
+		buffer[indx].position = transform * quad_vertex_position[3];
+		indx++;
+	}
+
 	void VertexBuffer::Update_Position_On_Quad(uint32_t indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
 	{
 		buffer[indx].position = p0;

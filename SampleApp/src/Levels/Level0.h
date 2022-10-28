@@ -27,6 +27,7 @@ namespace HBL {
 			ENROLL_ENTITY(lvlHandler);
 			ENROLL_ENTITY(sps);
 			ENROLL_ENTITY(text);
+			ENROLL_ENTITY(FPSCounter);
 			
 			for (uint32_t i = 0; i < 400; i++)
 				ENROLL_ENTITY(wall[i]);
@@ -76,6 +77,9 @@ namespace HBL {
 
 			ADD_COMPONENT(TextTransform, text);
 			ADD_COMPONENT(Text, text);
+
+			ADD_COMPONENT(TextTransform, FPSCounter);
+			ADD_COMPONENT(Text, FPSCounter);
 		}
 
 		void Init_Components() override
@@ -94,13 +98,25 @@ namespace HBL {
 			for (uint32_t i = 0; i < 10000; i++)
 			{
 				GET_COMPONENT(Transform, level[i]).Static = true;
-				GET_COMPONENT(Transform, level[i]).position.x = Random::Float(270.0f);
-				GET_COMPONENT(Transform, level[i]).position.y = Random::Float(270.0f);
+				GET_COMPONENT(Transform, level[i]).position.x = Random::Float(800.0f);
+				GET_COMPONENT(Transform, level[i]).position.y = Random::Float(800.0f);
 			}
 
 			GET_COMPONENT(TextTransform, text).scale.x = 1.5f;
 			GET_COMPONENT(TextTransform, text).scale.y = 1.5f;
-			GET_COMPONENT(Text, text).text = "tizllllllllllloghkqp";
+			GET_COMPONENT(Text, text).text = "aaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+			GET_COMPONENT(TextTransform, FPSCounter).position.x = 500.0f;
+			GET_COMPONENT(TextTransform, FPSCounter).position.y = 500.0f;
+
+			GET_COMPONENT(TextTransform, FPSCounter).sreenSpaceOffset.x = 100.0f;
+			GET_COMPONENT(TextTransform, FPSCounter).sreenSpaceOffset.y = 600.0f;
+
+			GET_COMPONENT(TextTransform, FPSCounter).scale.x = 1.0f;
+			GET_COMPONENT(TextTransform, FPSCounter).scale.y = 1.0f;
+
+			GET_COMPONENT(TextTransform, FPSCounter).screenSpace = true;
+			GET_COMPONENT(Text, FPSCounter).text = "";
 
 			GET_MY_COMPONENT(Health, player).health = 99;
 			GET_MY_COMPONENT(Health, enemy).health = 88;

@@ -3,10 +3,10 @@
 HBL::System Globals::ecs;
 
 std::vector<HBL::IEntity> Globals::entities;
-std::vector<void *> Globals::components;
 
 bool Globals::Scene_Change = false;
 uint32_t Globals::Current_Level = 0;
+HBL::IEntity Globals::Camera;
 
 std::vector<HBL::Component::Transform> Globals::Transform;
 std::vector<HBL::Component::CollisionBox> Globals::CollisionBox;

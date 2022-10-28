@@ -23,6 +23,22 @@ namespace HBL {
 			//GET_COMPONENT(Transform, enemy).rotation++;
 			//GET_COMPONENT(Gravity, enemy).Enabled = false;
 
+			if (InputManager::GetKeyDown(GLFW_KEY_H))
+			{
+				GET_COMPONENT(Text, FPSCounter).text = "fllffrrrWWWffff123LffLff";
+			}
+			else
+			{
+				GET_COMPONENT(Text, FPSCounter).text = std::to_string((int)GET_COMPONENT(Transform, player).position.x);
+			}
+
+			if (InputManager::GetKeyDown(GLFW_KEY_G))
+			{
+				GET_COMPONENT(TextTransform, FPSCounter).position.x += 30.0f * dt;
+			}
+
+			GET_COMPONENT(Text, text).text = std::to_string((int)GET_COMPONENT(TextTransform, FPSCounter).position.x) + " - " + std::to_string((int)GET_COMPONENT(TextTransform, FPSCounter).position.y);
+
 		}
 
 	};

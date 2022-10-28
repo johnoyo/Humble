@@ -379,6 +379,8 @@ namespace HBL {
 
 	void CollisionSystem::Check_For_Collisions(IEntity& p, int collisionBox, VertexBuffer& buffer, int axis)
 	{
+		//FUNCTION_PROFILE();
+
 		uint32_t i = 0;
 
 		for (i = 0; i < Globals::CollisionBox.size(); i++) 

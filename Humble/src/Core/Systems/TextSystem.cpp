@@ -23,7 +23,7 @@ namespace HBL {
 
 		// Add another batch for text rendering
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", (buffer_size * 4), vpMatrix);
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", 10 * (buffer_size * 4), vpMatrix);
 		
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
@@ -33,7 +33,14 @@ namespace HBL {
 			Component::Text& text = GET_COMPONENT(Text, entt);
 			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
 
+			if (textTransform.screenSpace)
+			{
+				textTransform.position.x = GET_COMPONENT(Transform, Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
+				textTransform.position.y = GET_COMPONENT(Transform, Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
+			}
+
 			uint32_t prevIndex = INVALID_INDEX;
+			cursorPosition = 0.0f;
 
 			if (text.Enabled)
 			{
@@ -54,7 +61,7 @@ namespace HBL {
 					tTr.position.x += cursorPosition;
 
 					// Draw the current letter as a new quad
-					int indx = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width, sdfData[sdfIndex].height);
+					int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Retrieve font atlas texture id
 					float id = TextureManager::Find("res/textures/testFont.png");
@@ -73,10 +80,15 @@ namespace HBL {
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.Update_Material_On_Quad(indx, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+					buffer.Update_Material_On_Quad(index, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+
+					// Update position of current character
+					buffer.Update_Position_On_Quad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width, (float)sdfData[sdfIndex].height, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;
+
+					textTransform.bufferIndex.push_back(index);
 				}
 			}
 		});
@@ -88,10 +100,121 @@ namespace HBL {
 
 	void TextSystem::Run(float dt)
 	{
+		// Retrieve vertex buffer for text
+		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
+
+		bool invalidate = false;
+
+		For_Each([&](IEntity& entt)
+		{
+			Component::Text& text = GET_COMPONENT(Text, entt);
+			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
+
+			if (textTransform.screenSpace)
+			{
+				textTransform.position.x = GET_COMPONENT(Transform, Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
+				textTransform.position.y = GET_COMPONENT(Transform, Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
+			}
+
+			uint32_t prevIndex = INVALID_INDEX;
+			cursorPosition = 0.0f;
+
+			if (text.Enabled)
+			{
+				const std::string& t = text.text;
+
+				for (uint32_t i = 0; i < t.size(); i++)
+				{
+					// Retrieve index for SDF vector
+					uint32_t sdfIndex = GetLetterIndex(t[i]);
+
+					Component::TextTransform tTr = textTransform;
+
+					// If its not the first letter calculate correct offset
+					if (prevIndex != INVALID_INDEX)
+						cursorPosition += ((sdfData[sdfIndex].xAdvance / 2.0f) * tTr.scale.x) + ((sdfData[prevIndex].xAdvance / 2.0f) * tTr.scale.x);
+
+					// Move cursor and position current letter
+					tTr.position.x += cursorPosition;
+
+					// Retrieve font atlas texture id
+					float id = TextureManager::Find("res/textures/testFont.png");
+
+					if (i >= textTransform.bufferIndex.size())
+					{
+						invalidate = true;
+
+						// Draw the current letter as a new quad.
+						int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width, sdfData[sdfIndex].height);
+
+						textTransform.bufferIndex.push_back(index);
+					}
+					else if (textTransform.bufferIndex.size() > t.size() && i == t.size() - 1)
+					{
+						// Retrieve whitespace character
+						uint32_t sdfIndexRemove = GetLetterIndex('\ ');
+
+						// Calculate some offsets
+						float line_width = (TextureManager::GetTextureSize().at(id).x / sdfData[sdfIndexRemove].width);
+						float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndexRemove].height);
+						float line_offset = line_height - 1.0f;
+
+						// Calculate letter position
+						float x = (GetPositionX(line_width, sdfIndexRemove, id));
+						float y = (GetPositionY(line_height, sdfIndexRemove, id));
+
+						// Letter position and coordinates inside the font atlas
+						glm::vec2 coords = glm::vec2(x, line_offset - y);
+						glm::vec2 size = glm::vec2(sdfData[sdfIndexRemove].width, sdfData[sdfIndexRemove].height);
+
+						// Remove left over characters
+						for (uint32_t j = 0; j < (uint32_t)(textTransform.bufferIndex.size() - t.size()); j++)
+						{
+							// Update texture from font atlas info
+							buffer.Update_Material_On_Quad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+
+							// Update position of current character
+							buffer.Update_Position_On_Quad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width, (float)sdfData[sdfIndex].height, 1.0f ));
+						}
+					}
+
+					// Calculate some offsets
+					float line_width = (TextureManager::GetTextureSize().at(id).x / sdfData[sdfIndex].width);
+					float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndex].height);
+					float line_offset = line_height - 1.0f;
+
+					// Calculate letter position
+					float x = (GetPositionX(line_width, sdfIndex, id));
+					float y = (GetPositionY(line_height, sdfIndex, id));
+
+					// Letter position and coordinates inside the font atlas
+					glm::vec2 coords = glm::vec2(x, line_offset - y);
+					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
+
+					// Update texture from font atlas info
+					buffer.Update_Material_On_Quad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+
+					// Update position of current character
+					buffer.Update_Position_On_Quad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width, (float)sdfData[sdfIndex].height, 1.0f));
+
+					// Store previous index
+					prevIndex = sdfIndex;
+				}
+			}
+		});
+
+		if (invalidate)
+		{
+			Renderer::Get().Bind(1);
+			Renderer::Get().Invalidate(1);
+			Renderer::Get().UnBind();
+		}
 	}
 
 	void TextSystem::Clear()
 	{
+		Globals::Text.clear();
+		Globals::TextTransform.clear();
 	}
 
 	float TextSystem::GetPositionX(float position, uint32_t sdfIndex, float id)

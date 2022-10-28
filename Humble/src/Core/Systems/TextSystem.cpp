@@ -53,7 +53,7 @@ namespace HBL {
 					tTr.position.x += cursorPosition;
 
 					// Draw the current letter as a new quad
-					int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width, sdfData[sdfIndex].height);
+					int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 					// Retrieve font atlas texture id
 					float id = TextureManager::Find("res/textures/testFont.png");
@@ -75,7 +75,7 @@ namespace HBL {
 					buffer.Update_Material_On_Quad(index, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
 					// Update position of current character
-					buffer.Update_Position_On_Quad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width, (float)sdfData[sdfIndex].height, 1.0f));
+					buffer.Update_Position_On_Quad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;
@@ -139,7 +139,7 @@ namespace HBL {
 						invalidate = true;
 
 						// Draw the current letter as a new quad.
-						int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width, sdfData[sdfIndex].height);
+						int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 						textTransform.bufferIndex.push_back(index);
 					}
@@ -168,7 +168,7 @@ namespace HBL {
 							buffer.Update_Material_On_Quad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
 							// Update position of current character
-							buffer.Update_Position_On_Quad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width, (float)sdfData[sdfIndex].height, 1.0f ));
+							buffer.Update_Position_On_Quad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f ));
 						}
 					}
 
@@ -189,7 +189,7 @@ namespace HBL {
 					buffer.Update_Material_On_Quad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
 					// Update position of current character
-					buffer.Update_Position_On_Quad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width, (float)sdfData[sdfIndex].height, 1.0f));
+					buffer.Update_Position_On_Quad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;

@@ -102,8 +102,8 @@ namespace HBL {
 				GET_COMPONENT(Transform, level[i]).position.y = Random::Float(800.0f);
 			}
 
-			GET_COMPONENT(TextTransform, text).scale.x = 1.5f;
-			GET_COMPONENT(TextTransform, text).scale.y = 1.5f;
+			GET_COMPONENT(TextTransform, text).scale.x = 2.0f;
+			GET_COMPONENT(TextTransform, text).scale.y = 2.0f;
 			GET_COMPONENT(Text, text).text = "aaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
 			GET_COMPONENT(TextTransform, FPSCounter).position.x = 500.0f;

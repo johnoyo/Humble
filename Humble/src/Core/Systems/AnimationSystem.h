@@ -1,12 +1,13 @@
 #pragma once
 
 #include "../HumbleAPI.h"
-#include "../ISystem.h"
+#include "../IRegistrySystem.h"
 #include "../Managers/TextureManager.h"
 
 namespace HBL {
 
-	class HBL_API AnimationSystem final : public ISystem {
+	class HBL_API AnimationSystem final : public IRegistrySystem
+	{
 	public:
 		virtual void Start() override;
 		virtual void Run(float dt) override;

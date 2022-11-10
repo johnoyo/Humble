@@ -14,6 +14,6 @@
 #include "Core/Managers/SoundManager.h"
 #include "Core/Utilities/Random.h"
 
-#include "Core/ISystem.h"
+#include "Core/IRegistrySystem.h"
 
 #include "Core/Application.h"

@@ -3,12 +3,13 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../ISystem.h"
+#include "../IRegistrySystem.h"
 #include "../Managers/InputManager.h"
 
 namespace HBL {
 
-	class HBL_API GravitySystem final : public ISystem {
+	class HBL_API GravitySystem final : public IRegistrySystem
+	{
 	public:
 		virtual void Start() override;
 		virtual void Run(float dt) override;

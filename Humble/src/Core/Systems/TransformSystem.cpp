@@ -7,7 +7,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Filter({ "Transform" });
+		Filter<Component::Transform>();
 	}
 
 	void TransformSystem::Run(float dt)
@@ -16,20 +16,20 @@ namespace HBL {
 
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		for (int i = 0; i < Globals::Transform.size(); i++)
+		ForEach([&](IEntity& entt) 
 		{
-			Component::Transform& tr = Globals::Transform[i];
-			if (tr.Static == false) 
+			Component::Transform& tr = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+			if (tr.Static == false)
 			{
 				buffer.Update_Position_On_Quad(tr.bufferIndex, tr);
 			}
-		}
+		}).Run();
 	}
 
 	void TransformSystem::Clear()
 	{
 		Clean();
-		Globals::Transform.clear();
+		Globals::s_Registry.GetArray<Component::Transform>().clear();
 	}
 
 }

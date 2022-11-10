@@ -5,8 +5,6 @@ namespace HBL {
 
 	void TextSystem::Start()
 	{
-		Filter(Globals::entities, "Text", "TextTransform");
-
 		// Import SDF data
 		SDF_Importer("res/textures/testFont.fnt");
 
@@ -15,20 +13,20 @@ namespace HBL {
 
 		// Add another batch for text rendering (200 characters for each text component).
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Globals::Text.size() * 4), vpMatrix);
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Globals::s_Registry.GetArray<Component::Text>().size() * 4), vpMatrix);
 		
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
 
-		For_Each([&](IEntity& entt)
+		Filter<Component::Text, Component::TextTransform>().ForEach([&](IEntity& entt)
 		{
-			Component::Text& text = GET_COMPONENT(Text, entt);
-			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
+			Component::Text& text = Globals::s_Registry.GetComponent<Component::Text>(entt);
+			Component::TextTransform& textTransform = Globals::s_Registry.GetComponent<Component::TextTransform>(entt);
 
 			if (textTransform.screenSpace)
 			{
-				textTransform.position.x = GET_COMPONENT(Transform, Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
-				textTransform.position.y = GET_COMPONENT(Transform, Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
+				textTransform.position.x = Globals::s_Registry.GetComponent<Component::Transform>(Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
+				textTransform.position.y = Globals::s_Registry.GetComponent<Component::Transform>(Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
 			}
 
 			uint32_t prevIndex = INVALID_INDEX;
@@ -83,7 +81,7 @@ namespace HBL {
 					textTransform.bufferIndex.push_back(index);
 				}
 			}
-		});
+		}).Run();
 
 		Renderer::Get().Bind(1);
 		Renderer::Get().Invalidate(1);
@@ -97,16 +95,16 @@ namespace HBL {
 
 		bool invalidate = false;
 
-		For_Each([&](IEntity& entt)
+		ForEach([&] (IEntity& entt)
 		{
-			Component::Text& text = GET_COMPONENT(Text, entt);
-			Component::TextTransform& textTransform = GET_COMPONENT(TextTransform, entt);
+			Component::Text& text = Globals::s_Registry.GetComponent<Component::Text>(entt);
+			Component::TextTransform& textTransform = Globals::s_Registry.GetComponent<Component::TextTransform>(entt);
 
 			// If screen space text follow camera.
 			if (textTransform.screenSpace)
 			{
-				textTransform.position.x = GET_COMPONENT(Transform, Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
-				textTransform.position.y = GET_COMPONENT(Transform, Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
+				textTransform.position.x = Globals::s_Registry.GetComponent<Component::Transform>(Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
+				textTransform.position.y = Globals::s_Registry.GetComponent<Component::Transform>(Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
 			}
 
 			uint32_t prevIndex = INVALID_INDEX;
@@ -195,7 +193,7 @@ namespace HBL {
 					prevIndex = sdfIndex;
 				}
 			}
-		});
+		}).Run();
 
 		if (invalidate)
 		{
@@ -207,8 +205,8 @@ namespace HBL {
 
 	void TextSystem::Clear()
 	{
-		Globals::Text.clear();
-		Globals::TextTransform.clear();
+		Globals::s_Registry.GetArray<Component::Text>().clear();
+		Globals::s_Registry.GetArray<Component::TextTransform>().clear();
 	}
 
 	float TextSystem::GetPositionX(float position, uint32_t sdfIndex, float id)

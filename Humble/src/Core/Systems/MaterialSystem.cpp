@@ -9,11 +9,12 @@ namespace HBL {
 
 		TextureManager::Init_Transparent_Texture();
 
-		for (uint32_t i = 0; i < Globals::Material.size(); i++) 
+		Filter<Component::Material>().ForEach([&](IEntity& entt)
 		{
-			if (Globals::Material.at(i).texture != "-") 
-				TextureManager::Load_Texture(Globals::Material.at(i).texture);
-		}
+			Component::Material& material = Globals::s_Registry.GetComponent<Component::Material>(entt);
+			if (material.texture != "-")
+				TextureManager::Load_Texture(material.texture);
+		}).Run();
 	}
 
 	void MaterialSystem::Run(float dt)
@@ -23,23 +24,24 @@ namespace HBL {
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		uint32_t indx = 0;
-		for (uint32_t i = 0; i < Globals::Material.size(); i++) 
+
+		ForEach([&](IEntity& entt)
 		{
-			Component::Material& material = Globals::Material.at(i);
-			if (material.Enabled) 
+			Component::Material& material = Globals::s_Registry.GetComponent<Component::Material>(entt);
+			if (material.Enabled)
 			{
-				if (material.coords == glm::vec2( -1.0f, -1.0f ) && material.sprite_size == glm::vec2(-1.0f, -1.0f))
+				if (material.coords == glm::vec2(-1.0f, -1.0f) && material.sprite_size == glm::vec2(-1.0f, -1.0f))
 				{
 					buffer.Update_Material_On_Quad(indx, material.color, TextureManager::Find(material.texture));
 				}
-				else 
+				else
 				{
 					float id = TextureManager::Find(material.texture);
 					buffer.Update_Material_On_Quad(indx, material.color, id, material.coords, TextureManager::GetTextureSize().at(id), material.sprite_size);
 				}
 				indx += 4;
 			}
-		}
+		}).Run();
 
 		for (uint32_t i = 0; i < TextureManager::GetTextureIndex(); i++)
 		{
@@ -53,8 +55,10 @@ namespace HBL {
 
 		TextureManager::GetTextureMap().clear();
 		TextureManager::GetTextureSize().clear();
+
 		TextureManager::GetTextureIndex() = 0;
-		Globals::Material.clear();
+
+		Globals::s_Registry.GetArray<Component::Material>().clear();
 		glDeleteTextures(32, TextureManager::GetTextureSlot());
 	}
 

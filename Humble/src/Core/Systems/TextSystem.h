@@ -1,5 +1,5 @@
 #pragma once
-#include "../ISystem.h"
+#include "../IRegistrySystem.h"
 #include "../Rendering/Renderer.h"
 #include <fstream>
 #include <sstream>
@@ -22,7 +22,8 @@ namespace HBL {
 
 	#define INVALID_INDEX 99999
 
-	class HBL_API TextSystem final : public ISystem{
+	class HBL_API TextSystem final : public IRegistrySystem
+	{
 	public:
 		virtual void Start() override;
 		virtual void Run(float dt) override;

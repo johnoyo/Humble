@@ -8,15 +8,18 @@ namespace HBL {
 
 		int current_level = Globals::Current_Level;
 
-		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
-			if (Globals::Script.at(i).Enabled) {
-				int size = Globals::Script.at(i).script.size();
+		Filter<Component::Script>().ForEach([&](IEntity& entt) 
+		{
+			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
+
+			if (script.Enabled) {
+				int size = script.script.size();
 				if (current_level < size)
-					Globals::Script.at(i).script[current_level]->Init();
+					script.script[current_level]->Init();
 				else
-					Globals::Script.at(i).script[size - 1]->Init();
+					script.script[size - 1]->Init();
 			}
-		}
+		}).Run();
 	}
 
 	void ScriptingSystem::Run(float dt)
@@ -25,15 +28,18 @@ namespace HBL {
 
 		int current_level = Globals::Current_Level;
 
-		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
-			if (Globals::Script.at(i).Enabled) {
-				int size = Globals::Script.at(i).script.size();
+		ForEach([&](IEntity& entt)
+		{
+			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
+
+			if (script.Enabled) {
+				int size = script.script.size();
 				if (current_level < size)
-					Globals::Script.at(i).script[current_level]->Update(dt);
+					script.script[current_level]->Update(dt);
 				else
-					Globals::Script.at(i).script[size - 1]->Update(dt);
+					script.script[size - 1]->Update(dt);
 			}
-		}
+		}).Run();
 	}
 
 	void ScriptingSystem::Clear()
@@ -42,13 +48,16 @@ namespace HBL {
 
 		int current_level = Globals::Current_Level;
 
-		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
-			for (uint32_t j = 0; j < current_level; j++) {
-				delete Globals::Script.at(i).script[j];
-			}
-		}
+		ForEach([&](IEntity& entt)
+		{
+			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
 
-		Globals::Script.clear();
+			for (uint32_t j = 0; j < current_level; j++) {
+				delete script.script[j];
+			}
+		}).Run();
+
+		Globals::s_Registry.GetArray<Component::Script>().clear();
 	}
 
 }

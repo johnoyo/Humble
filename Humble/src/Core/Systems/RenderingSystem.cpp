@@ -9,7 +9,7 @@ namespace HBL {
 
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
 
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", (Globals::entities.size() * 4) + (Globals::Shadow.size() * 12), vpMatrix);
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", (Globals::s_Registry.GetEntities().size() * 4) + (Globals::s_Registry.GetArray<Component::Shadow>().size() * 12), vpMatrix);
 
 		Init_Vertex_Buffer();
 	}
@@ -26,14 +26,17 @@ namespace HBL {
 	{
 		Renderer::Get().GetVertexBuffer(0).Reset();
 
-		ENGINE_LOG("Transform size: %d", Globals::Transform.size());
+		ENGINE_LOG("Transform size: %d", Globals::s_Registry.GetArray<Component::Transform>().size());
 
-		for (uint32_t i = 0; i < Globals::Transform.size(); i++) {
-			if (Globals::Transform.at(i).Enabled) {
-				Globals::Transform.at(i).bufferIndex = Renderer::Get().GetVertexBuffer(0).index;
-				Renderer::Get().Draw_Quad(0, Globals::Transform.at(i));
+		Filter<Component::Transform>().ForEach([&](IEntity& entt) 
+		{
+			Component::Transform& transform = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+			if (transform.Enabled) 
+			{
+				transform.bufferIndex = Renderer::Get().GetVertexBuffer(0).index;
+				Renderer::Get().Draw_Quad(0, transform);
 			}
-		}
+		}).Run();
 
 		Renderer::Get().Bind(0);
 		Renderer::Get().Invalidate(0);

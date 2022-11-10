@@ -77,98 +77,123 @@ namespace HBL {
 		int collectible_index = 0;
 
 		// Reset all component properties of entities
-		for (uint32_t i = 0; i < Globals::entities.size(); i++) {
-			IEntity& entt = Globals::entities.at(i);
-			if (TRY_FIND_COMPONENT(Transform, entt)) {
-				GET_COMPONENT(Transform, entt).Static = true;
-				GET_COMPONENT(Transform, entt).Enabled = false;
+		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) {
+			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
+			if (Globals::s_Registry.HasComponent<Component::Transform>(entt)) 
+			{
+				Globals::s_Registry.GetComponent<Component::Transform>(entt).Static = true;
+				Globals::s_Registry.GetComponent<Component::Transform>(entt).Enabled = false;
 			}
-			if (TRY_FIND_COMPONENT(Material, entt)) {
-				GET_COMPONENT(Material, entt).texture = "-";
-				GET_COMPONENT(Material, entt).Enabled = false;
+			if (Globals::s_Registry.HasComponent<Component::Material>(entt))
+			{
+				Globals::s_Registry.GetComponent<Component::Material>(entt).texture = "-";
+				Globals::s_Registry.GetComponent<Component::Material>(entt).Enabled = false;
 			}
-			if (TRY_FIND_COMPONENT(Script, entt)) {
-				GET_COMPONENT(Script, entt).Enabled = false;
+			if (Globals::s_Registry.HasComponent<Component::Script>(entt))
+			{
+				Globals::s_Registry.GetComponent<Component::Script>(entt).Enabled = false;
 			}
-			if (TRY_FIND_COMPONENT(CollisionBox, entt)) {
-				GET_COMPONENT(CollisionBox, entt).Enabled = false;
+			if (Globals::s_Registry.HasComponent<Component::CollisionBox>(entt))
+			{
+				Globals::s_Registry.GetComponent<Component::CollisionBox>(entt).Enabled = false;
 			}
-			if (TRY_FIND_COMPONENT(Shadow, entt)) {
-				GET_COMPONENT(Shadow, entt).Enabled = false;
+			if (Globals::s_Registry.HasComponent<Component::Shadow>(entt))
+			{
+				Globals::s_Registry.GetComponent<Component::Shadow>(entt).Enabled = false;
 			}
-			if (TRY_FIND_COMPONENT(Gravity, entt)) {
-				GET_COMPONENT(Gravity, entt).Enabled = false;
+			if (Globals::s_Registry.HasComponent<Component::Gravity>(entt))
+			{
+				Globals::s_Registry.GetComponent<Component::Gravity>(entt).Enabled = false;
 			}
-			if (TRY_FIND_COMPONENT(Animation, entt)) {
-				GET_COMPONENT(Animation, entt).Enabled = false;
+			if (Globals::s_Registry.HasComponent<Component::Animation>(entt))
+			{
+				Globals::s_Registry.GetComponent<Component::Animation>(entt).Enabled = false;
 			}
 		}
 
 		// Set up background
-		GET_COMPONENT(Transform, background).position.x = 0.0f;
-		GET_COMPONENT(Transform, background).position.y = 0.0f;
-		GET_COMPONENT(Transform, background).scale.x = 1920.0f;
-		GET_COMPONENT(Transform, background).scale.y = 1080.0f;
-		GET_COMPONENT(Transform, background).Static = false;
-		GET_COMPONENT(Transform, background).Enabled = true;
-		GET_COMPONENT(Material, background).Enabled = true;
-		GET_COMPONENT(Material, background).texture = "res/textures/brickWall_2.jpg";
+		Component::Transform& backgroundTransform = Globals::s_Registry.GetComponent<Component::Transform>(background);
+		Component::Material& backgroundMaterial = Globals::s_Registry.GetComponent<Component::Material>(background);
+
+		backgroundTransform.position.x = 0.0f;
+		backgroundTransform.position.y = 0.0f;
+		backgroundTransform.scale.x = 1920.0f;
+		backgroundTransform.scale.y = 1080.0f;
+		backgroundTransform.Static = false;
+		backgroundTransform.Enabled = true;
+		backgroundMaterial.Enabled = true;
+		backgroundMaterial.texture = "res/textures/brickWall_2.jpg";
 
 		// Re enable lvlHandler
-		GET_COMPONENT(Script, lvlHandler).Enabled = true;
+		Globals::s_Registry.GetComponent<Component::Script>(lvlHandler).Enabled = true;
 
 		// Update the position of the entities
 		for (uint32_t i = 0; i < p.size(); i++) {
 			if (i == s) continue;
-			if (p.at(i).k == 1.0f) {
-				GET_COMPONENT(Transform, level[level_index]).scale.x = 30.0f;
-				GET_COMPONENT(Transform, level[level_index]).scale.y = 30.0f;
-				GET_COMPONENT(Transform, level[level_index]).position.x = p.at(i).j * GET_COMPONENT(Transform, level[level_index]).scale.x;
-				GET_COMPONENT(Transform, level[level_index]).position.y = p.at(i).i * GET_COMPONENT(Transform, level[level_index]).scale.y;
-				GET_COMPONENT(Transform, level[level_index]).Static = true;
-				GET_COMPONENT(Transform, level[level_index]).Enabled = true;
+			if (p.at(i).k == 1.0f) 
+			{
+				Component::Transform& levelTransform = Globals::s_Registry.GetComponent<Component::Transform>(level[level_index]);
+				Component::Material& levelMaterial = Globals::s_Registry.GetComponent<Component::Material>(level[level_index]);
+				Component::CollisionBox& levelCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(level[level_index]);
 
-				GET_COMPONENT(Material, level[level_index]).Enabled = true;
-				GET_COMPONENT(Material, level[level_index]).texture = "res/textures/coinA.png";
-				GET_COMPONENT(CollisionBox, level[level_index]).Enabled = true;
+				levelTransform.scale.x = 30.0f;
+				levelTransform.scale.y = 30.0f;
+				levelTransform.position.x = p.at(i).j * levelTransform.scale.x;
+				levelTransform.position.y = p.at(i).i * levelTransform.scale.y;
+				levelTransform.Static = true;
+				levelTransform.Enabled = true;
+
+				levelMaterial.Enabled = true;
+				levelMaterial.texture = "res/textures/coinA.png";
+				levelCollisionBox.Enabled = true;
 
 				level_index++;
 			}
-			else if (p.at(i).k == 6.0f) {
-				GET_COMPONENT(Transform, wall[wall_index]).scale.x = 30.0f;
-				GET_COMPONENT(Transform, wall[wall_index]).scale.y = 30.0f;
-				GET_COMPONENT(Transform, wall[wall_index]).position.x = p.at(i).j * GET_COMPONENT(Transform, wall[wall_index]).scale.x;
-				GET_COMPONENT(Transform, wall[wall_index]).position.y = p.at(i).i * GET_COMPONENT(Transform, wall[wall_index]).scale.y;
-				GET_COMPONENT(Transform, wall[wall_index]).Static = true;
-				GET_COMPONENT(Transform, wall[wall_index]).Enabled = true;
+			else if (p.at(i).k == 6.0f) 
+			{
+				Component::Transform& wallTransform = Globals::s_Registry.GetComponent<Component::Transform>(wall[wall_index]);
+				Component::Material& wallMaterial = Globals::s_Registry.GetComponent<Component::Material>(wall[wall_index]);
+				Component::CollisionBox& wallCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(wall[wall_index]);
 
-				GET_COMPONENT(CollisionBox, wall[wall_index]).Enabled = true;
+				wallTransform.scale.x = 30.0f;
+				wallTransform.scale.y = 30.0f;
+				wallTransform.position.x = p.at(i).j * wallTransform.scale.x;
+				wallTransform.position.y = p.at(i).i * wallTransform.scale.y;
+				wallTransform.Static = true;
+				wallTransform.Enabled = true;
 
-				GET_COMPONENT(Material, wall[wall_index]).Enabled = true;
-				GET_COMPONENT(Material, wall[wall_index]).texture = "res/textures/brick_3.png";
+				wallCollisionBox.Enabled = true;
+
+				wallMaterial.Enabled = true;
+				wallMaterial.texture = "res/textures/brick_3.png";
 
 				if (!first)
-					GET_COMPONENT(Shadow, wall[wall_index]).Enabled = true;
+					Globals::s_Registry.GetComponent<Component::Shadow>(wall[wall_index]).Enabled = true;
 
 				wall_index++;
 			}
-			else if (p.at(i).k == 4.0f) {
-				GET_COMPONENT(Transform, enemy).scale.x = 30.0f;
-				GET_COMPONENT(Transform, enemy).scale.y = 30.0f;
-				GET_COMPONENT(Transform, enemy).position.x = p.at(i).j * GET_COMPONENT(Transform, enemy).scale.x;
-				GET_COMPONENT(Transform, enemy).position.y = p.at(i).i * GET_COMPONENT(Transform, enemy).scale.y;
-				GET_COMPONENT(Transform, enemy).Static = false;
-				GET_COMPONENT(Transform, enemy).Enabled = true;
+			else if (p.at(i).k == 4.0f) 
+			{
+				Component::Transform& enemyTransform = Globals::s_Registry.GetComponent<Component::Transform>(enemy);
+				Component::Material& enemyMaterial = Globals::s_Registry.GetComponent<Component::Material>(enemy);
+				Component::CollisionBox& enemyCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(enemy);
 
-				GET_COMPONENT(CollisionBox, enemy).Enabled = true;
+				enemyTransform.scale.x = 30.0f;
+				enemyTransform.scale.y = 30.0f;
+				enemyTransform.position.x = p.at(i).j * enemyTransform.scale.x;
+				enemyTransform.position.y = p.at(i).i * enemyTransform.scale.y;
+				enemyTransform.Static = false;
+				enemyTransform.Enabled = true;
 
-				GET_COMPONENT(Script, enemy).Enabled = true;
+				enemyCollisionBox.Enabled = true;
 
-				GET_COMPONENT(Material, enemy).Enabled = true;
-				GET_COMPONENT(Material, enemy).texture = "res/textures/enemy.png";
+				Globals::s_Registry.GetComponent<Component::Script>(enemy).Enabled = true;
 
-				GET_COMPONENT(Shadow, enemy).Enabled = true;
-				GET_COMPONENT(Gravity, enemy).Enabled = true;
+				enemyMaterial.Enabled = true;
+				enemyMaterial.texture = "res/textures/enemy.png";
+
+				Globals::s_Registry.GetComponent<Component::Shadow>(enemy).Enabled = true;
+				Globals::s_Registry.GetComponent<Component::Gravity>(enemy).Enabled = true;
 				enemy_index++;
 			}
 		}
@@ -178,37 +203,48 @@ namespace HBL {
 		ENGINE_LOG("p size: %d", p.size());
 
 		// Upadate the position of the player last
-		GET_COMPONENT(Transform, player).scale.x = 29.0f;
-		GET_COMPONENT(Transform, player).scale.y = 29.0f;
-		GET_COMPONENT(Transform, player).position.x = p.at(s).j * GET_COMPONENT(Transform, player).scale.x;
-		GET_COMPONENT(Transform, player).position.y = p.at(s).i * GET_COMPONENT(Transform, player).scale.y;
-		GET_COMPONENT(Transform, player).Static = false;
-		GET_COMPONENT(Transform, player).Enabled = true;
+		Component::Transform& playerTransform = Globals::s_Registry.GetComponent<Component::Transform>(player);
+		Component::Material& playerMaterial = Globals::s_Registry.GetComponent<Component::Material>(player);
 
-		GET_COMPONENT(CollisionBox, player).Enabled = true;
+		playerTransform.scale.x = 29.0f;
+		playerTransform.scale.y = 29.0f;
+		playerTransform.position.x = p.at(s).j * playerTransform.scale.x;
+		playerTransform.position.y = p.at(s).i * playerTransform.scale.y;
+		playerTransform.Static = false;
+		playerTransform.Enabled = true;
 
-		GET_COMPONENT(Script, player).Enabled = true;
+		Globals::s_Registry.GetComponent<Component::CollisionBox>(player).Enabled = true;
 
-		GET_COMPONENT(Material, player).Enabled = true;
-		GET_COMPONENT(Material, player).texture = "res/textures/super_mario_tiles.png";
+		Globals::s_Registry.GetComponent<Component::Script>(player).Enabled = true;
 
-		GET_COMPONENT(Animation, player).Enabled = true;
+		playerMaterial.Enabled = true;
+		playerMaterial.texture = "res/textures/super_mario_tiles.png";
+
+		Globals::s_Registry.GetComponent<Component::Animation>(player).Enabled = true;
 
 		// Recalculate all collision boxes
-		for (uint32_t i = 0; i < Globals::entities.size(); i++) {
-			if (TRY_FIND_COMPONENT(CollisionBox, Globals::entities.at(i)) && TRY_FIND_COMPONENT(Transform, Globals::entities.at(i))) {
-				if (GET_COMPONENT(CollisionBox, Globals::entities.at(i)).Enabled) {
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).tl.x = GET_COMPONENT(Transform, Globals::entities.at(i)).position.x - GET_COMPONENT(Transform, Globals::entities.at(i)).scale.x / 2.0f;
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).tl.y = GET_COMPONENT(Transform, Globals::entities.at(i)).position.y + GET_COMPONENT(Transform, Globals::entities.at(i)).scale.y / 2.0f;
-																	   				 
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).tr.x = GET_COMPONENT(Transform, Globals::entities.at(i)).position.x + GET_COMPONENT(Transform, Globals::entities.at(i)).scale.x / 2.0f;
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).tr.y = GET_COMPONENT(Transform, Globals::entities.at(i)).position.y + GET_COMPONENT(Transform, Globals::entities.at(i)).scale.y / 2.0f;
-																	  
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).br.x = GET_COMPONENT(Transform, Globals::entities.at(i)).position.x + GET_COMPONENT(Transform, Globals::entities.at(i)).scale.x / 2.0f;
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).br.y = GET_COMPONENT(Transform, Globals::entities.at(i)).position.y - GET_COMPONENT(Transform, Globals::entities.at(i)).scale.y / 2.0f;
-																	   
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).bl.x = GET_COMPONENT(Transform, Globals::entities.at(i)).position.x - GET_COMPONENT(Transform, Globals::entities.at(i)).scale.x / 2.0f;
-					GET_COMPONENT(CollisionBox, Globals::entities.at(i)).bl.y = GET_COMPONENT(Transform, Globals::entities.at(i)).position.y - GET_COMPONENT(Transform, Globals::entities.at(i)).scale.y / 2.0f;
+		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) 
+		{
+			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
+
+			if (Globals::s_Registry.HasComponent<Component::CollisionBox>(entt) && Globals::s_Registry.HasComponent<Component::Transform>(entt)) 
+			{
+				Component::CollisionBox& collisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(entt);
+				if (collisionBox.Enabled)
+				{
+					Component::Transform& transform = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+
+					collisionBox.tl.x = transform.position.x - transform.scale.x / 2.0f;
+					collisionBox.tl.y = transform.position.y + transform.scale.y / 2.0f;
+								 		
+					collisionBox.tr.x = transform.position.x + transform.scale.x / 2.0f;
+					collisionBox.tr.y = transform.position.y + transform.scale.y / 2.0f;
+										
+					collisionBox.br.x = transform.position.x + transform.scale.x / 2.0f;
+					collisionBox.br.y = transform.position.y - transform.scale.y / 2.0f;
+										
+					collisionBox.bl.x = transform.position.x - transform.scale.x / 2.0f;
+					collisionBox.bl.y = transform.position.y - transform.scale.y / 2.0f;
 				}
 			}
 		}

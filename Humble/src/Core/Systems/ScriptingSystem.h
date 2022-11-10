@@ -2,12 +2,13 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../ISystem.h"
+#include "../IRegistrySystem.h"
 #include <algorithm>
 
 namespace HBL {
 
-	class HBL_API ScriptingSystem final : public ISystem {
+	class HBL_API ScriptingSystem final : public IRegistrySystem
+	{
 	public:
 		virtual void Start() override;
 		virtual void Run(float dt) override;

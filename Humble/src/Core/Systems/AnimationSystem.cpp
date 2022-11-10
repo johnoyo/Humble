@@ -6,20 +6,20 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE()
 
-		Filter( { "Animation" } ).For_Each([&](IEntity& entt)
+		Filter<Component::Animation>().ForEach([&](IEntity& entt)
 		{
-			Component::Animation& animation = GET_COMPONENT(Animation, entt);
+			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(entt);
 
 			for (auto anim : animation.animations)
 				anim.time = glfwGetTime();
-		});
+		}).Run();
 	}
 
 	void AnimationSystem::Run(float dt)
 	{
-		For_Each([&](IEntity& entt)
+		ForEach([&](IEntity& entt)
 		{
-			Component::Animation& animation = GET_COMPONENT(Animation, entt);
+			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(entt);
 
 			if (animation.Enabled)
 			{
@@ -59,7 +59,7 @@ namespace HBL {
 					}
 				}
 			}
-		});
+		}).Run();
 	}
 
 	void AnimationSystem::Clear()
@@ -67,7 +67,7 @@ namespace HBL {
 		FUNCTION_PROFILE();
 
 		Clean();
-		Globals::Animation.clear();
+		Globals::s_Registry.GetArray<Component::Animation>().clear();
 	}
 
 	void AnimationSystem::PlayAnimation(Component::Animation& animation, int index)

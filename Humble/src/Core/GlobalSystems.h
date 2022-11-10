@@ -13,7 +13,7 @@
 #include "..\Core\Systems\ShadowCastSystem.h"
 #include "..\Core\Systems\TextSystem.h"
 
-struct HBL_API GlobalSystems 
+struct HBL_API GlobalSystems
 {
 	static HBL::WindowSystem windowSystem;
 	static HBL::MaterialSystem materialSystem;

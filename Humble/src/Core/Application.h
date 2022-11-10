@@ -5,7 +5,7 @@
 #include "Utilities.h"
 #include "HumbleAPI.h"
 #include "IScene.h"
-#include "ISystem.h"
+#include "IRegistrySystem.h"
 
 namespace HBL {
 
@@ -14,8 +14,6 @@ namespace HBL {
 		Application(float width, float height, const std::string& name, bool full_screen, bool vSync, bool fixedTimeStep, float fixedUpdates = 60.0f);
 
 		void Add_Scene(IScene* scene);
-
-		void Register_System(ISystem* system);
 
 		void Manage_Scenes()
 		{
@@ -44,8 +42,6 @@ namespace HBL {
 
 		void Start() {
 
-			Register_Systems();
-
 			m_Scenes[m_Current]->Init_Systems();
 
 			m_Scenes[m_Current]->Enroll_Entities();
@@ -55,7 +51,7 @@ namespace HBL {
 			// Initialize Systems
 			Initialize_Systems();
 
-			while (!GlobalSystems::windowSystem.Window_Should_Close()) 
+			while (!GlobalSystems::windowSystem.Window_Should_Close())
 			{
 				// Measure time and delta time
 				float time = (float)glfwGetTime();
@@ -101,22 +97,13 @@ namespace HBL {
 
 	private:
 		std::vector<IScene*> m_Scenes;
-		std::vector<ISystem*> m_Systems;
 
 		uint32_t m_Current = 0;
 		bool m_FixedTimeStep = false;
 
-		void Register_Systems()
-		{
-			Register_System(&GlobalSystems::renderingSystem);
-			Register_System(&GlobalSystems::materialSystem);
-			Register_System(&GlobalSystems::animationSystem);
-			Register_System(&GlobalSystems::scriptingSystem);
-			Register_System(&GlobalSystems::transformSystem);
-			Register_System(&GlobalSystems::gravitySystem);
-			Register_System(&GlobalSystems::collisionSystem);
-			Register_System(&GlobalSystems::textSystem);
-		}
+		void RegisterSystems();
+
+		void RegisterArrays();
 
 		void Initialize_Systems() 
 		{
@@ -127,12 +114,12 @@ namespace HBL {
 
 			SoundManager::Start();
 
-			for (ISystem* system : m_Systems)
+			for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
+			glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -143,12 +130,12 @@ namespace HBL {
 
 			Globals::Camera = m_Scenes[m_Current]->GetCamera();
 
-			for (ISystem* system : m_Systems)
+			for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
+			glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -159,12 +146,12 @@ namespace HBL {
 			while (m_FixedDeltaTime >= 1.0f)
 			{
 				// Update fixed systems
-				for (ISystem* system : m_Systems)
+				for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
 				{
 					system->Run(dt);
 				}
 
-				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
+				glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 				GlobalSystems::shadowSystem.Run(position);
 
 				m_FixedUpdates++;
@@ -176,12 +163,12 @@ namespace HBL {
 		{
 			if (!m_FixedTimeStep)
 			{
-				for (ISystem* system : m_Systems)
+				for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
 				{
 					system->Run(dt);
 				}
 
-				glm::vec3& position = GET_COMPONENT(Transform, m_Scenes[m_Current]->GetPlayer()).position;
+				glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 				GlobalSystems::shadowSystem.Run(position);
 			}
 			else 
@@ -192,15 +179,15 @@ namespace HBL {
 
 		void Clear() 
 		{
-			for (ISystem* system : m_Systems)
+			for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
 			{
 				system->Clear();
 			}
 
-			GlobalSystems::shadowSystem.Clear();
+			Globals::s_Registry.GetArray<Component::Shadow>().clear();
 			Renderer::Get().Clear();
 
-			Globals::ecs.Flush(Globals::entities);
+			Globals::s_Registry.Flush();
 		}
 
 		void Shutdown() 

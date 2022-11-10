@@ -20,106 +20,108 @@ namespace HBL {
 			std::cout << "Random Double: " << Random::Double(10.0) << "\n";
 			std::cout << "Random Int: " << Random::Int(10) << "\n";
 
-			ENROLL_ENTITY(background);
-			ENROLL_ENTITY(player);
-			ENROLL_ENTITY(enemy);
-			ENROLL_ENTITY(camera);
-			ENROLL_ENTITY(lvlHandler);
-			ENROLL_ENTITY(sps);
-			ENROLL_ENTITY(text);
-			ENROLL_ENTITY(FPSCounter);
+			Globals::s_Registry.EnrollEntity(background);
+			Globals::s_Registry.EnrollEntity(player);
+			Globals::s_Registry.EnrollEntity(enemy);
+			Globals::s_Registry.EnrollEntity(camera);
+			Globals::s_Registry.EnrollEntity(lvlHandler);
+			Globals::s_Registry.EnrollEntity(sps);
+			Globals::s_Registry.EnrollEntity(text);
+			Globals::s_Registry.EnrollEntity(FPSCounter);
 			
 			for (uint32_t i = 0; i < 400; i++)
-				ENROLL_ENTITY(wall[i]);
+				Globals::s_Registry.EnrollEntity(wall[i]);
 			
 			for (uint32_t i = 0; i < 10000; i++)
-				ENROLL_ENTITY(level[i]);
+				Globals::s_Registry.EnrollEntity(level[i]);
 		}
 
 		void Add_Components() override
 		{
-			ADD_COMPONENT(Transform, background);
-			ADD_COMPONENT(Material, background);
+			Globals::s_Registry.AddComponent<Component::Transform>(background);
+			Globals::s_Registry.AddComponent<Component::Material>(background);
 			
-			ADD_COMPONENT(Transform, player);
-			ADD_COMPONENT(Script, player);
-			ADD_COMPONENT(Material, player);
-			ADD_COMPONENT(Animation, player);
-			ADD_COMPONENT(CollisionBox, player);
-			ADD_MY_COMPONENT(Health, player);
+			Globals::s_Registry.AddComponent<Component::Transform>(player);
+			Globals::s_Registry.AddComponent<Component::Script>(player);
+			Globals::s_Registry.AddComponent<Component::Material>(player);
+			Globals::s_Registry.AddComponent<Component::Animation>(player);
+			Globals::s_Registry.AddComponent<Component::CollisionBox>(player);
+			Globals::s_Registry.AddComponent<Component::Health>(player);
 			
-			ADD_COMPONENT(Transform, enemy);
-			ADD_COMPONENT(Script, enemy);
-			ADD_COMPONENT(Material, enemy);
-			ADD_COMPONENT(CollisionBox, enemy);
-			ADD_COMPONENT(Gravity, enemy);
-			ADD_COMPONENT(Shadow, enemy);
-			ADD_MY_COMPONENT(Health, enemy);
+			Globals::s_Registry.AddComponent<Component::Transform>(enemy);
+			Globals::s_Registry.AddComponent<Component::Script>(enemy);
+			Globals::s_Registry.AddComponent<Component::Material>(enemy);
+			Globals::s_Registry.AddComponent<Component::CollisionBox>(enemy);
+			Globals::s_Registry.AddComponent<Component::Gravity>(enemy);
+			Globals::s_Registry.AddComponent<Component::Shadow>(enemy);
+			Globals::s_Registry.AddComponent<Component::Health>(enemy);
 			
-			ADD_COMPONENT(Script, lvlHandler);
+			Globals::s_Registry.AddComponent<Component::Script>(lvlHandler);
 				
-			ADD_COMPONENT(Transform, camera);
+			Globals::s_Registry.AddComponent<Component::Transform>(camera);
 			
-			ADD_COMPONENT(Material, sps);
+			Globals::s_Registry.AddComponent<Component::Material>(sps);
 				
-			for (uint32_t i = 0; i < 400; i++) {
-				ADD_COMPONENT(Transform, wall[i]);
-				ADD_COMPONENT(CollisionBox, wall[i]);
-				ADD_COMPONENT(Material, wall[i]);
-				ADD_COMPONENT(Shadow, wall[i]);
+			for (uint32_t i = 0; i < 400; i++) 
+			{
+				Globals::s_Registry.AddComponent<Component::Transform>(wall[i]);
+				Globals::s_Registry.AddComponent<Component::CollisionBox>(wall[i]);
+				Globals::s_Registry.AddComponent<Component::Material>(wall[i]);
+				Globals::s_Registry.AddComponent<Component::Shadow>(wall[i]);
 			}
 			
-			for (uint32_t i = 0; i < 10000; i++) {
-				ADD_COMPONENT(Transform, level[i]);
-				ADD_COMPONENT(CollisionBox, level[i]);
-				ADD_COMPONENT(Material, level[i]);
+			for (uint32_t i = 0; i < 10000; i++) 
+			{
+				Globals::s_Registry.AddComponent<Component::Transform>(level[i]);
+				Globals::s_Registry.AddComponent<Component::CollisionBox>(level[i]);
+				Globals::s_Registry.AddComponent<Component::Material>(level[i]);
 			}
 
-			ADD_COMPONENT(TextTransform, text);
-			ADD_COMPONENT(Text, text);
+			Globals::s_Registry.AddComponent<Component::TextTransform>(text);
+			Globals::s_Registry.AddComponent<Component::Text>(text);
 
-			ADD_COMPONENT(TextTransform, FPSCounter);
-			ADD_COMPONENT(Text, FPSCounter);
+			Globals::s_Registry.AddComponent<Component::TextTransform>(FPSCounter);
+			Globals::s_Registry.AddComponent<Component::Text>(FPSCounter);
 		}
 
 		void Init_Components() override
 		{
-			GET_COMPONENT(Script, player).script.push_back(new PlayerScript());
-			GET_COMPONENT(Script, enemy).script.push_back(new EnemyScript());
-			GET_COMPONENT(Script, lvlHandler).script.push_back(new LevelHandlerScript());
+			Globals::s_Registry.GetComponent<Component::Script>(player).script.push_back(new PlayerScript());
+			Globals::s_Registry.GetComponent<Component::Script>(enemy).script.push_back(new EnemyScript());
+			Globals::s_Registry.GetComponent<Component::Script>(lvlHandler).script.push_back(new LevelHandlerScript());
 
-			GET_COMPONENT(Transform, player).Static = false;
-			GET_COMPONENT(Transform, enemy).Static = false;
-			GET_COMPONENT(Transform, background).Static = false;
+			Globals::s_Registry.GetComponent<Component::Transform>(player).Static = false;
+			Globals::s_Registry.GetComponent<Component::Transform>(enemy).Static = false;
+			Globals::s_Registry.GetComponent<Component::Transform>(background).Static = false;
 			
 			for (uint32_t i = 0; i < 400; i++)
-				GET_COMPONENT(Transform, wall[i]).Static = true;
+				Globals::s_Registry.GetComponent<Component::Transform>(wall[i]).Static = true;
 			
 			for (uint32_t i = 0; i < 10000; i++)
 			{
-				GET_COMPONENT(Transform, level[i]).Static = true;
-				GET_COMPONENT(Transform, level[i]).position.x = Random::Float(800.0f);
-				GET_COMPONENT(Transform, level[i]).position.y = Random::Float(800.0f);
+				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).Static = true;
+				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).position.x = Random::Float(800.0f);
+				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).position.y = Random::Float(800.0f);
 			}
 
-			GET_COMPONENT(TextTransform, text).scale.x = 2.0f;
-			GET_COMPONENT(TextTransform, text).scale.y = 2.0f;
-			GET_COMPONENT(Text, text).text = "aaaaaaaaaaaaaaaaaaaaaaaaaaa";
+			Globals::s_Registry.GetComponent<Component::TextTransform>(text).scale.x = 2.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(text).scale.y = 2.0f;
+			Globals::s_Registry.GetComponent<Component::Text>(text).text = "aaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-			GET_COMPONENT(TextTransform, FPSCounter).position.x = 500.0f;
-			GET_COMPONENT(TextTransform, FPSCounter).position.y = 500.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).position.x = 500.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).position.y = 500.0f;
 
-			GET_COMPONENT(TextTransform, FPSCounter).sreenSpaceOffset.x = 100.0f;
-			GET_COMPONENT(TextTransform, FPSCounter).sreenSpaceOffset.y = 600.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).sreenSpaceOffset.x = 100.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).sreenSpaceOffset.y = 600.0f;
 
-			GET_COMPONENT(TextTransform, FPSCounter).scale.x = 1.0f;
-			GET_COMPONENT(TextTransform, FPSCounter).scale.y = 1.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).scale.x = 1.0f;
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).scale.y = 1.0f;
 
-			GET_COMPONENT(TextTransform, FPSCounter).screenSpace = true;
-			GET_COMPONENT(Text, FPSCounter).text = "";
+			Globals::s_Registry.GetComponent<Component::TextTransform>(FPSCounter).screenSpace = true;
+			Globals::s_Registry.GetComponent<Component::Text>(FPSCounter).text = "";
 
-			GET_MY_COMPONENT(Health, player).health = 99;
-			GET_MY_COMPONENT(Health, enemy).health = 88;
+			Globals::s_Registry.GetComponent<Component::Health>(player).health = 99;
+			Globals::s_Registry.GetComponent<Component::Health>(player).health = 88;
 		}
 
 		void Init_Systems() override

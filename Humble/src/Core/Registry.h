@@ -12,6 +12,8 @@
 
 namespace HBL 
 {
+	class IRegistrySystem;
+
 	class HBL_API Registry
 	{
 	public:
@@ -39,7 +41,7 @@ namespace HBL
 		template<typename T>
 		T& GetComponent(IEntity& Entity)
 		{
-			ASSERT(HasComponent<T>(Entity));
+			//ASSERT(HasComponent<T>(Entity));
 
 			auto& array = GetArray<T>();
 			return array[Entity.m_UUID];
@@ -83,12 +85,17 @@ namespace HBL
 		void Flush()
 		{
 			m_Entities.clear();
-			m_ComponentArrays.clear();
 		}
 
+		void RegisterSystem(IRegistrySystem* system)
+		{
+			m_Systems.push_back(system);
+		}
+
+		std::vector<IRegistrySystem*> m_Systems;
 	private:
+
 		std::vector<IEntity> m_Entities;
-		std::vector<uint32_t> m_EntitiesUUIDs;
 		std::unordered_map<std::size_t, void*> m_ComponentArrays;
 
 		// TODO: Remove these functions.

@@ -2,19 +2,19 @@
 
 namespace HBL 
 {
-	class HealthSystem final : public ISystem 
+	class HealthSystem final : public IRegistrySystem 
 	{
 	public:
 		virtual void Start() override
 		{
 			FUNCTION_PROFILE();
-			Filter({ "Health" });
+			Filter<Component::Health>();
 		}
 		virtual void Run(float dt) override
 		{
-			For_Each([&](IEntity& entt)
+			ForEach([&](IEntity& entt)
 			{
-				Component::Health& h = GET_MY_COMPONENT(Health, entt);
+				Component::Health& h = Globals::s_Registry.GetComponent<Component::Health>(entt);
 				//std::cout << "Entity health: " << h.health << "\n";
 			});
 		}

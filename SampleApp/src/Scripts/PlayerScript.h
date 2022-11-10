@@ -11,12 +11,12 @@ namespace HBL {
 		virtual void Init() override {
 
 			//GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
-			Component::Material& material = GET_COMPONENT(Material, player);
+			Component::Material& material = Globals::s_Registry.GetComponent<Component::Material>(player);
 			material.texture = "res/textures/super_mario_tiles.png";
 			material.coords = { 6.0f, 1.0f };
 			material.sprite_size = { 16.0f, 16.0f };
 
-			Component::Animation& animation = GET_COMPONENT(Animation, player);
+			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(player);
 
 			animation.animations.push_back({
 				"WalkAnim",
@@ -48,9 +48,9 @@ namespace HBL {
 
 		virtual void Update(float dt) override {
 
-			Component::Transform& transform_p = GET_COMPONENT(Transform, player);
-			Component::Transform& transform_bg = GET_COMPONENT(Transform, background);
-			Component::Animation& animation_p = GET_COMPONENT(Animation, player);
+			Component::Transform& transform_p = Globals::s_Registry.GetComponent<Component::Transform>(player);
+			Component::Transform& transform_bg = Globals::s_Registry.GetComponent<Component::Transform>(background);
+			Component::Animation& animation_p = Globals::s_Registry.GetComponent<Component::Animation>(player);
 
 			// Background follow player
 			transform_bg.position.x = transform_p.position.x;

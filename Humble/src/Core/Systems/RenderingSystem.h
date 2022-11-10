@@ -9,11 +9,12 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "../Rendering/Renderer.h"
-#include "../ISystem.h"
+#include "../IRegistrySystem.h"
 
 namespace HBL {
 
-	class HBL_API RenderingSystem final : public ISystem {
+	class HBL_API RenderingSystem final : public IRegistrySystem
+	{
 	public:
 
 		virtual void Start() override;

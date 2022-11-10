@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
@@ -25,10 +26,10 @@ namespace HBL {
 		const glm::mat4& Get_View_Projection_Matrix() const { return m_View_Projection_Matrix; }
 
 	private:
-		void Set_Position(IEntity& camera, const glm::vec3& position) { GET_COMPONENT(Transform, camera).position = position; Recalculate_View_Matrix(camera); }
-		void Set_Position_x(IEntity& camera, float position) { GET_COMPONENT(Transform, camera).position.x = position; Recalculate_View_Matrix(camera); }
-		void Set_Position_y(IEntity& camera, float position) { GET_COMPONENT(Transform, camera).position.y = position; Recalculate_View_Matrix(camera); }
-		void Incr_Position(IEntity& camera, IEntity& player, const glm::vec3& position) { GET_COMPONENT(Transform, camera).position.x += position.x;  GET_COMPONENT(Transform, camera).position.y += position.y; Recalculate_View_Matrix(camera); }
+		void Set_Position(IEntity& camera, const glm::vec3& position) { Globals::s_Registry.GetComponent<Component::Transform>(camera).position = position; Recalculate_View_Matrix(camera); }
+		void Set_Position_x(IEntity& camera, float position) { Globals::s_Registry.GetComponent<Component::Transform>(camera).position.x = position; Recalculate_View_Matrix(camera); }
+		void Set_Position_y(IEntity& camera, float position) { Globals::s_Registry.GetComponent<Component::Transform>(camera).position.y = position; Recalculate_View_Matrix(camera); }
+		void Incr_Position(IEntity& camera, IEntity& player, const glm::vec3& position) { Globals::s_Registry.GetComponent<Component::Transform>(camera).position.x += position.x;  Globals::s_Registry.GetComponent<Component::Transform>(camera).position.y += position.y; Recalculate_View_Matrix(camera); }
 
 		void Recalculate_View_Matrix(IEntity& camera);
 

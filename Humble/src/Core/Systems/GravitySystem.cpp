@@ -6,7 +6,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Filter({ "Transform", "Gravity" });
+		Filter<Component::Gravity, Component::Transform>();
 	}
 
 	void GravitySystem::InitializeGravity(float gravityForce, float thres)
@@ -26,21 +26,21 @@ namespace HBL {
 		force = gravityForce;
 		threshold = thres;
 
-		Filter({ "Gravity" }).For_Each([&](IEntity& entt)
+		ForEach([&](IEntity& entt)
 		{
-			Component::Gravity& gravity = GET_COMPONENT(Gravity, entt);
+			Component::Gravity& gravity = Globals::s_Registry.GetComponent<Component::Gravity>(entt);
 			gravity.appliedForce = 0.0f;
-		});
+		}).Run();
 	}
 
 	void GravitySystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 
-		Filter({ "Transform", "Gravity" }).For_Each([&](IEntity& entt)
+		ForEach([&](IEntity& entt)
 		{
-			Component::Gravity& gravity = GET_COMPONENT(Gravity, entt);
-			Component::Transform& transfom = GET_COMPONENT(Transform, entt);
+			Component::Gravity& gravity = Globals::s_Registry.GetComponent<Component::Gravity>(entt);
+			Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(entt);
 
 			if (gravity.Enabled && !gravity.isGrounded)
 			{
@@ -56,13 +56,13 @@ namespace HBL {
 				if (gravity.appliedForce <= threshold)
 					gravity.appliedForce = threshold;
 			}
-		});
+		}).Run();
 	}
 
 	void GravitySystem::Clear()
 	{
 		Clean();
-		Globals::Gravity.clear();
+		Globals::s_Registry.GetArray<Component::Gravity>().clear();
 	}
 
 }

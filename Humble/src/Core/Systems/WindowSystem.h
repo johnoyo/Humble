@@ -1,7 +1,8 @@
 #pragma once
 #include "../Core.h"
-#include <string>
 #include "../HumbleAPI.h"
+
+#include <string>
 
 namespace HBL {
 

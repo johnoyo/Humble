@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System.h"
+#include "Registry.h"
 #include "IEntity.h"
 #include "Components.h"
 #include <vector>
@@ -9,6 +10,7 @@
 struct HBL_API Globals 
 {
 	static HBL::System ecs;
+	static HBL::Registry s_Registry;
 
 	static std::vector<HBL::IEntity> entities;
 

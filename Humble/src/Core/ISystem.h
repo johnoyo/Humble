@@ -2,6 +2,7 @@
 #include <vector>
 #include "Utilities.h"
 #include "HumbleAPI.h"
+#include <typeinfo>
 
 namespace HBL {
 
@@ -15,7 +16,8 @@ namespace HBL {
 		{
 			//FUNCTION_PROFILE();
 
-			for (IEntity& entt : filtered) {
+			for (IEntity& entt : filtered) 
+			{
 				func(entt);
 			}
 		}
@@ -28,7 +30,7 @@ namespace HBL {
 		template<typename T, typename... Ts>
 		void Filter(std::vector<IEntity>& current_entities, T& param, Ts&... params)
 		{
-			FUNCTION_PROFILE();
+			//FUNCTION_PROFILE();
 			
 			filtered.clear();
 
@@ -133,6 +135,59 @@ namespace HBL {
 			return *this;
 		}
 
+		template<typename T>
+		void FilterComponents()
+		{
+			//FUNCTION_PROFILE();
+
+			if (currentEntities.size() == 0)
+			{
+				for (IEntity& entt : Globals::s_Registry.GetEntities())
+				{
+					if (Globals::s_Registry.HasComponent<T>(entt))
+						filtered.push_back(entt);
+				}
+			}
+			else
+			{
+				currentEntities = filteredComponents;
+				filteredComponents.clear();
+
+				for (IEntity& entt : currentEntities)
+				{
+					if (Globals::s_Registry.HasComponent<T>(entt))
+						filteredComponents.push_back(entt);
+				}
+			}
+
+			//auto& array = Globals::s_Registry.GetArray<T>();
+			//for (auto& component : array)
+			//{
+			//	auto x = component.first;
+			//}
+
+			return;
+		}
+
+		template<typename...>
+		struct typelist {};
+
+		template<typename T, typename ... Rest>
+		void Call(typelist<T, Rest...>)
+		{
+			FilterComponents<T>();
+			Call(typelist<Rest...>());
+		};
+
+		void Call(typelist<>) { }
+
+		template<typename...Components>
+		void Filter() 
+		{
+			//FUNCTION_PROFILE();
+			Call(typelist<Components...>());
+		}
+
 		void Clean() 
 		{
 			current.clear();
@@ -152,15 +207,17 @@ namespace HBL {
 
 			cachedEntities.clear();
 
-			cachedIndex = 999999;
+			cachedIndex = UINT32_MAX;
 		}
 
 	private:
 
 		std::vector<std::vector<std::string>> cachedQueries;
 		std::vector<std::vector<IEntity>> cachedEntities;
-		uint32_t cachedIndex = 999999;
+		uint32_t cachedIndex = UINT32_MAX;
 
+		std::vector<IEntity> filteredComponents;
+		std::vector<IEntity> currentEntities;
 		std::vector<IEntity> filtered;
 		std::vector<IEntity> current;
 	};

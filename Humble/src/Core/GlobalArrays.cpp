@@ -1,6 +1,7 @@
 #include "GlobalArrays.h"
 
 HBL::System Globals::ecs;
+HBL::Registry Globals::s_Registry;
 
 std::vector<HBL::IEntity> Globals::entities;
 

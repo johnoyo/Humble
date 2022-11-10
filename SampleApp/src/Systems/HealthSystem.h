@@ -8,7 +8,7 @@ namespace HBL
 		virtual void Start() override
 		{
 			FUNCTION_PROFILE();
-			Filter(Globals::entities, "Health");
+			Filter({ "Health" });
 		}
 		virtual void Run(float dt) override
 		{

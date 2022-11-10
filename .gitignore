@@ -18,10 +18,8 @@ mono_crash.*
 
 # Build results
 [Dd]ebug/
-[Dd]ebug-x86_64/
 [Dd]ebugPublic/
 [Rr]elease/
-[Rr]elease-x86_64/
 [Rr]eleases/
 x64/
 x86/
@@ -29,7 +27,7 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 [Bb]in/
-bin-int/
+[Bb]in-int/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
@@ -95,7 +93,9 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-*.tlog
+*.sln
+*.vcxproj
+*.filters
 
 # Chutzpah Test files
 _Chutzpah*
@@ -352,3 +352,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+*.tlog
+*.idb

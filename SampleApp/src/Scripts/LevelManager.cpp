@@ -79,44 +79,44 @@ namespace HBL {
 		int collectible_index = 0;
 
 		// Reset all component properties of entities
-		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) 
+		for (uint32_t i = 0; i < Registry::Get().GetEntities().size(); i++) 
 		{
-			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
-			if (Globals::s_Registry.HasComponent<Component::Transform>(entt)) 
+			IEntity& entt = Registry::Get().GetEntities().at(i);
+			if (Registry::Get().HasComponent<Component::Transform>(entt)) 
 			{
-				Globals::s_Registry.GetComponent<Component::Transform>(entt).Static = true;
-				Globals::s_Registry.GetComponent<Component::Transform>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::Transform>(entt).Static = true;
+				Registry::Get().GetComponent<Component::Transform>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::SpriteRenderer>(entt))
+			if (Registry::Get().HasComponent<Component::SpriteRenderer>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt).texture = "-";
-				Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::SpriteRenderer>(entt).texture = "-";
+				Registry::Get().GetComponent<Component::SpriteRenderer>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::Script>(entt))
+			if (Registry::Get().HasComponent<Component::Script>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::Script>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::Script>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::CollisionBox>(entt))
+			if (Registry::Get().HasComponent<Component::CollisionBox>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::CollisionBox>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::CollisionBox>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::Shadow>(entt))
+			if (Registry::Get().HasComponent<Component::Shadow>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::Shadow>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::Shadow>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::Gravity>(entt))
+			if (Registry::Get().HasComponent<Component::Gravity>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::Gravity>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::Gravity>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::Animation>(entt))
+			if (Registry::Get().HasComponent<Component::Animation>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::Animation>(entt).Enabled = false;
+				Registry::Get().GetComponent<Component::Animation>(entt).Enabled = false;
 			}
 		}
 
 		// Set up background
-		Component::Transform& backgroundTransform = Globals::s_Registry.GetComponent<Component::Transform>(background);
-		Component::SpriteRenderer& backgroundMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(background);
+		Component::Transform& backgroundTransform = Registry::Get().GetComponent<Component::Transform>(background);
+		Component::SpriteRenderer& backgroundMaterial = Registry::Get().GetComponent<Component::SpriteRenderer>(background);
 
 		backgroundTransform.position.x = 0.0f;
 		backgroundTransform.position.y = 0.0f;
@@ -128,7 +128,7 @@ namespace HBL {
 		backgroundMaterial.texture = "res/textures/brickWall_2.jpg";
 
 		// Re enable lvlHandler
-		Globals::s_Registry.GetComponent<Component::Script>(lvlHandler).Enabled = true;
+		Registry::Get().GetComponent<Component::Script>(lvlHandler).Enabled = true;
 
 		// Update the position of the entities
 		for (uint32_t i = 0; i < p.size(); i++) 
@@ -136,9 +136,9 @@ namespace HBL {
 			if (i == s) continue;
 			if (p.at(i).k == 1.0f) 
 			{
-				Component::Transform& levelTransform = Globals::s_Registry.GetComponent<Component::Transform>(level[level_index]);
-				Component::SpriteRenderer& levelMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(level[level_index]);
-				Component::CollisionBox& levelCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(level[level_index]);
+				Component::Transform& levelTransform = Registry::Get().GetComponent<Component::Transform>(level[level_index]);
+				Component::SpriteRenderer& levelMaterial = Registry::Get().GetComponent<Component::SpriteRenderer>(level[level_index]);
+				Component::CollisionBox& levelCollisionBox = Registry::Get().GetComponent<Component::CollisionBox>(level[level_index]);
 
 				levelTransform.scale.x = 30.0f;
 				levelTransform.scale.y = 30.0f;
@@ -155,9 +155,9 @@ namespace HBL {
 			}
 			else if (p.at(i).k == 6.0f) 
 			{
-				Component::Transform& wallTransform = Globals::s_Registry.GetComponent<Component::Transform>(wall[wall_index]);
-				Component::SpriteRenderer& wallMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(wall[wall_index]);
-				Component::CollisionBox& wallCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(wall[wall_index]);
+				Component::Transform& wallTransform = Registry::Get().GetComponent<Component::Transform>(wall[wall_index]);
+				Component::SpriteRenderer& wallMaterial = Registry::Get().GetComponent<Component::SpriteRenderer>(wall[wall_index]);
+				Component::CollisionBox& wallCollisionBox = Registry::Get().GetComponent<Component::CollisionBox>(wall[wall_index]);
 
 				wallTransform.scale.x = 30.0f;
 				wallTransform.scale.y = 30.0f;
@@ -172,15 +172,15 @@ namespace HBL {
 				wallMaterial.texture = "res/textures/brick_3.png";
 
 				if (!first)
-					Globals::s_Registry.GetComponent<Component::Shadow>(wall[wall_index]).Enabled = true;
+					Registry::Get().GetComponent<Component::Shadow>(wall[wall_index]).Enabled = true;
 
 				wall_index++;
 			}
 			else if (p.at(i).k == 4.0f) 
 			{
-				Component::Transform& enemyTransform = Globals::s_Registry.GetComponent<Component::Transform>(enemy);
-				Component::SpriteRenderer& enemyMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(enemy);
-				Component::CollisionBox& enemyCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(enemy);
+				Component::Transform& enemyTransform = Registry::Get().GetComponent<Component::Transform>(enemy);
+				Component::SpriteRenderer& enemyMaterial = Registry::Get().GetComponent<Component::SpriteRenderer>(enemy);
+				Component::CollisionBox& enemyCollisionBox = Registry::Get().GetComponent<Component::CollisionBox>(enemy);
 
 				enemyTransform.scale.x = 30.0f;
 				enemyTransform.scale.y = 30.0f;
@@ -191,13 +191,13 @@ namespace HBL {
 
 				enemyCollisionBox.Enabled = true;
 
-				Globals::s_Registry.GetComponent<Component::Script>(enemy).Enabled = true;
+				Registry::Get().GetComponent<Component::Script>(enemy).Enabled = true;
 
 				enemyMaterial.Enabled = true;
 				enemyMaterial.texture = "res/textures/enemy.png";
 
-				Globals::s_Registry.GetComponent<Component::Shadow>(enemy).Enabled = true;
-				Globals::s_Registry.GetComponent<Component::Gravity>(enemy).Enabled = true;
+				Registry::Get().GetComponent<Component::Shadow>(enemy).Enabled = true;
+				Registry::Get().GetComponent<Component::Gravity>(enemy).Enabled = true;
 				enemy_index++;
 			}
 		}
@@ -207,8 +207,8 @@ namespace HBL {
 		ENGINE_LOG("p size: %d", p.size());
 
 		// Upadate the position of the player last
-		Component::Transform& playerTransform = Globals::s_Registry.GetComponent<Component::Transform>(player);
-		Component::SpriteRenderer& playerMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(player);
+		Component::Transform& playerTransform = Registry::Get().GetComponent<Component::Transform>(player);
+		Component::SpriteRenderer& playerMaterial = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 
 		playerTransform.scale.x = 29.0f;
 		playerTransform.scale.y = 29.0f;
@@ -217,26 +217,26 @@ namespace HBL {
 		playerTransform.Static = false;
 		playerTransform.Enabled = true;
 
-		Globals::s_Registry.GetComponent<Component::CollisionBox>(player).Enabled = true;
+		Registry::Get().GetComponent<Component::CollisionBox>(player).Enabled = true;
 
-		Globals::s_Registry.GetComponent<Component::Script>(player).Enabled = true;
+		Registry::Get().GetComponent<Component::Script>(player).Enabled = true;
 
 		playerMaterial.Enabled = true;
 		playerMaterial.texture = "res/textures/super_mario_tiles.png";
 
-		Globals::s_Registry.GetComponent<Component::Animation>(player).Enabled = true;
+		Registry::Get().GetComponent<Component::Animation>(player).Enabled = true;
 
 		// Recalculate all collision boxes
-		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) 
+		for (uint32_t i = 0; i < Registry::Get().GetEntities().size(); i++) 
 		{
-			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
+			IEntity& entt = Registry::Get().GetEntities().at(i);
 
-			if (Globals::s_Registry.HasComponent<Component::CollisionBox>(entt) && Globals::s_Registry.HasComponent<Component::Transform>(entt)) 
+			if (Registry::Get().HasComponent<Component::CollisionBox>(entt) && Registry::Get().HasComponent<Component::Transform>(entt)) 
 			{
-				Component::CollisionBox& collisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(entt);
+				Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 				if (collisionBox.Enabled)
 				{
-					Component::Transform& transform = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+					Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
 
 					collisionBox.tl.x = transform.position.x - transform.scale.x / 2.0f;
 					collisionBox.tl.y = transform.position.y + transform.scale.y / 2.0f;

@@ -10,7 +10,7 @@ namespace HBL {
 
 		Filter<Component::Script>().ForEach([&](IEntity& entt) 
 		{
-			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
+			Component::Script& script = Registry::Get().GetComponent<Component::Script>(entt);
 
 			if (script.Enabled) 
 			{
@@ -31,7 +31,7 @@ namespace HBL {
 
 		ForEach([&](IEntity& entt)
 		{
-			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
+			Component::Script& script = Registry::Get().GetComponent<Component::Script>(entt);
 
 			if (script.Enabled) 
 			{
@@ -52,7 +52,7 @@ namespace HBL {
 
 		ForEach([&](IEntity& entt)
 		{
-			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
+			Component::Script& script = Registry::Get().GetComponent<Component::Script>(entt);
 
 			for (uint32_t j = 0; j < current_level; j++) 
 			{
@@ -60,7 +60,7 @@ namespace HBL {
 			}
 		}).Run();
 
-		Globals::s_Registry.GetArray<Component::Script>().clear();
+		Registry::Get().GetArray<Component::Script>().clear();
 	}
 
 }

@@ -8,6 +8,7 @@
 #include "Core/GlobalArrays.h"
 #include "Core/Utilities.h"
 #include "Core/GlobalSystems.h"
+#include "Core/Registry.h"
 
 #include "Core/IScript.h"
 #include "Core/Managers/InputManager.h"

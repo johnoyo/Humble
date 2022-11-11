@@ -32,8 +32,8 @@ int main()
 
 	HBL::Application *app = new HBL::Application(1920.0f, 1080.0f, "SampleApp", false, false, false, 30.0f);
 
-	Globals::s_Registry.RegisterSystem(&healthSystem);
-	Globals::s_Registry.AddArray<HBL::Component::Health>();
+	HBL::Registry::Get().RegisterSystem(&healthSystem);
+	HBL::Registry::Get().AddArray<HBL::Component::Health>();
 
 	app->Add_Scene(&level0);
 	app->Add_Scene(&level1);

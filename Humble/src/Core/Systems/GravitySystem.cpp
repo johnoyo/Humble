@@ -28,7 +28,7 @@ namespace HBL {
 
 		ForEach([&](IEntity& entt)
 		{
-			Component::Gravity& gravity = Globals::s_Registry.GetComponent<Component::Gravity>(entt);
+			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
 			gravity.appliedForce = 0.0f;
 		}).Run();
 	}
@@ -39,8 +39,8 @@ namespace HBL {
 
 		ForEach([&](IEntity& entt)
 		{
-			Component::Gravity& gravity = Globals::s_Registry.GetComponent<Component::Gravity>(entt);
-			Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
+			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
 
 			if (gravity.Enabled && !gravity.isGrounded)
 			{
@@ -62,7 +62,7 @@ namespace HBL {
 	void GravitySystem::Clear()
 	{
 		Clean();
-		Globals::s_Registry.GetArray<Component::Gravity>().clear();
+		Registry::Get().GetArray<Component::Gravity>().clear();
 	}
 
 }

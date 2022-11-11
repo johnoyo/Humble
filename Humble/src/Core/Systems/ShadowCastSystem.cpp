@@ -12,24 +12,24 @@ namespace HBL {
 
 		uint32_t offset = 0;
 		// Init shadow cast component info
-		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) 
+		for (uint32_t i = 0; i < Registry::Get().GetEntities().size(); i++) 
 		{
-			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
+			IEntity& entt = Registry::Get().GetEntities().at(i);
 
-			if (Globals::s_Registry.HasComponent<Component::Transform>(entt) &&
-				Globals::s_Registry.HasComponent<Component::SpriteRenderer>(entt) &&
-				Globals::s_Registry.HasComponent<Component::Shadow>(entt)) 
+			if (Registry::Get().HasComponent<Component::Transform>(entt) &&
+				Registry::Get().HasComponent<Component::SpriteRenderer>(entt) &&
+				Registry::Get().HasComponent<Component::Shadow>(entt)) 
 			{
-				Component::Shadow& shadow = Globals::s_Registry.GetComponent<Component::Shadow>(entt);
+				Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(entt);
 
 				if (shadow.Enabled)
 				{
-					Component::SpriteRenderer& sprite = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt);
+					Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 
 					sprite.texture = "-";
 					sprite.color = shadow_color;
 
-					shadow.parentBufferIndex = Globals::s_Registry.GetComponent<Component::Transform>(entt).bufferIndex;
+					shadow.parentBufferIndex = Registry::Get().GetComponent<Component::Transform>(entt).bufferIndex;
 					shadow.bufferIndex = buffer.GetSize() + offset;
 					shadow.color = shadow_color;
 
@@ -41,7 +41,7 @@ namespace HBL {
 		// Init shadow cast positions
 		glm::vec3 O = player_position;
 
-		for (auto& component : Globals::s_Registry.GetArray<Component::Shadow>())
+		for (auto& component : Registry::Get().GetArray<Component::Shadow>())
 		{
 			Component::Shadow& shadow = component.second;
 
@@ -96,7 +96,7 @@ namespace HBL {
 
 		glm::vec3 O = player_position;
 
-		for (auto& component : Globals::s_Registry.GetArray<Component::Shadow>())
+		for (auto& component : Registry::Get().GetArray<Component::Shadow>())
 		{
 			Component::Shadow& shadow = component.second;
 
@@ -140,7 +140,7 @@ namespace HBL {
 
 	void ShadowCastSystem::Clear()
 	{
-		Globals::s_Registry.GetArray<Component::Shadow>().clear();
+		Registry::Get().GetArray<Component::Shadow>().clear();
 	}
 
 }

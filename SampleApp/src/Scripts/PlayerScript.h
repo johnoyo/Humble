@@ -10,12 +10,12 @@ namespace HBL {
 
 		virtual void Init() override 
 		{
-			Component::SpriteRenderer& sprite = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(player);
+			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 			sprite.texture = "res/textures/super_mario_tiles.png";
 			sprite.coords = { 6.0f, 1.0f };
 			sprite.sprite_size = { 16.0f, 16.0f };
 
-			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(player);
+			Component::Animation& animation = Registry::Get().GetComponent<Component::Animation>(player);
 
 			animation.animations.push_back({
 				"WalkAnim",
@@ -47,9 +47,9 @@ namespace HBL {
 
 		virtual void Update(float dt) override 
 		{
-			Component::Transform& transform_p = Globals::s_Registry.GetComponent<Component::Transform>(player);
-			Component::Transform& transform_bg = Globals::s_Registry.GetComponent<Component::Transform>(background);
-			Component::Animation& animation_p = Globals::s_Registry.GetComponent<Component::Animation>(player);
+			Component::Transform& transform_p = Registry::Get().GetComponent<Component::Transform>(player);
+			Component::Transform& transform_bg = Registry::Get().GetComponent<Component::Transform>(background);
+			Component::Animation& animation_p = Registry::Get().GetComponent<Component::Animation>(player);
 
 			// Background follow player
 			transform_bg.position.x = transform_p.position.x;

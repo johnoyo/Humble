@@ -10,8 +10,8 @@ namespace HBL {
 
 		Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
-			Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(entt);
-			Component::CollisionBox& collisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(entt);
+			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
+			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 
 			collisionBox.tl.x = transfom.position.x - transfom.scale.x / 2.0f;
 			collisionBox.tl.y = transfom.position.y + transfom.scale.y / 2.0f;
@@ -39,11 +39,11 @@ namespace HBL {
 		// Update collision boxes of non-static objects
 		ForEach([&](IEntity& entt)
 		{
-			Component::CollisionBox& collisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(entt);
+			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 			
 			if (collisionBox.Enabled)
 			{
-				Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+				Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
 
 				if (transfom.Static == false)
 				{
@@ -84,7 +84,7 @@ namespace HBL {
 	void CollisionSystem::Clear()
 	{
 		Clean();
-		Globals::s_Registry.GetArray<Component::CollisionBox>().clear();
+		Registry::Get().GetArray<Component::CollisionBox>().clear();
 	}
 
 	void CollisionSystem::CreateSectors(uint32_t dimension, glm::vec2 worldSize)
@@ -104,7 +104,7 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 
-		Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+		Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
 
 		if (transfom.Enabled)
 		{
@@ -155,8 +155,8 @@ namespace HBL {
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		bool collision = false;
-		Component::CollisionBox& collisionBox0 = Globals::s_Registry.GetComponent<Component::CollisionBox>(e0);
-		Component::CollisionBox& collisionBox1 = Globals::s_Registry.GetComponent<Component::CollisionBox>(e1);
+		Component::CollisionBox& collisionBox0 = Registry::Get().GetComponent<Component::CollisionBox>(e0);
+		Component::CollisionBox& collisionBox1 = Registry::Get().GetComponent<Component::CollisionBox>(e1);
 
 		collision = check_corner_br_tl_bool(collisionBox0.br, collisionBox1.tl, collisionBox1.br);
 		if (collision) return true;
@@ -199,8 +199,8 @@ namespace HBL {
 
 	void CollisionSystem::change_position_x(IEntity& p, VertexBuffer& buffer) 
 	{
-		Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(p);
-		Component::CollisionBox& collisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(p);
+		Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(p);
+		Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
 		glm::vec3 tr = transfom.position;
 		glm::vec3 sc = transfom.scale;
@@ -217,8 +217,8 @@ namespace HBL {
 
 	void CollisionSystem::change_position_y(IEntity& p, VertexBuffer& buffer) 
 	{
-		Component::Transform& transfom = Globals::s_Registry.GetComponent<Component::Transform>(p);
-		Component::CollisionBox& collisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(p);
+		Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(p);
+		Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
 		glm::vec3 tr = transfom.position;
 		glm::vec3 sc = transfom.scale;
@@ -239,11 +239,11 @@ namespace HBL {
 		{
 			//ENGINE_LOG("bottom right");
 			if (axis == X_AXIS) {
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.x += e_tl.x - p_br.x;
+				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_tl.x - p_br.x;
 				change_position_x(p, buffer);
 			}
 			else if (axis == Y_AXIS) {
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.y += e_tl.y - p_br.y;
+				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_tl.y - p_br.y;
 				change_position_y(p, buffer);
 			}
 			return true;
@@ -258,13 +258,13 @@ namespace HBL {
 			//ENGINE_LOG("top right");
 			if (axis == X_AXIS) 
 			{
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.x += e_bl.x - p_tr.x;
+				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_bl.x - p_tr.x;
 				change_position_x(p, buffer);
 			}
 			else if (axis == Y_AXIS) 
 			{
 				//Transform.at(p.Transform).position.y += e_bl.y - 0.5f - p_tr.y;
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.y += e_bl.y - p_tr.y;
+				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_bl.y - p_tr.y;
 				change_position_y(p, buffer);
 			}
 			return true;
@@ -279,12 +279,12 @@ namespace HBL {
 			//ENGINE_LOG("top left");
 			if (axis == X_AXIS) 
 			{
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.x += e_br.x - p_tl.x;
+				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_br.x - p_tl.x;
 				change_position_x(p, buffer);
 			}
 			else if (axis == Y_AXIS) 
 			{
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.y += e_br.y - p_tl.y;
+				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_br.y - p_tl.y;
 				change_position_y(p, buffer);
 			}
 			return true;
@@ -299,12 +299,12 @@ namespace HBL {
 			//ENGINE_LOG("bottom left");
 			if (axis == X_AXIS) 
 			{
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.x += e_tr.x - p_bl.x;
+				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_tr.x - p_bl.x;
 				change_position_x(p, buffer);
 			}
 			else if (axis == Y_AXIS) 
 			{
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.y += e_tr.y - p_bl.y;
+				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_tr.y - p_bl.y;
 				change_position_y(p, buffer);
 			}
 			return true;
@@ -319,7 +319,7 @@ namespace HBL {
 			if (axis == X_AXIS) 
 			{
 				//ENGINE_LOG("left to right");
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.x += e_bl.x - p_br.x;
+				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_bl.x - p_br.x;
 				change_position_x(p, buffer);
 			}
 
@@ -335,7 +335,7 @@ namespace HBL {
 			if (axis == X_AXIS) 
 			{
 				//ENGINE_LOG("right to left");
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.x += e_br.x - p_bl.x;
+				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_br.x - p_bl.x;
 				change_position_x(p, buffer);
 			}
 
@@ -351,7 +351,7 @@ namespace HBL {
 			if (axis == Y_AXIS) 
 			{
 				//ENGINE_LOG("bottom to top");
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.y += e_bl.y - p_tl.y;
+				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_bl.y - p_tl.y;
 				change_position_y(p, buffer);
 			}
 
@@ -367,7 +367,7 @@ namespace HBL {
 			if (axis == Y_AXIS) 
 			{
 				//ENGINE_LOG("top to bottom");
-				Globals::s_Registry.GetComponent<Component::Transform>(p).position.y += e_tl.y - p_bl.y;
+				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_tl.y - p_bl.y;
 				change_position_y(p, buffer);
 			}
 
@@ -382,91 +382,91 @@ namespace HBL {
 
 		uint32_t i = 0;
 
-		for (auto& component : Globals::s_Registry.GetArray<Component::CollisionBox>())
+		for (auto& component : Registry::Get().GetArray<Component::CollisionBox>())
 		{
 			bool tmp = false;
 			Component::CollisionBox& cb_i = component.second;
 
 			if (component.first != p.m_UUID && cb_i.Enabled)
 			{
-				Component::CollisionBox& cb_p = Globals::s_Registry.GetComponent<Component::CollisionBox>(p);
+				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
 				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
 
 				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
 
 				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
 
 				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
 
 				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
 
 				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
 
 				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
 
 				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
-					if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = true;
-						Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
@@ -474,10 +474,10 @@ namespace HBL {
 
 		}
 
-		if (Globals::s_Registry.HasComponent<Component::Gravity>(p))
+		if (Registry::Get().HasComponent<Component::Gravity>(p))
 		{
-			Globals::s_Registry.GetComponent<Component::Gravity>(p).collides = false;
-			Globals::s_Registry.GetComponent<Component::Gravity>(p).isGrounded = false;
+			Registry::Get().GetComponent<Component::Gravity>(p).collides = false;
+			Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 		}
 
 		return;

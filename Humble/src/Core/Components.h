@@ -8,6 +8,11 @@ namespace HBL {
 
 	namespace Component {
 
+		struct HBL_API Tag
+		{
+			std::string tag = "";
+		};
+
 		struct HBL_API Transform 
 		{
 			glm::vec3 position = { 0.0f, 0.0f, 0.0f };

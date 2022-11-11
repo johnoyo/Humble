@@ -6,6 +6,7 @@
 #include "HumbleAPI.h"
 #include "IScene.h"
 #include "IRegistrySystem.h"
+#include "Registry.h"
 
 namespace HBL {
 
@@ -114,12 +115,12 @@ namespace HBL {
 
 			SoundManager::Start();
 
-			for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
+			for (IRegistrySystem* system : Registry::Get().GetSystems())
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
+			glm::vec3& position = Registry::Get().GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -130,12 +131,12 @@ namespace HBL {
 
 			Globals::Camera = m_Scenes[m_Current]->GetCamera();
 
-			for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
+			for (IRegistrySystem* system : Registry::Get().GetSystems())
 			{
 				system->Start();
 			}
 
-			glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
+			glm::vec3& position = Registry::Get().GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 			glm::vec4 color(0.0f, 0.0f, 0.0f, 1.0f);
 			GlobalSystems::shadowSystem.Start(color, position);
 		}
@@ -146,12 +147,12 @@ namespace HBL {
 			while (m_FixedDeltaTime >= 1.0f)
 			{
 				// Update fixed systems
-				for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
+				for (IRegistrySystem* system : Registry::Get().GetSystems())
 				{
 					system->Run(dt);
 				}
 
-				glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
+				glm::vec3& position = Registry::Get().GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 				GlobalSystems::shadowSystem.Run(position);
 
 				m_FixedUpdates++;
@@ -163,12 +164,12 @@ namespace HBL {
 		{
 			if (!m_FixedTimeStep)
 			{
-				for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
+				for (IRegistrySystem* system : Registry::Get().GetSystems())
 				{
 					system->Run(dt);
 				}
 
-				glm::vec3& position = Globals::s_Registry.GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
+				glm::vec3& position = Registry::Get().GetComponent<Component::Transform>(m_Scenes[m_Current]->GetPlayer()).position;
 				GlobalSystems::shadowSystem.Run(position);
 			}
 			else 
@@ -179,15 +180,15 @@ namespace HBL {
 
 		void Clear() 
 		{
-			for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
+			for (IRegistrySystem* system : Registry::Get().GetSystems())
 			{
 				system->Clear();
 			}
 
-			Globals::s_Registry.GetArray<Component::Shadow>().clear();
+			Registry::Get().GetArray<Component::Shadow>().clear();
 			Renderer::Get().Clear();
 
-			Globals::s_Registry.Flush();
+			Registry::Get().Flush();
 		}
 
 		void Shutdown() 

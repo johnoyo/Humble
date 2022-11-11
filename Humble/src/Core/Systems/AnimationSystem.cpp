@@ -8,7 +8,7 @@ namespace HBL {
 
 		Filter<Component::Animation>().ForEach([&](IEntity& entt)
 		{
-			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(entt);
+			Component::Animation& animation = Registry::Get().GetComponent<Component::Animation>(entt);
 
 			for (auto anim : animation.animations)
 				anim.time = glfwGetTime();
@@ -19,7 +19,7 @@ namespace HBL {
 	{
 		ForEach([&](IEntity& entt)
 		{
-			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(entt);
+			Component::Animation& animation = Registry::Get().GetComponent<Component::Animation>(entt);
 
 			if (animation.Enabled)
 			{
@@ -67,7 +67,7 @@ namespace HBL {
 		FUNCTION_PROFILE();
 
 		Clean();
-		Globals::s_Registry.GetArray<Component::Animation>().clear();
+		Registry::Get().GetArray<Component::Animation>().clear();
 	}
 
 	void AnimationSystem::PlayAnimation(Component::Animation& animation, int index)

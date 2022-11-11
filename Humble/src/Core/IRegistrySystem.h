@@ -8,6 +8,40 @@
 
 namespace HBL {
 
+	template<typename T>
+	class IView
+	{
+	public:
+		IView(std::unordered_map<uint64_t, T> viewedComponent)
+			: m_ViewedComponent(viewedComponent) { }
+
+		IView& ForEach(std::function<void(T&)> func)
+		{
+			m_FunctionView = func;
+			return *this;
+		}
+
+		void Run()
+		{
+			for (auto& component : m_ViewedComponent)
+			{
+				m_FunctionView(component.second);
+			}
+		}
+
+		void Scedule()
+		{
+			// TODO: Parallel run the m_FunctionFilter.
+			for (auto& component : m_ViewedComponent)
+			{
+				m_FunctionView(component.second);
+			}
+		}
+	private:
+		std::unordered_map<uint64_t, T> m_ViewedComponent;
+		std::function<void(T&)> m_FunctionView = nullptr;
+	};
+
 	class HBL_API IRegistrySystem 
 	{
 	public:
@@ -28,7 +62,7 @@ namespace HBL {
 			{
 				m_Recursions++;
 
-				if (Globals::s_Registry.HasComponent<T>(entt))
+				if (Registry::Get().HasComponent<T>(entt))
 					m_ComponentCounter++;
 
 				Caller<Ts...>::Call(entt);
@@ -40,7 +74,7 @@ namespace HBL {
 		{
 			m_FilteredEntities.clear();
 
-			for (IEntity& entt : Globals::s_Registry.GetEntities())
+			for (IEntity& entt : Registry::Get().GetEntities())
 			{
 				m_ComponentCounter = 0;
 				m_Recursions = 0;
@@ -58,7 +92,7 @@ namespace HBL {
 		// TODO: Iterate through components not entities.
 		IRegistrySystem& ForEach(std::function<void(IEntity&)> func)
 		{
-			m_Function = func;
+			m_FunctionFilter = func;
 			return *this;
 		}
 
@@ -66,7 +100,7 @@ namespace HBL {
 		{
 			for (IEntity& entt : m_FilteredEntities)
 			{
-				m_Function(entt);
+				m_FunctionFilter(entt);
 			}
 		}
 
@@ -75,20 +109,20 @@ namespace HBL {
 			// TODO: Parallel run the m_Function.
 			for (IEntity& entt : m_FilteredEntities)
 			{
-				m_Function(entt);
+				m_FunctionFilter(entt);
 			}
 		}
 
 		void Clean()
 		{
-			m_Function = nullptr;
+			m_FunctionFilter = nullptr;
 			m_FilteredEntities.clear();
 		}
 
 	private:
-		std::function<void(IEntity&)> m_Function = nullptr;
-		std::vector<IEntity> m_FilteredEntities;
 
+		std::function<void(IEntity&)> m_FunctionFilter = nullptr;
+		std::vector<IEntity> m_FilteredEntities;
 		inline static uint32_t m_Recursions = 0;
 		inline static uint32_t m_ComponentCounter = 0;
 	};

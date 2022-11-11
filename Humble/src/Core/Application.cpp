@@ -12,26 +12,26 @@ namespace HBL {
 
 	void Application::RegisterSystems()
 	{
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::spriteRendererSystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::animationSystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::scriptingSystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::transformSystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::gravitySystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::collisionSystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::textSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::spriteRendererSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::animationSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::scriptingSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::transformSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::gravitySystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::collisionSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::textSystem);
 	}
 
 	void Application::RegisterArrays()
 	{
-		Globals::s_Registry.AddArray<Component::Transform>();
-		Globals::s_Registry.AddArray<Component::SpriteRenderer>();
-		Globals::s_Registry.AddArray<Component::CollisionBox>();
-		Globals::s_Registry.AddArray<Component::Script>();
-		Globals::s_Registry.AddArray<Component::Gravity>();
-		Globals::s_Registry.AddArray<Component::Animation>();
-		Globals::s_Registry.AddArray<Component::Shadow>();
-		Globals::s_Registry.AddArray<Component::Text>();
-		Globals::s_Registry.AddArray<Component::TextTransform>();
+		Registry::Get().AddArray<Component::Transform>();
+		Registry::Get().AddArray<Component::SpriteRenderer>();
+		Registry::Get().AddArray<Component::CollisionBox>();
+		Registry::Get().AddArray<Component::Script>();
+		Registry::Get().AddArray<Component::Gravity>();
+		Registry::Get().AddArray<Component::Animation>();
+		Registry::Get().AddArray<Component::Shadow>();
+		Registry::Get().AddArray<Component::Text>();
+		Registry::Get().AddArray<Component::TextTransform>();
 	}
 
 	void Application::Add_Scene(IScene* scene)

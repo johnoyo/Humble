@@ -6,14 +6,14 @@ void HBL::SpriteRendererSystem::Start()
 	FUNCTION_PROFILE();
 
 	const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Globals::s_Registry.GetEntities().size() * 4) + (Globals::s_Registry.GetArray<Component::Shadow>().size() * 12), vpMatrix);
+	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), vpMatrix);
 	InitVertexBuffer();
 
 	TextureManager::InitTransparentTexture();
 
 	ForEach([&](IEntity& entt)
 	{
-		Component::SpriteRenderer& sprite = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt);
+		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 		if (sprite.texture != "-")
 			TextureManager::LoadTexture(sprite.texture);
 	}).Run();
@@ -21,13 +21,15 @@ void HBL::SpriteRendererSystem::Start()
 
 void HBL::SpriteRendererSystem::Run(float dt)
 {
+	//FUNCTION_PROFILE();
+
 	VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 	uint32_t indx = 0;
 
 	ForEach([&](IEntity& entt)
 	{
-		Component::SpriteRenderer& sprite = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt);
+		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 		if (sprite.Enabled)
 		{
 			if (sprite.coords == glm::vec2(-1.0f, -1.0f) && sprite.sprite_size == glm::vec2(-1.0f, -1.0f))
@@ -58,7 +60,7 @@ void HBL::SpriteRendererSystem::Clear()
 
 	TextureManager::GetTextureIndex() = 0;
 
-	Globals::s_Registry.GetArray<Component::SpriteRenderer>().clear();
+	Registry::Get().GetArray<Component::SpriteRenderer>().clear();
 	glDeleteTextures(32, TextureManager::GetTextureSlot());
 }
 
@@ -66,11 +68,11 @@ void HBL::SpriteRendererSystem::InitVertexBuffer()
 {
 	Renderer::Get().GetVertexBuffer(0).Reset();
 
-	ENGINE_LOG("Transform size: %d", Globals::s_Registry.GetArray<Component::Transform>().size());
+	ENGINE_LOG("Transform size: %d", Registry::Get().GetArray<Component::Transform>().size());
 
 	Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
 	{
-		Component::Transform& transform = Globals::s_Registry.GetComponent<Component::Transform>(entt);
+		Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
 		if (transform.Enabled)
 		{
 			transform.bufferIndex = Renderer::Get().GetVertexBuffer(0).m_Index;

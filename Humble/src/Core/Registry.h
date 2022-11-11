@@ -17,8 +17,13 @@ namespace HBL
 	class HBL_API Registry
 	{
 	public:
-		Registry();
-		~Registry();
+		Registry(const Registry&) = delete;
+
+		static Registry& Get()
+		{
+			static Registry instance;
+			return instance;
+		}
 
 		void EnrollEntity(IEntity& Entity)
 		{
@@ -100,6 +105,9 @@ namespace HBL
 		}
 
 	private:
+
+		Registry() {};
+
 		std::vector<IEntity> m_Entities;
 		std::vector<IRegistrySystem*> m_Systems;
 		std::unordered_map<std::size_t, void*> m_ComponentArrays;

@@ -14,7 +14,7 @@ namespace HBL
 		{
 			ForEach([&](IEntity& entt)
 			{
-				Component::Health& h = Globals::s_Registry.GetComponent<Component::Health>(entt);
+				Component::Health& h = Registry::Get().GetComponent<Component::Health>(entt);
 				//std::cout << "Entity health: " << h.health << "\n";
 			});
 		}

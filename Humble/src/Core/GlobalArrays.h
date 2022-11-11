@@ -8,8 +8,6 @@
 
 struct HBL_API Globals 
 {
-	static HBL::Registry s_Registry;
-
 	static bool Scene_Change;
 	static uint32_t Current_Level;
 	static HBL::IEntity Camera;

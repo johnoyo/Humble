@@ -7,7 +7,7 @@ namespace HBL {
 
 	struct HBL_API IEntity
 	{
-		uint32_t m_UUID = 0x0000;
+		uint64_t m_UUID = 0x0000;
 	};
 
 }

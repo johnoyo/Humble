@@ -16,9 +16,9 @@ namespace HBL {
 		{
 			HBL::Random::Init();
 
-			std::cout << "Random Float: " << Random::Float(10.0f) << "\n";
-			std::cout << "Random Double: " << Random::Double(10.0) << "\n";
-			std::cout << "Random Int: " << Random::Int(10) << "\n";
+			std::cout << "Random Float: " << Random::Float(0.0f, 10.0f) << "\n";
+			std::cout << "Random Double: " << Random::Double(0.0, 10.0) << "\n";
+			std::cout << "Random Int: " << Random::Int32(-20, 5) << "\n";
 
 			Globals::s_Registry.EnrollEntity(background);
 			Globals::s_Registry.EnrollEntity(player);
@@ -100,8 +100,8 @@ namespace HBL {
 			for (uint32_t i = 0; i < 10000; i++)
 			{
 				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).Static = true;
-				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).position.x = Random::Float(800.0f);
-				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).position.y = Random::Float(800.0f);
+				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).position.x = Random::Float(0.0f, 800.0f);
+				Globals::s_Registry.GetComponent<Component::Transform>(level[i]).position.y = Random::Float(0.0f, 800.0f);
 			}
 
 			Globals::s_Registry.GetComponent<Component::TextTransform>(text).scale.x = 2.0f;

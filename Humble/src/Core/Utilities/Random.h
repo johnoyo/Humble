@@ -1,7 +1,10 @@
 #pragma once
 
-#include <random>
 #include "../HumbleAPI.h"
+#include "../Core.h"
+
+#include <stdint.h>
+#include <random>
 
 namespace HBL {
 
@@ -13,29 +16,45 @@ namespace HBL {
 			s_RandomEngine.seed(std::random_device()());
 		}
 
-		static double Double(double ceiling)
+		static double Double(double floor, double ceiling)
 		{
-			return (double)(((double)s_Distribution(s_RandomEngine) / (double)std::numeric_limits<uint32_t>::max()) * ceiling);
+			ASSERT(floor < ceiling);
+			return (double)((((double)s_Distribution(s_RandomEngine) / (double)std::numeric_limits<uint32_t>::max()) * (ceiling - floor) + floor));
 		}
 
-		static float Float(float ceiling)
+		static float Float(float floor, float ceiling)
 		{
-			return ((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint32_t>::max()) * ceiling;
+			ASSERT(floor < ceiling);
+			return ((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor;
 		}
 
-		static int Int(int ceiling)
+		static int32_t Int32(int32_t floor, int32_t ceiling)
 		{
-			return (int)(((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint32_t>::max()) * ceiling);
+			ASSERT(floor < ceiling);
+			return (int32_t)((((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
 		}
 
-		static int UInt(int ceiling)
+		static int64_t Int64(int64_t floor, int64_t ceiling)
 		{
-			return (uint64_t)(((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint32_t>::max()) * ceiling);
+			ASSERT(floor < ceiling);
+			return (int64_t)((((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
+		}
+
+		static uint32_t UInt32(uint32_t floor, uint32_t ceiling)
+		{
+			ASSERT(floor < ceiling);
+			return (uint32_t)((((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
+		}
+
+		static uint64_t UInt64(uint64_t floor, uint64_t ceiling)
+		{
+			ASSERT(floor < ceiling);
+			return (uint64_t)((((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
 		}
 
 	private:
-		static std::mt19937 s_RandomEngine;
-		static std::uniform_int_distribution<std::mt19937::result_type> s_Distribution;
+		static std::mt19937_64 s_RandomEngine;
+		static std::uniform_int_distribution<std::mt19937_64::result_type> s_Distribution;
 	};
 
 }

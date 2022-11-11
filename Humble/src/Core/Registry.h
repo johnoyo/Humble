@@ -22,7 +22,13 @@ namespace HBL
 
 		void EnrollEntity(IEntity& Entity)
 		{
-			Entity.m_UUID = Random::Int(100000000); // TODO: Replace with UUIDs
+			Entity.m_UUID = Random::UInt64(0, UINT64_MAX);
+			m_Entities.emplace_back(Entity);
+		}
+
+		void EnrollEntityWithUUID(IEntity& Entity, uint64_t uuid)
+		{
+			Entity.m_UUID = uuid;
 			m_Entities.emplace_back(Entity);
 		}
 
@@ -64,13 +70,13 @@ namespace HBL
 		template<typename T>
 		void AddArray()
 		{
-			m_ComponentArrays.emplace(typeid(T).hash_code(), new std::unordered_map<uint32_t, T>());
+			m_ComponentArrays.emplace(typeid(T).hash_code(), new std::unordered_map<uint64_t, T>());
 		}
 
 		template<typename T>
-		std::unordered_map<std::uint32_t, T>& GetArray()
+		std::unordered_map<std::uint64_t, T>& GetArray()
 		{
-			return *(std::unordered_map<uint32_t, T>*)m_ComponentArrays[typeid(T).hash_code()];
+			return *(std::unordered_map<uint64_t, T>*)m_ComponentArrays[typeid(T).hash_code()];
 		}
 
 		std::vector<IEntity>& GetEntities()

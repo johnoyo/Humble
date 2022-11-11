@@ -23,6 +23,7 @@ namespace HBL {
 
 	void Application::RegisterArrays()
 	{
+		Registry::Get().AddArray<Component::Tag>();
 		Registry::Get().AddArray<Component::Transform>();
 		Registry::Get().AddArray<Component::SpriteRenderer>();
 		Registry::Get().AddArray<Component::CollisionBox>();

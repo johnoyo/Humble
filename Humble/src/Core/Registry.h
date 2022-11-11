@@ -6,9 +6,9 @@
 #include "Core.h"
 #include "Utilities/Random.h"
 
+#include <type_traits>
 #include <iostream>
 #include <vector>
-#include <type_traits>
 
 namespace HBL 
 {
@@ -25,16 +25,25 @@ namespace HBL
 			return instance;
 		}
 
-		void EnrollEntity(IEntity& Entity)
+		void EnrollEntity(IEntity& Entity, const std::string& name = "")
 		{
 			Entity.m_UUID = Random::UInt64(0, UINT64_MAX);
 			m_Entities.emplace_back(Entity);
+
+			AddComponent<Component::Tag>(Entity);
+
+			if (name.empty())
+				GetComponent<Component::Tag>(Entity).tag = "UnNamedEntity";
+			else
+				GetComponent<Component::Tag>(Entity).tag = name;
 		}
 
-		void EnrollEntityWithUUID(IEntity& Entity, uint64_t uuid)
+		void EnrollEntityWithUUID(IEntity& Entity, uint64_t uuid, const std::string& name)
 		{
 			Entity.m_UUID = uuid;
 			m_Entities.emplace_back(Entity);
+
+			AddComponent<Component::Tag>(Entity).tag = name;
 		}
 
 		template<typename T>
@@ -105,7 +114,6 @@ namespace HBL
 		}
 
 	private:
-
 		Registry() {};
 
 		std::vector<IEntity> m_Entities;

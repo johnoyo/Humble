@@ -36,7 +36,7 @@ namespace HBL {
 							{
 								// If animation has not ended yet, progress it.
 								anim.start_coords.x++;
-								anim.material->coords = anim.start_coords;
+								anim.sprite->coords = anim.start_coords;
 								anim.frames--;
 							}
 							else
@@ -46,7 +46,7 @@ namespace HBL {
 								{
 									anim.frames = anim.cached_frames;
 									anim.start_coords.x -= anim.frames;
-									anim.material->coords = anim.start_coords;
+									anim.sprite->coords = anim.start_coords;
 								}
 							}
 
@@ -95,7 +95,7 @@ namespace HBL {
 		animation.animations[index].cached_frames = frame;
 
 		animation.animations[index].start_coords.x -= diff;
-		animation.animations[index].material->coords = animation.animations[index].start_coords;
+		animation.animations[index].sprite->coords = animation.animations[index].start_coords;
 	}
 
 }

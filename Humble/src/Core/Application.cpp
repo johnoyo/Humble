@@ -12,8 +12,7 @@ namespace HBL {
 
 	void Application::RegisterSystems()
 	{
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::renderingSystem);
-		Globals::s_Registry.RegisterSystem(&GlobalSystems::materialSystem);
+		Globals::s_Registry.RegisterSystem(&GlobalSystems::spriteRendererSystem);
 		Globals::s_Registry.RegisterSystem(&GlobalSystems::animationSystem);
 		Globals::s_Registry.RegisterSystem(&GlobalSystems::scriptingSystem);
 		Globals::s_Registry.RegisterSystem(&GlobalSystems::transformSystem);
@@ -25,7 +24,7 @@ namespace HBL {
 	void Application::RegisterArrays()
 	{
 		Globals::s_Registry.AddArray<Component::Transform>();
-		Globals::s_Registry.AddArray<Component::Material>();
+		Globals::s_Registry.AddArray<Component::SpriteRenderer>();
 		Globals::s_Registry.AddArray<Component::CollisionBox>();
 		Globals::s_Registry.AddArray<Component::Script>();
 		Globals::s_Registry.AddArray<Component::Gravity>();

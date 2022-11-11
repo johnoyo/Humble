@@ -7,7 +7,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		RenderingSystem& rend = GlobalSystems::renderingSystem;
+		SpriteRendererSystem& rend = GlobalSystems::spriteRendererSystem;
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		uint32_t offset = 0;
@@ -17,20 +17,20 @@ namespace HBL {
 			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
 
 			if (Globals::s_Registry.HasComponent<Component::Transform>(entt) &&
-				Globals::s_Registry.HasComponent<Component::Material>(entt) &&
+				Globals::s_Registry.HasComponent<Component::SpriteRenderer>(entt) &&
 				Globals::s_Registry.HasComponent<Component::Shadow>(entt)) 
 			{
 				Component::Shadow& shadow = Globals::s_Registry.GetComponent<Component::Shadow>(entt);
 
 				if (shadow.Enabled)
 				{
-					Component::Material& material = Globals::s_Registry.GetComponent<Component::Material>(entt);
+					Component::SpriteRenderer& sprite = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt);
 
-					material.texture = "-";
-					material.color = shadow_color;
+					sprite.texture = "-";
+					sprite.color = shadow_color;
 
 					shadow.parentBufferIndex = Globals::s_Registry.GetComponent<Component::Transform>(entt).bufferIndex;
-					shadow.bufferIndex = buffer.Get_Size() + offset;
+					shadow.bufferIndex = buffer.GetSize() + offset;
 					shadow.color = shadow_color;
 
 					offset += 12;
@@ -52,10 +52,10 @@ namespace HBL {
 				std::vector<glm::vec2> vertices;
 
 				// Retrieve vertices of entity
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 0].position);
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 1].position);
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 2].position);
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 3].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
 
 				// Find all shadow points
 				for (int j = 0; j < 4; j++) 
@@ -75,9 +75,9 @@ namespace HBL {
 				}
 
 				// Set shadow quad positions
-				Renderer::Get().Draw_Quad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
-				Renderer::Get().Draw_Quad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
-				Renderer::Get().Draw_Quad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+				Renderer::Get().DrawQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
+				Renderer::Get().DrawQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
+				Renderer::Get().DrawQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 
-		RenderingSystem& rend = GlobalSystems::renderingSystem;
+		SpriteRendererSystem& rend = GlobalSystems::spriteRendererSystem;
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		glm::vec3 O = player_position;
@@ -106,10 +106,10 @@ namespace HBL {
 				std::vector<glm::vec2> edge_points;
 
 				std::vector<glm::vec2> vertices;
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 0].position);
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 1].position);
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 2].position);
-				vertices.push_back(buffer.Get_Buffer()[shadow.parentBufferIndex + 3].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
+				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
 
 				// Find all shadow points
 				for (int j = 0; j < 4; j++) 
@@ -131,9 +131,9 @@ namespace HBL {
 				}
 
 				// Update shadow quad positions
-				buffer.Update_Position_On_Quad(shadow.bufferIndex, vertices[3], shadow_points[3], shadow_points[0], vertices[0]);
-				buffer.Update_Position_On_Quad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
-				buffer.Update_Position_On_Quad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex, vertices[3], shadow_points[3], shadow_points[0], vertices[0]);
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
 			}
 		}
 	}

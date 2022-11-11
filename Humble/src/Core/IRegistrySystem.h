@@ -18,7 +18,7 @@ namespace HBL {
 		template<typename... Ts>
 		struct Caller
 		{
-			static void Call(IEntity& entt) { /*std::cout << "Recursion still going." << std::endl;*/ } // Base case, terminates recursion
+			static void Call(IEntity& entt) { } // Base case, terminates recursion
 		};
 
 		template<typename T, typename... Ts>
@@ -26,8 +26,6 @@ namespace HBL {
 		{
 			static void Call(IEntity& entt)
 			{
-				// Do something with T
-				//std::cout << "Recursion still going." << std::endl;
 				m_Recursions++;
 
 				if (Globals::s_Registry.HasComponent<T>(entt))

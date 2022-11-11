@@ -39,18 +39,18 @@ namespace HBL {
 		void Add_Components() override
 		{
 			Globals::s_Registry.AddComponent<Component::Transform>(background);
-			Globals::s_Registry.AddComponent<Component::Material>(background);
+			Globals::s_Registry.AddComponent<Component::SpriteRenderer>(background);
 			
 			Globals::s_Registry.AddComponent<Component::Transform>(player);
 			Globals::s_Registry.AddComponent<Component::Script>(player);
-			Globals::s_Registry.AddComponent<Component::Material>(player);
+			Globals::s_Registry.AddComponent<Component::SpriteRenderer>(player);
 			Globals::s_Registry.AddComponent<Component::Animation>(player);
 			Globals::s_Registry.AddComponent<Component::CollisionBox>(player);
 			Globals::s_Registry.AddComponent<Component::Health>(player);
 			
 			Globals::s_Registry.AddComponent<Component::Transform>(enemy);
 			Globals::s_Registry.AddComponent<Component::Script>(enemy);
-			Globals::s_Registry.AddComponent<Component::Material>(enemy);
+			Globals::s_Registry.AddComponent<Component::SpriteRenderer>(enemy);
 			Globals::s_Registry.AddComponent<Component::CollisionBox>(enemy);
 			Globals::s_Registry.AddComponent<Component::Gravity>(enemy);
 			Globals::s_Registry.AddComponent<Component::Shadow>(enemy);
@@ -60,13 +60,13 @@ namespace HBL {
 				
 			Globals::s_Registry.AddComponent<Component::Transform>(camera);
 			
-			Globals::s_Registry.AddComponent<Component::Material>(sps);
+			Globals::s_Registry.AddComponent<Component::SpriteRenderer>(sps);
 				
 			for (uint32_t i = 0; i < 400; i++) 
 			{
 				Globals::s_Registry.AddComponent<Component::Transform>(wall[i]);
 				Globals::s_Registry.AddComponent<Component::CollisionBox>(wall[i]);
-				Globals::s_Registry.AddComponent<Component::Material>(wall[i]);
+				Globals::s_Registry.AddComponent<Component::SpriteRenderer>(wall[i]);
 				Globals::s_Registry.AddComponent<Component::Shadow>(wall[i]);
 			}
 			
@@ -74,7 +74,7 @@ namespace HBL {
 			{
 				Globals::s_Registry.AddComponent<Component::Transform>(level[i]);
 				Globals::s_Registry.AddComponent<Component::CollisionBox>(level[i]);
-				Globals::s_Registry.AddComponent<Component::Material>(level[i]);
+				Globals::s_Registry.AddComponent<Component::SpriteRenderer>(level[i]);
 			}
 
 			Globals::s_Registry.AddComponent<Component::TextTransform>(text);

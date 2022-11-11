@@ -212,7 +212,7 @@ namespace HBL {
 		collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 		// move player on x-axis
-		buffer.Update_PositionX_On_Quad(transfom.bufferIndex, transfom);
+		buffer.UpdatePositionXOnQuad(transfom.bufferIndex, transfom);
 	}
 
 	void CollisionSystem::change_position_y(IEntity& p, VertexBuffer& buffer) 
@@ -230,7 +230,7 @@ namespace HBL {
 		collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 		// move player on y-axis
-		buffer.Update_PositionY_On_Quad(transfom.bufferIndex, transfom);
+		buffer.UpdatePositionYOnQuad(transfom.bufferIndex, transfom);
 	}
 
 	bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br, int axis)

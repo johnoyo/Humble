@@ -21,7 +21,7 @@ namespace HBL {
 			Component::Transform& tr = Globals::s_Registry.GetComponent<Component::Transform>(entt);
 			if (tr.Static == false)
 			{
-				buffer.Update_Position_On_Quad(tr.bufferIndex, tr);
+				buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
 			}
 		}).Run();
 	}

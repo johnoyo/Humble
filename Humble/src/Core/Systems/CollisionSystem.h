@@ -4,7 +4,7 @@
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include "../IRegistrySystem.h"
-#include "RenderingSystem.h"
+#include "SpriteRendererSystem.h"
 #include <vector>
 
 namespace HBL {

@@ -14,7 +14,8 @@
 
 namespace HBL {
 
-	struct ShaderProgramSource {
+	struct ShaderProgramSource 
+	{
 		std::string VertexSource;
 		std::string FragmentSource;
 	};
@@ -31,7 +32,8 @@ namespace HBL {
 		uint32_t shader = 0;
 	};
 
-	class HBL_API Renderer {
+	class HBL_API Renderer 
+	{
 	public:
 		Renderer(const Renderer&) = delete;
 
@@ -48,10 +50,10 @@ namespace HBL {
 		void Bind();
 		void UnBind();
 
-		uint32_t Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color);
-		uint32_t Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3);
-		uint32_t Draw_Quad(uint32_t vindex, Component::Transform& tr);
-		uint32_t Draw_Quad(uint32_t vindex, Component::TextTransform& tr, float width, float height);
+		uint32_t DrawQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color);
+		uint32_t DrawQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3);
+		uint32_t DrawQuad(uint32_t vindex, Component::Transform& tr);
+		uint32_t DrawQuad(uint32_t vindex, Component::TextTransform& tr, float width, float height);
 
 		void Invalidate(uint32_t vindex);
 
@@ -59,7 +61,7 @@ namespace HBL {
 		IndexBuffer& GetIndexBuffer(uint32_t index) { return rendererData[index]->ibuffer; }
 
 		void Clear();
-		void Clear_Buffers();
+		void ClearBuffers();
 
 	private:
 		Renderer() {}

@@ -32,8 +32,9 @@ namespace HBL
 			//ASSERT(!HasComponent<T>(Entity));
 
 			T component;
+
 			auto& array = GetArray<T>();
-			array.emplace( Entity.m_UUID, component );
+			array.emplace(Entity.m_UUID, component);
 
 			return component;
 		}
@@ -77,9 +78,9 @@ namespace HBL
 			return m_Entities;
 		}
 
-		std::vector<IEntity>& Group(std::vector<std::size_t> components)
+		std::vector<IRegistrySystem*>& GetSystems()
 		{
-			return std::vector<IEntity>();
+			return m_Systems;
 		}
 
 		void Flush()
@@ -92,28 +93,9 @@ namespace HBL
 			m_Systems.push_back(system);
 		}
 
-		std::vector<IRegistrySystem*> m_Systems;
 	private:
-
 		std::vector<IEntity> m_Entities;
+		std::vector<IRegistrySystem*> m_Systems;
 		std::unordered_map<std::size_t, void*> m_ComponentArrays;
-
-		// TODO: Remove these functions.
-		uint64_t CreateHash(uint16_t& componentID, uint16_t& indexOfArray, uint32_t& indexInArray)
-		{
-			return (uint64_t)((uint32_t)(componentID) << 16 | (uint32_t)(indexOfArray)) << 32 | (uint64_t)(indexInArray);
-		}
-		uint32_t RetrieveComponentID(uint64_t& hash)
-		{
-			return (hash & 0xffff000000000000) >> 48;
-		}
-		uint32_t RetrieveIndexOfArray(uint64_t& hash)
-		{
-			return (hash & 0x0000ffff00000000) >> 32;
-		}
-		uint32_t RetrieveIndexInArray(uint64_t& hash)
-		{
-			return (hash & 0xffffffff);
-		}
 	};
 }

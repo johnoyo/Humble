@@ -1,9 +1,8 @@
 #include "GlobalSystems.h"
 
 HBL::WindowSystem GlobalSystems::windowSystem;
-HBL::MaterialSystem GlobalSystems::materialSystem;
+HBL::SpriteRendererSystem GlobalSystems::spriteRendererSystem;
 HBL::AnimationSystem GlobalSystems::animationSystem;
-HBL::RenderingSystem GlobalSystems::renderingSystem;
 HBL::CameraSystem GlobalSystems::cameraSystem;
 HBL::ScriptingSystem GlobalSystems::scriptingSystem;
 HBL::CollisionSystem GlobalSystems::collisionSystem;

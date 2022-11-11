@@ -3,7 +3,7 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "RenderingSystem.h"
+#include "SpriteRendererSystem.h"
 #include "../IRegistrySystem.h"
 
 namespace HBL {

@@ -8,7 +8,8 @@ namespace HBL {
 
 	namespace Component {
 
-		struct HBL_API Transform {
+		struct HBL_API Transform 
+		{
 			glm::vec3 position = { 0.0f, 0.0f, 0.0f };
 			float rotation = 0.0f;
 			glm::vec3 scale = { 10.0f, 10.0f, 10.0f };
@@ -19,7 +20,8 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API CollisionBox {
+		struct HBL_API CollisionBox 
+		{
 			glm::vec3 bl = { 0.0f, 0.0f, 0.0f };
 			glm::vec3 br = { 0.0f, 0.0f, 0.0f };
 			glm::vec3 tl = { 0.0f, 0.0f, 0.0f };
@@ -28,7 +30,8 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API Material {
+		struct HBL_API SpriteRenderer 
+		{
 			std::string texture = "-";
 			glm::vec2 coords = { -1.0f, -1.0f };
 			glm::vec2 sprite_size = { -1.0f, -1.0f };
@@ -37,11 +40,13 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API Animation {
-			struct Animations {
+		struct HBL_API Animation 
+		{
+			struct Animations 
+			{
 				std::string name = "-";
 
-				Material* material;
+				SpriteRenderer* sprite;
 
 				glm::vec2 start_coords = { -1.0f, -1.0f };
 				double time = 0.0;
@@ -58,7 +63,8 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API Gravity {
+		struct HBL_API Gravity 
+		{
 			bool collides = true;
 			bool isGrounded = false;
 			float appliedForce = 0.0f;
@@ -66,20 +72,15 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API AudioSource {
-			std::vector<std::string> audioSources;
-			std::function<void(std::string)> Play;
-
-			bool Enabled = true;
-		};
-
-		struct HBL_API Script {
+		struct HBL_API Script 
+		{
 			std::vector<HBL::IScript*> script;
 
 			bool Enabled = true;
 		};
 
-		struct HBL_API Shadow {
+		struct HBL_API Shadow 
+		{
 			glm::vec4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
 			float shadowDistance = 200000.0f;
 			int parentBufferIndex = -1;
@@ -88,7 +89,8 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API TextTransform {
+		struct HBL_API TextTransform 
+		{
 			glm::vec3 position = { 0.0f, 0.0f, 0.0f };
 			float rotation = 0.0f;
 			glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
@@ -102,7 +104,8 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
-		struct HBL_API Text {
+		struct HBL_API Text 
+		{
 			std::string text = "Sample text";
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 			uint32_t lineLength = 32;

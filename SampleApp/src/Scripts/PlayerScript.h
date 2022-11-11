@@ -8,19 +8,18 @@ namespace HBL {
 		PlayerScript() {}
 		~PlayerScript() {}
 
-		virtual void Init() override {
-
-			//GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
-			Component::Material& material = Globals::s_Registry.GetComponent<Component::Material>(player);
-			material.texture = "res/textures/super_mario_tiles.png";
-			material.coords = { 6.0f, 1.0f };
-			material.sprite_size = { 16.0f, 16.0f };
+		virtual void Init() override 
+		{
+			Component::SpriteRenderer& sprite = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(player);
+			sprite.texture = "res/textures/super_mario_tiles.png";
+			sprite.coords = { 6.0f, 1.0f };
+			sprite.sprite_size = { 16.0f, 16.0f };
 
 			Component::Animation& animation = Globals::s_Registry.GetComponent<Component::Animation>(player);
 
 			animation.animations.push_back({
 				"WalkAnim",
-				&material,
+				&sprite,
 				{ 6.0f, 1.0f },
 				0.0,
 				0.5,
@@ -32,7 +31,7 @@ namespace HBL {
 
 			animation.animations.push_back({
 				"JumpAnim",
-				&material,
+				&sprite,
 				{ 5.0f, 2.0f },
 				0.0,
 				0.5,
@@ -46,8 +45,8 @@ namespace HBL {
 			animation.animations[1].Enabled = false;
 		}
 
-		virtual void Update(float dt) override {
-
+		virtual void Update(float dt) override 
+		{
 			Component::Transform& transform_p = Globals::s_Registry.GetComponent<Component::Transform>(player);
 			Component::Transform& transform_bg = Globals::s_Registry.GetComponent<Component::Transform>(background);
 			Component::Animation& animation_p = Globals::s_Registry.GetComponent<Component::Animation>(player);
@@ -60,7 +59,8 @@ namespace HBL {
 			GlobalSystems::cameraSystem.Follow(camera, player, (-GlobalSystems::windowSystem.Get_Width() / 2.0f), (-GlobalSystems::windowSystem.Get_Height() / 2.0f));
 			
 			// Player movement
-			if (InputManager::GetKeyDown(GLFW_KEY_D)) {
+			if (InputManager::GetKeyDown(GLFW_KEY_D)) 
+			{
 				transform_p.position.x += 210.0f * dt;
 				GlobalSystems::animationSystem.PlayAnimation(animation_p, 0);
 			}

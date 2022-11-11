@@ -2,7 +2,7 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "RenderingSystem.h"
+#include "SpriteRendererSystem.h"
 
  /*
   * Let O be the position of the player

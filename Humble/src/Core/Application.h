@@ -114,7 +114,7 @@ namespace HBL {
 
 			SoundManager::Start();
 
-			for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
+			for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
 			{
 				system->Start();
 			}
@@ -130,7 +130,7 @@ namespace HBL {
 
 			Globals::Camera = m_Scenes[m_Current]->GetCamera();
 
-			for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
+			for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
 			{
 				system->Start();
 			}
@@ -146,7 +146,7 @@ namespace HBL {
 			while (m_FixedDeltaTime >= 1.0f)
 			{
 				// Update fixed systems
-				for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
+				for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
 				{
 					system->Run(dt);
 				}
@@ -163,7 +163,7 @@ namespace HBL {
 		{
 			if (!m_FixedTimeStep)
 			{
-				for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
+				for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
 				{
 					system->Run(dt);
 				}
@@ -179,7 +179,7 @@ namespace HBL {
 
 		void Clear() 
 		{
-			for (IRegistrySystem* system : Globals::s_Registry.m_Systems)
+			for (IRegistrySystem* system : Globals::s_Registry.GetSystems())
 			{
 				system->Clear();
 			}
@@ -195,7 +195,7 @@ namespace HBL {
 			SoundManager::Clean();
 			Renderer::Get().Clear();
 			GlobalSystems::scriptingSystem.Clear();
-			GlobalSystems::materialSystem.Clear();
+			GlobalSystems::spriteRendererSystem.Clear();
 			GlobalSystems::windowSystem.Terminate();
 		}
 

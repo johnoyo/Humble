@@ -12,7 +12,8 @@ namespace HBL {
 		{
 			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
 
-			if (script.Enabled) {
+			if (script.Enabled) 
+			{
 				int size = script.script.size();
 				if (current_level < size)
 					script.script[current_level]->Init();
@@ -32,7 +33,8 @@ namespace HBL {
 		{
 			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
 
-			if (script.Enabled) {
+			if (script.Enabled) 
+			{
 				int size = script.script.size();
 				if (current_level < size)
 					script.script[current_level]->Update(dt);
@@ -52,7 +54,8 @@ namespace HBL {
 		{
 			Component::Script& script = Globals::s_Registry.GetComponent<Component::Script>(entt);
 
-			for (uint32_t j = 0; j < current_level; j++) {
+			for (uint32_t j = 0; j < current_level; j++) 
+			{
 				delete script.script[j];
 			}
 		}).Run();

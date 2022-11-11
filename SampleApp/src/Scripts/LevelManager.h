@@ -20,19 +20,22 @@ namespace HBL {
 	public:
 		LevelManager(const LevelManager&) = delete;
 
-		static LevelManager& Get() {
+		static LevelManager& Get() 
+		{
 			static LevelManager instance;
 			return instance;
 		}
 
-		static void Load_Level(const std::string& level_path) {
+		static void Load_Level(const std::string& level_path) 
+		{
 			Get().m_current_level++;
 			Get().m_level_path = level_path;
 		}
 
-		static void Load_Level(const std::string& level_path, bool first) {
+		static void Load_Level(const std::string& level_path, bool first) 
+		{
 			Get().m_current_level++;
-			return Get().ILoadLevel(level_path, GlobalSystems::scriptingSystem, GlobalSystems::gravitySystem, GlobalSystems::renderingSystem, Renderer::Get().GetVertexBuffer(0), Renderer::Get().GetIndexBuffer(0), background, first);
+			return Get().ILoadLevel(level_path, GlobalSystems::scriptingSystem, GlobalSystems::gravitySystem, GlobalSystems::spriteRendererSystem, Renderer::Get().GetVertexBuffer(0), Renderer::Get().GetIndexBuffer(0), background, first);
 		}
 
 		inline static uint32_t GetCurrentLevel() { return Get().IGetCurrentLevel(); }
@@ -41,7 +44,7 @@ namespace HBL {
 	private:
 		LevelManager() {}
 
-		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity& background, bool first);
+		void ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, SpriteRendererSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity& background, bool first);
 		inline uint32_t IGetCurrentLevel() { return m_current_level; }
 		inline const std::string& IGetCurrentPath() { return m_level_path; }
 

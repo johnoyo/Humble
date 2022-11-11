@@ -2,7 +2,7 @@
 
 namespace HBL {
 
-	void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity& background, bool first)
+	void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, SpriteRendererSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity& background, bool first)
 	{
 		std::ifstream is(level_path);
 
@@ -12,7 +12,8 @@ namespace HBL {
 		int index = 0;
 
 		// Parse level dimensions
-		while (is.get(c)) {
+		while (is.get(c)) 
+		{
 			if (c == '\n') break;
 
 			if (c == ',') {
@@ -39,7 +40,8 @@ namespace HBL {
 
 		// Parse level content
 		std::vector<pos> p;
-		while (is.get(c)) {
+		while (is.get(c)) 
+		{
 			if (c == 'B') {
 				p.push_back({ i,j,6.0f });
 			}
@@ -77,17 +79,18 @@ namespace HBL {
 		int collectible_index = 0;
 
 		// Reset all component properties of entities
-		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) {
+		for (uint32_t i = 0; i < Globals::s_Registry.GetEntities().size(); i++) 
+		{
 			IEntity& entt = Globals::s_Registry.GetEntities().at(i);
 			if (Globals::s_Registry.HasComponent<Component::Transform>(entt)) 
 			{
 				Globals::s_Registry.GetComponent<Component::Transform>(entt).Static = true;
 				Globals::s_Registry.GetComponent<Component::Transform>(entt).Enabled = false;
 			}
-			if (Globals::s_Registry.HasComponent<Component::Material>(entt))
+			if (Globals::s_Registry.HasComponent<Component::SpriteRenderer>(entt))
 			{
-				Globals::s_Registry.GetComponent<Component::Material>(entt).texture = "-";
-				Globals::s_Registry.GetComponent<Component::Material>(entt).Enabled = false;
+				Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt).texture = "-";
+				Globals::s_Registry.GetComponent<Component::SpriteRenderer>(entt).Enabled = false;
 			}
 			if (Globals::s_Registry.HasComponent<Component::Script>(entt))
 			{
@@ -113,7 +116,7 @@ namespace HBL {
 
 		// Set up background
 		Component::Transform& backgroundTransform = Globals::s_Registry.GetComponent<Component::Transform>(background);
-		Component::Material& backgroundMaterial = Globals::s_Registry.GetComponent<Component::Material>(background);
+		Component::SpriteRenderer& backgroundMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(background);
 
 		backgroundTransform.position.x = 0.0f;
 		backgroundTransform.position.y = 0.0f;
@@ -128,12 +131,13 @@ namespace HBL {
 		Globals::s_Registry.GetComponent<Component::Script>(lvlHandler).Enabled = true;
 
 		// Update the position of the entities
-		for (uint32_t i = 0; i < p.size(); i++) {
+		for (uint32_t i = 0; i < p.size(); i++) 
+		{
 			if (i == s) continue;
 			if (p.at(i).k == 1.0f) 
 			{
 				Component::Transform& levelTransform = Globals::s_Registry.GetComponent<Component::Transform>(level[level_index]);
-				Component::Material& levelMaterial = Globals::s_Registry.GetComponent<Component::Material>(level[level_index]);
+				Component::SpriteRenderer& levelMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(level[level_index]);
 				Component::CollisionBox& levelCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(level[level_index]);
 
 				levelTransform.scale.x = 30.0f;
@@ -152,7 +156,7 @@ namespace HBL {
 			else if (p.at(i).k == 6.0f) 
 			{
 				Component::Transform& wallTransform = Globals::s_Registry.GetComponent<Component::Transform>(wall[wall_index]);
-				Component::Material& wallMaterial = Globals::s_Registry.GetComponent<Component::Material>(wall[wall_index]);
+				Component::SpriteRenderer& wallMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(wall[wall_index]);
 				Component::CollisionBox& wallCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(wall[wall_index]);
 
 				wallTransform.scale.x = 30.0f;
@@ -175,7 +179,7 @@ namespace HBL {
 			else if (p.at(i).k == 4.0f) 
 			{
 				Component::Transform& enemyTransform = Globals::s_Registry.GetComponent<Component::Transform>(enemy);
-				Component::Material& enemyMaterial = Globals::s_Registry.GetComponent<Component::Material>(enemy);
+				Component::SpriteRenderer& enemyMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(enemy);
 				Component::CollisionBox& enemyCollisionBox = Globals::s_Registry.GetComponent<Component::CollisionBox>(enemy);
 
 				enemyTransform.scale.x = 30.0f;
@@ -204,7 +208,7 @@ namespace HBL {
 
 		// Upadate the position of the player last
 		Component::Transform& playerTransform = Globals::s_Registry.GetComponent<Component::Transform>(player);
-		Component::Material& playerMaterial = Globals::s_Registry.GetComponent<Component::Material>(player);
+		Component::SpriteRenderer& playerMaterial = Globals::s_Registry.GetComponent<Component::SpriteRenderer>(player);
 
 		playerTransform.scale.x = 29.0f;
 		playerTransform.scale.y = 29.0f;
@@ -250,9 +254,7 @@ namespace HBL {
 		}
 
 		is.close();
-
-		rend.Init_Vertex_Buffer();
-
+		rend.InitVertexBuffer();
 		grav.ResetGravity(1000.0f, -1000.0f);
 	}
 

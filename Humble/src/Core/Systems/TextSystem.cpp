@@ -9,7 +9,7 @@ namespace HBL {
 		SDF_Importer("res/textures/testFont.fnt");
 
 		// Load texture font atlas
-		TextureManager::Load_Texture("res/textures/testFont.png");
+		TextureManager::LoadTexture("res/textures/testFont.png");
 
 		// Add another batch for text rendering (200 characters for each text component).
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
@@ -51,7 +51,7 @@ namespace HBL {
 					tTr.position.x += cursorPosition;
 
 					// Draw the current letter as a new quad
-					int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
+					int index = Renderer::Get().DrawQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 					// Retrieve font atlas texture id
 					float id = TextureManager::Find("res/textures/testFont.png");
@@ -70,10 +70,10 @@ namespace HBL {
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.Update_Material_On_Quad(index, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+					buffer.UpdateMaterialOnQuad(index, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
 					// Update position of current character
-					buffer.Update_Position_On_Quad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
+					buffer.UpdatePositionOnQuad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;
@@ -137,7 +137,7 @@ namespace HBL {
 						invalidate = true;
 
 						// Draw the current letter as a new quad.
-						int index = Renderer::Get().Draw_Quad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
+						int index = Renderer::Get().DrawQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 						textTransform.bufferIndex.push_back(index);
 					}
@@ -163,10 +163,10 @@ namespace HBL {
 						for (uint32_t j = 0; j < (uint32_t)(textTransform.bufferIndex.size() - t.size()); j++)
 						{
 							// Update texture from font atlas info
-							buffer.Update_Material_On_Quad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+							buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
 							// Update position of current character
-							buffer.Update_Position_On_Quad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f ));
+							buffer.UpdatePositionOnQuad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f ));
 						}
 					}
 
@@ -184,10 +184,10 @@ namespace HBL {
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.Update_Material_On_Quad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+					buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
 
 					// Update position of current character
-					buffer.Update_Position_On_Quad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
+					buffer.UpdatePositionOnQuad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;

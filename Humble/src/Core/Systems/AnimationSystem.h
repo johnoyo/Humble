@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../HumbleAPI.h"
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 #include "../Managers/TextureManager.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	class HBL_API AnimationSystem final : public IRegistrySystem
 	{
 	public:

@@ -8,15 +8,13 @@ namespace HBL
 		virtual void Start() override
 		{
 			FUNCTION_PROFILE();
-			Filter<Component::Health>();
 		}
 		virtual void Run(float dt) override
 		{
-			ForEach([&](IEntity& entt)
+			View<Component::Health>().ForEach([&](Component::Health& health)
 			{
-				Component::Health& h = Registry::Get().GetComponent<Component::Health>(entt);
 				//std::cout << "Entity health: " << h.health << "\n";
-			});
+			}).Run();
 		}
 		virtual void Clear() override { }
 	};

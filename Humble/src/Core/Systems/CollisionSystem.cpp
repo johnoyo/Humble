@@ -25,7 +25,7 @@ namespace HBL {
 			collisionBox.bl.x = transfom.position.x - transfom.scale.x / 2.0f;
 			collisionBox.bl.y = transfom.position.y - transfom.scale.y / 2.0f;
 
-			Categorize(entt);
+			Categorize(transfom, entt);
 		}).Run();
 
 	}
@@ -37,7 +37,7 @@ namespace HBL {
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		// Update collision boxes of non-static objects
-		ForEach([&](IEntity& entt)
+		Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
 			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 			
@@ -47,12 +47,10 @@ namespace HBL {
 
 				if (transfom.Static == false)
 				{
-					//ENGINE_PROFILE("For_Each CollisionSystem::Run");
-
 					glm::vec3& tr = transfom.position;
 					glm::vec3& sc = transfom.scale;
 
-					//int index = FindSector(transfom);
+					//int index = Categorize(transfom, entt);
 
 					//if (index != -1)
 					//{
@@ -100,11 +98,9 @@ namespace HBL {
 		return;
 	}
 
-	void CollisionSystem::Categorize(IEntity& entt)
+	int CollisionSystem::Categorize(Component::Transform& transfom, IEntity& entt)
 	{
 		//FUNCTION_PROFILE();
-
-		Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
 
 		if (transfom.Enabled)
 		{
@@ -118,12 +114,13 @@ namespace HBL {
 					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
 					{
 						sectors[index].emplace_back(entt);
+						return index;
 					}
 				}
 			}
 		}
 
-		return;
+		return -1;
 	}
 
 	int CollisionSystem::FindSector(Component::Transform& transfom)
@@ -487,21 +484,22 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 
-		/*for (IEntity& entt : sectors[index])
+		for (IEntity& entt : sectors[index])
 		{
 			bool tmp = false;
-			if (p.ID != entt.ID && GET_COMPONENT(CollisionBox, entt).Enabled) {
+			Component::CollisionBox& cb_i = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 
-				Component::CollisionBox& cb_i = GET_COMPONENT(CollisionBox, entt);
-				Component::CollisionBox& cb_p = GET_COMPONENT(CollisionBox, p);
+			if (p.m_UUID != entt.m_UUID && cb_i.Enabled) 
+			{
+				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
 				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
@@ -509,10 +507,10 @@ namespace HBL {
 				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
@@ -520,10 +518,10 @@ namespace HBL {
 				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
@@ -531,10 +529,10 @@ namespace HBL {
 				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
@@ -542,10 +540,10 @@ namespace HBL {
 				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
@@ -553,10 +551,10 @@ namespace HBL {
 				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
@@ -564,10 +562,10 @@ namespace HBL {
 				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
 					return;
 				}
@@ -575,21 +573,21 @@ namespace HBL {
 				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) 
 				{
-					if (TRY_FIND_COMPONENT(Gravity, p))
+					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						GET_COMPONENT(Gravity, p).collides = true;
-						GET_COMPONENT(Gravity, p).isGrounded = false;
+						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
 					return;
 				}
 			}
 		}
 
-		if (TRY_FIND_COMPONENT(Gravity, p)) 
+		if (Registry::Get().HasComponent<Component::Gravity>(p))
 		{
-			GET_COMPONENT(Gravity, p).collides = false;
-			GET_COMPONENT(Gravity, p).isGrounded = false;
-		}*/
+			Registry::Get().GetComponent<Component::Gravity>(p).collides = false;
+			Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+		}
 
 		return;
 	}

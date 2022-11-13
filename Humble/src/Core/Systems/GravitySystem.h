@@ -3,11 +3,11 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 #include "../Managers/InputManager.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	class HBL_API GravitySystem final : public IRegistrySystem
 	{
 	public:

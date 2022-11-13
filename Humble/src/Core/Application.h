@@ -5,8 +5,8 @@
 #include "Utilities.h"
 #include "HumbleAPI.h"
 #include "IScene.h"
-#include "IRegistrySystem.h"
-#include "Registry.h"
+#include "ECS/IRegistrySystem.h"
+#include "ECS/Registry.h"
 
 namespace HBL {
 

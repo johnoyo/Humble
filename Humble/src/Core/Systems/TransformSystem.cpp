@@ -9,14 +9,14 @@ namespace HBL {
 
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		for (auto& component : Registry::Get().GetArray<Component::Transform>())
+		View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
-			Component::Transform& tr = component.second;
 			if (tr.Static == false)
 			{
-				buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
+				if (tr.bufferIndex != -1)
+					buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
 			}
-		}
+		}).Run();
 	}
 
 	void TransformSystem::Run(float dt)
@@ -25,14 +25,14 @@ namespace HBL {
 
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		for (auto& component : Registry::Get().GetArray<Component::Transform>())
+		View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
-			Component::Transform& tr = component.second;
 			if (tr.Static == false)
 			{
-				buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
+				if (tr.bufferIndex != -1)
+					buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
 			}
-		}
+		}).Run(); 
 	}
 
 	void TransformSystem::Clear()

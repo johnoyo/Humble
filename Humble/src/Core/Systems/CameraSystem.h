@@ -9,9 +9,10 @@
 #include <iostream>
 
 
-namespace HBL {
-
-	class HBL_API CameraSystem {
+namespace HBL 
+{
+	class HBL_API CameraSystem 
+	{
 	public:
 		void Initialize(float left, float right, float bottom, float top);
 		void Create();

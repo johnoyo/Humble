@@ -23,7 +23,7 @@ namespace HBL {
 			Registry::Get().EnrollEntity(background);
 			Registry::Get().EnrollEntity(player);
 			Registry::Get().EnrollEntity(enemy);
-			Registry::Get().EnrollEntity(camera);
+			Registry::Get().EnrollEntity(camera, "Camera");
 			Registry::Get().EnrollEntity(lvlHandler);
 			Registry::Get().EnrollEntity(sps);
 			Registry::Get().EnrollEntity(text);

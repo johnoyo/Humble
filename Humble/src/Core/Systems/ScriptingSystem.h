@@ -2,11 +2,11 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 #include <algorithm>
 
-namespace HBL {
-
+namespace HBL 
+{
 	class HBL_API ScriptingSystem final : public IRegistrySystem
 	{
 	public:

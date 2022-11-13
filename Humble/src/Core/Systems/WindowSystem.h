@@ -4,9 +4,10 @@
 
 #include <string>
 
-namespace HBL {
-
-	class HBL_API WindowSystem {
+namespace HBL 
+{
+	class HBL_API WindowSystem 
+	{
 	public:
 		void Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync);
 		void Create();

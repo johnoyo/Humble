@@ -13,9 +13,10 @@
   *
  */
 
-namespace HBL {
-
-    class HBL_API ShadowCastSystem {
+namespace HBL 
+{
+    class HBL_API ShadowCastSystem 
+    {
     public:
         void Start(glm::vec4& shadow_color, glm::vec3& player_position);
         void Run(glm::vec3& player_position);

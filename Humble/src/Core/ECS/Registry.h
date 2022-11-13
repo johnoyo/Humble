@@ -1,14 +1,17 @@
 #pragma once
 
+#include "UUID.h"
 #include "IEntity.h"
 #include "Components.h"
-#include "HumbleAPI.h"
-#include "Core.h"
-#include "Utilities/Random.h"
 
-#include <type_traits>
+#include "../Core.h"
+#include "../HumbleAPI.h"
+#include "../Utilities.h"
+#include "../Utilities/Random.h"
+
 #include <iostream>
-#include <vector>
+#include <type_traits>
+#include <unordered_map>
 
 namespace HBL 
 {
@@ -27,7 +30,7 @@ namespace HBL
 
 		void EnrollEntity(IEntity& Entity, const std::string& name = "")
 		{
-			Entity.m_UUID = Random::UInt64(0, UINT64_MAX);
+			Entity.m_UUID = UUID(Random::UInt64(0, UINT64_MAX));
 			m_Entities.emplace_back(Entity);
 
 			AddComponent<Component::Tag>(Entity);
@@ -38,9 +41,9 @@ namespace HBL
 				GetComponent<Component::Tag>(Entity).tag = name;
 		}
 
-		void EnrollEntityWithUUID(IEntity& Entity, uint64_t uuid, const std::string& name)
+		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid, const std::string& name)
 		{
-			Entity.m_UUID = uuid;
+			Entity.m_UUID = UUID(uuid);
 			m_Entities.emplace_back(Entity);
 
 			AddComponent<Component::Tag>(Entity).tag = name;
@@ -55,7 +58,7 @@ namespace HBL
 
 			auto& array = GetArray<T>();
 			array.emplace(Entity.m_UUID, component);
-
+			
 			return component;
 		}
 
@@ -84,13 +87,17 @@ namespace HBL
 		template<typename T>
 		void AddArray()
 		{
-			m_ComponentArrays.emplace(typeid(T).hash_code(), new std::unordered_map<uint64_t, T>());
+			std::unordered_map<UUID, T>* array = new std::unordered_map<UUID, T>();
+			//array->max_load_factor(0.25);
+
+			m_ComponentArrays.emplace(typeid(T).hash_code(), array);
 		}
 
 		template<typename T>
-		std::unordered_map<std::uint64_t, T>& GetArray()
+		std::unordered_map<UUID, T>& GetArray()
 		{
-			return *(std::unordered_map<uint64_t, T>*)m_ComponentArrays[typeid(T).hash_code()];
+			auto& array = *(std::unordered_map<UUID, T>*)m_ComponentArrays[typeid(T).hash_code()];
+			return array;
 		}
 
 		std::vector<IEntity>& GetEntities()
@@ -114,10 +121,11 @@ namespace HBL
 		}
 
 	private:
-		Registry() {};
-
+		Registry() { };
+		
 		std::vector<IEntity> m_Entities;
 		std::vector<IRegistrySystem*> m_Systems;
 		std::unordered_map<std::size_t, void*> m_ComponentArrays;
 	};
+
 }

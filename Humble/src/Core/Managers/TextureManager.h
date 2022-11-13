@@ -24,14 +24,14 @@ namespace HBL {
 			return instance;
 		}
 
-		static void InitTransparentTexture() { Get().IInitTransparentTexture(); }
-		static void LoadTexture(const std::string& path) { Get().ILoadTexture(path); }
-		static float Find(const std::string& path) { return Get().IFind(path); }
+		void InitTransparentTexture();
+		void LoadTexture(const std::string& path);
+		float Find(const std::string& path);
 
-		static uint32_t* GetTextureSlot() { return Get().m_TextureSlot; }
-		static std::vector<std::string>& GetTextureMap() { return Get().m_TextureMap; }
-		static std::vector<glm::vec2>& GetTextureSize() { return Get().m_TextureSize; }
-		static uint32_t& GetTextureIndex() { return Get().m_CurrentIndex; }
+		uint32_t* GetTextureSlot() { return m_TextureSlot; }
+		std::vector<std::string>& GetTextureMap() { return m_TextureMap; }
+		std::vector<glm::vec2>& GetTextureSize() { return m_TextureSize; }
+		uint32_t& GetTextureIndex() { return m_CurrentIndex; }
 
 	private:
 		TextureManager() {}
@@ -41,9 +41,6 @@ namespace HBL {
 		uint32_t m_CurrentIndex = 0;
 		std::vector<std::string> m_TextureMap;
 		std::vector<glm::vec2> m_TextureSize;
-		void IInitTransparentTexture();
-		void ILoadTexture(const std::string& path);
-		float IFind(const std::string& path);
 	};
 
 }

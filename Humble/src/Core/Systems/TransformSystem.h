@@ -4,11 +4,11 @@
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include "SpriteRendererSystem.h"
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 
-namespace HBL {
-
-	class HBL_API TransformSystem final : public IRegistrySystem 
+namespace HBL 
+{
+	class HBL_API TransformSystem final : public IRegistrySystem
 	{
 	public:
 		virtual void Start() override;

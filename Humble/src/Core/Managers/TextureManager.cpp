@@ -3,7 +3,7 @@
 
 namespace HBL {
 
-	void TextureManager::IInitTransparentTexture()
+	void TextureManager::InitTransparentTexture()
 	{
 		uint32_t whiteTextureID;
 
@@ -22,7 +22,7 @@ namespace HBL {
 		m_TextureSlot[m_CurrentIndex++] = whiteTextureID;
 	}
 
-	void TextureManager::ILoadTexture(const std::string& path)
+	void TextureManager::LoadTexture(const std::string& path)
 	{
 		int w, h, bits;
 
@@ -48,13 +48,13 @@ namespace HBL {
 		assert(m_CurrentIndex < 32);
 	}
 
-	float TextureManager::IFind(const std::string& path)
+	float TextureManager::Find(const std::string& path)
 	{
 		for (int i = 0; i < m_TextureMap.size(); i++) {
 			if (path == m_TextureMap.at(i)) return (float)i;
 		}
 		std::cerr << "Error! Could not find the file specified (" << path << "). Loading it from scratch!" << "\n";
-		ILoadTexture(path);
+		LoadTexture(path);
 		return (float)m_TextureMap.size() - 1;
 	}
 

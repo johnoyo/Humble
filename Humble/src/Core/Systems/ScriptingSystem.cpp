@@ -8,10 +8,8 @@ namespace HBL {
 
 		int current_level = Globals::Current_Level;
 
-		Filter<Component::Script>().ForEach([&](IEntity& entt) 
+		View<Component::Script>().ForEach([&](Component::Script& script)
 		{
-			Component::Script& script = Registry::Get().GetComponent<Component::Script>(entt);
-
 			if (script.Enabled) 
 			{
 				int size = script.script.size();
@@ -29,10 +27,8 @@ namespace HBL {
 
 		int current_level = Globals::Current_Level;
 
-		ForEach([&](IEntity& entt)
+		View<Component::Script>().ForEach([&](Component::Script& script)
 		{
-			Component::Script& script = Registry::Get().GetComponent<Component::Script>(entt);
-
 			if (script.Enabled) 
 			{
 				int size = script.script.size();
@@ -48,12 +44,12 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
+		Clean();
+
 		int current_level = Globals::Current_Level;
 
-		ForEach([&](IEntity& entt)
+		View<Component::Script>().ForEach([&](Component::Script& script)
 		{
-			Component::Script& script = Registry::Get().GetComponent<Component::Script>(entt);
-
 			for (uint32_t j = 0; j < current_level; j++) 
 			{
 				delete script.script[j];

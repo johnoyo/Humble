@@ -8,13 +8,13 @@
 #include "Core/GlobalArrays.h"
 #include "Core/Utilities.h"
 #include "Core/GlobalSystems.h"
-#include "Core/Registry.h"
+
+#include "Core/ECS/Registry.h"
+#include "Core/ECS/IRegistrySystem.h"
 
 #include "Core/IScript.h"
 #include "Core/Managers/InputManager.h"
 #include "Core/Managers/SoundManager.h"
 #include "Core/Utilities/Random.h"
-
-#include "Core/IRegistrySystem.h"
 
 #include "Core/Application.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 #include "../Rendering/Renderer.h"
 #include <fstream>
 #include <sstream>
@@ -20,7 +20,7 @@ namespace HBL {
 		int xAdvance;
 	};
 
-	#define INVALID_INDEX 99999
+	#define INVALID_INDEX UINT32_MAX
 
 	class HBL_API TextSystem final : public IRegistrySystem
 	{

@@ -5,8 +5,6 @@ namespace HBL {
 	void GravitySystem::Start()
 	{
 		FUNCTION_PROFILE();
-
-		Filter<Component::Gravity, Component::Transform>();
 	}
 
 	void GravitySystem::InitializeGravity(float gravityForce, float thres)
@@ -26,7 +24,7 @@ namespace HBL {
 		force = gravityForce;
 		threshold = thres;
 
-		ForEach([&](IEntity& entt)
+		Filter<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
 		{
 			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
 			gravity.appliedForce = 0.0f;
@@ -37,7 +35,7 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 
-		ForEach([&](IEntity& entt)
+		Filter<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
 		{
 			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
 			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);

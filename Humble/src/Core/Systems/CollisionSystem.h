@@ -3,12 +3,12 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 #include "SpriteRendererSystem.h"
 #include <vector>
 
-namespace HBL {
-
+namespace HBL 
+{
 	class HBL_API CollisionSystem final : public IRegistrySystem
 	{
 	public:
@@ -18,7 +18,7 @@ namespace HBL {
 
 		void CreateSectors(uint32_t dimension, glm::vec2 worldSize);
 
-		void Categorize(IEntity& entt);
+		int Categorize(Component::Transform& transfom, IEntity& entt);
 		int FindSector(Component::Transform& transfom);
 
 		bool CollisionBetween(IEntity& e0, IEntity& e1);

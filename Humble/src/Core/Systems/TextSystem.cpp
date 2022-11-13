@@ -9,7 +9,7 @@ namespace HBL {
 		SDF_Importer("res/textures/testFont.fnt");
 
 		// Load texture font atlas
-		TextureManager::LoadTexture("res/textures/testFont.png");
+		TextureManager::Get().LoadTexture("res/textures/testFont.png");
 
 		// Add another batch for text rendering (200 characters for each text component).
 		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
@@ -54,11 +54,11 @@ namespace HBL {
 					int index = Renderer::Get().DrawQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 					// Retrieve font atlas texture id
-					float id = TextureManager::Find("res/textures/testFont.png");
+					float id = TextureManager::Get().Find("res/textures/testFont.png");
 
 					// Calculate some offsets
-					float line_width = (TextureManager::GetTextureSize().at(id).x / sdfData[sdfIndex].width);
-					float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndex].height);
+					float line_width = (TextureManager::Get().GetTextureSize().at(id).x / sdfData[sdfIndex].width);
+					float line_height = (TextureManager::Get().GetTextureSize().at(id).y / sdfData[sdfIndex].height);
 					float line_offset = line_height - 1.0f;
 
 					// Calculate letter position
@@ -70,7 +70,7 @@ namespace HBL {
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.UpdateMaterialOnQuad(index, text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+					buffer.UpdateMaterialOnQuad(index, text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
 
 					// Update position of current character
 					buffer.UpdatePositionOnQuad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
@@ -95,7 +95,7 @@ namespace HBL {
 
 		bool invalidate = false;
 
-		ForEach([&] (IEntity& entt)
+		Filter<Component::Text, Component::TextTransform>().ForEach([&] (IEntity& entt)
 		{
 			Component::Text& text = Registry::Get().GetComponent<Component::Text>(entt);
 			Component::TextTransform& textTransform = Registry::Get().GetComponent<Component::TextTransform>(entt);
@@ -129,7 +129,7 @@ namespace HBL {
 					tTr.position.x += cursorPosition;
 
 					// Retrieve font atlas texture id
-					float id = TextureManager::Find("res/textures/testFont.png");
+					float id = TextureManager::Get().Find("res/textures/testFont.png");
 
 					// Register new quad if max numbers of currently available characters is exceeded.
 					if (i >= textTransform.bufferIndex.size())
@@ -147,8 +147,8 @@ namespace HBL {
 						uint32_t sdfIndexRemove = GetLetterIndex('\ ');
 
 						// Calculate some offsets
-						float line_width = (TextureManager::GetTextureSize().at(id).x / sdfData[sdfIndexRemove].width);
-						float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndexRemove].height);
+						float line_width = (TextureManager::Get().GetTextureSize().at(id).x / sdfData[sdfIndexRemove].width);
+						float line_height = (TextureManager::Get().GetTextureSize().at(id).y / sdfData[sdfIndexRemove].height);
 						float line_offset = line_height - 1.0f;
 
 						// Calculate letter position
@@ -163,7 +163,7 @@ namespace HBL {
 						for (uint32_t j = 0; j < (uint32_t)(textTransform.bufferIndex.size() - t.size()); j++)
 						{
 							// Update texture from font atlas info
-							buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+							buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
 
 							// Update position of current character
 							buffer.UpdatePositionOnQuad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f ));
@@ -171,8 +171,8 @@ namespace HBL {
 					}
 
 					// Calculate some offsets
-					float line_width = (TextureManager::GetTextureSize().at(id).x / sdfData[sdfIndex].width);
-					float line_height = (TextureManager::GetTextureSize().at(id).y / sdfData[sdfIndex].height);
+					float line_width = (TextureManager::Get().GetTextureSize().at(id).x / sdfData[sdfIndex].width);
+					float line_height = (TextureManager::Get().GetTextureSize().at(id).y / sdfData[sdfIndex].height);
 					float line_offset = line_height - 1.0f;
 
 					// Calculate letter position
@@ -184,7 +184,7 @@ namespace HBL {
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::GetTextureSize().at(id), size);
+					buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
 
 					// Update position of current character
 					buffer.UpdatePositionOnQuad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
@@ -205,18 +205,19 @@ namespace HBL {
 
 	void TextSystem::Clear()
 	{
+		Clean();
 		Registry::Get().GetArray<Component::Text>().clear();
 		Registry::Get().GetArray<Component::TextTransform>().clear();
 	}
 
 	float TextSystem::GetPositionX(float position, uint32_t sdfIndex, float id)
 	{
-		return (sdfData[sdfIndex].xCoord / (TextureManager::GetTextureSize().at(id).x / position));
+		return (sdfData[sdfIndex].xCoord / (TextureManager::Get().GetTextureSize().at(id).x / position));
 	}
 
 	float TextSystem::GetPositionY(float position, uint32_t sdfIndex, float id)
 	{
-		return (sdfData[sdfIndex].yCoord / (TextureManager::GetTextureSize().at(id).y / position));
+		return (sdfData[sdfIndex].yCoord / (TextureManager::Get().GetTextureSize().at(id).y / position));
 	}
 
 	uint32_t TextSystem::GetLetterIndex(char c)

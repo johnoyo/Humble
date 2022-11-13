@@ -91,7 +91,7 @@ namespace HBL {
 	{
 		//FUNCTION_PROFILE();
 
-		SpriteRendererSystem& rend = GlobalSystems::spriteRendererSystem;
+		//SpriteRendererSystem& rend = GlobalSystems::spriteRendererSystem;
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		glm::vec3 O = player_position;

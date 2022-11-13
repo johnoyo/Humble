@@ -17,7 +17,7 @@ namespace HBL {
 
 		virtual void Update(float dt) override 
 		{
-			Registry::Get().GetComponent<Component::Transform>(enemy).position.x -= 30.0f * dt;
+			//Registry::Get().GetComponent<Component::Transform>(enemy).position.x -= 30.0f * dt;
 			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation++;
 			//Registry::Get().GetComponent<Component::Gravity>(enemy).Enabled = false;
 

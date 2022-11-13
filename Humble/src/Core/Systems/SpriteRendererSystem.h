@@ -1,13 +1,15 @@
 #pragma once
 
 #include "../HumbleAPI.h"
-#include "../IRegistrySystem.h"
+#include "../ECS/IRegistrySystem.h"
 
 #include "../Core.h"
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../Rendering/Renderer.h"
 #include "../Managers/TextureManager.h"
+#include "../ECS/Group.h"
+#include "../ECS/Components.h"
 
 #include <iostream>
 #include <vector>

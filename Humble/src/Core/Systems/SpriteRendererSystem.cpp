@@ -5,8 +5,8 @@ void HBL::SpriteRendererSystem::Start()
 {
 	FUNCTION_PROFILE();
 
-	const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), vpMatrix);
+	//const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
+	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), Globals::Camera);
 	InitVertexBuffer();
 
 	TextureManager::Get().InitTransparentTexture();
@@ -55,14 +55,12 @@ void HBL::SpriteRendererSystem::Clear()
 {
 	FUNCTION_PROFILE();
 
-	Clean();
-
 	TextureManager::Get().GetTextureMap().clear();
 	TextureManager::Get().GetTextureSize().clear();
 
 	TextureManager::Get().GetTextureIndex() = 0;
 
-	Registry::Get().GetArray<Component::SpriteRenderer>().clear();
+	Registry::Get().ClearArray<Component::SpriteRenderer>();
 	glDeleteTextures(32, TextureManager::Get().GetTextureSlot());
 }
 

@@ -10,7 +10,7 @@
 #include "Core/GlobalSystems.h"
 
 #include "Core/ECS/Registry.h"
-#include "Core/ECS/IRegistrySystem.h"
+#include "Core/ECS/ISystem.h"
 
 #include "Core/IScript.h"
 #include "Core/Managers/InputManager.h"

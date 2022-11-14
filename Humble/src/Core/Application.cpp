@@ -16,6 +16,7 @@ namespace HBL {
 		Registry::Get().RegisterSystem(&GlobalSystems::animationSystem);
 		Registry::Get().RegisterSystem(&GlobalSystems::scriptingSystem);
 		Registry::Get().RegisterSystem(&GlobalSystems::transformSystem);
+		Registry::Get().RegisterSystem(&GlobalSystems::cameraSystem);
 		Registry::Get().RegisterSystem(&GlobalSystems::gravitySystem);
 		Registry::Get().RegisterSystem(&GlobalSystems::collisionSystem);
 		Registry::Get().RegisterSystem(&GlobalSystems::textSystem);
@@ -23,6 +24,7 @@ namespace HBL {
 
 	void Application::RegisterArrays()
 	{
+		Registry::Get().AddArray<Component::Camera>();
 		Registry::Get().AddArray<Component::Tag>();
 		Registry::Get().AddArray<Component::Transform>();
 		Registry::Get().AddArray<Component::SpriteRenderer>();

@@ -1,16 +1,21 @@
 #pragma once
-#include "../HumbleAPI.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+
 #include "../Core.h"
+#include "../HumbleAPI.h"
+#include "../ECS/Registry.h"
 #include "../Utilities/OpenGLDebug.h"
+
+#include "stb_image/stb_image.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include "stb_image/stb_image.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
+
 
 namespace HBL {
 
@@ -43,8 +48,8 @@ namespace HBL {
 			return instance;
 		}
 
-		void AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, const glm::mat4& m_Camera_vp);
-		void Render(const glm::mat4& camera_vp);
+		void AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, IEntity& camera);
+		void Render(IEntity& camera);
 
 		void Bind(uint32_t index);
 		void Bind();
@@ -69,10 +74,10 @@ namespace HBL {
 		void BeginFrame();
 		void EndFrame();
 
-		void Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path, bool debug = true);
+		void Prepare(const glm::mat4& cameraVP, const std::string& shader_path, bool debug = true);
 
 		void UpdateIndexBuffer(uint32_t size, uint32_t vindex);
-		void UpdateCameraUniform(const glm::mat4& m_Camera_vp);
+		void UpdateCameraUniform(const glm::mat4& cameraVP);
 
 		ShaderProgramSource ParseShader(const std::string& filepath);
 		uint32_t CompileShader(uint32_t type, const std::string& source);

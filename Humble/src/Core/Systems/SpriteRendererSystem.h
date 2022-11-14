@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../HumbleAPI.h"
-#include "../ECS/IRegistrySystem.h"
+#include "../ECS/ISystem.h"
 
 #include "../Core.h"
 #include "../GlobalArrays.h"
@@ -18,7 +18,7 @@
 
 namespace HBL
 {
-	class HBL_API SpriteRendererSystem final : public IRegistrySystem
+	class HBL_API SpriteRendererSystem final : public ISystem
 	{
 	public:
 		virtual void Start() override;

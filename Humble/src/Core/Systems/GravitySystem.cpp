@@ -59,8 +59,7 @@ namespace HBL {
 
 	void GravitySystem::Clear()
 	{
-		Clean();
-		Registry::Get().GetArray<Component::Gravity>().clear();
+		Registry::Get().ClearArray<Component::Gravity>();
 	}
 
 }

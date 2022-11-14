@@ -81,8 +81,7 @@ namespace HBL {
 
 	void CollisionSystem::Clear()
 	{
-		Clean();
-		Registry::Get().GetArray<Component::CollisionBox>().clear();
+		Registry::Get().ClearArray<Component::CollisionBox>();
 	}
 
 	void CollisionSystem::CreateSectors(uint32_t dimension, glm::vec2 worldSize)

@@ -3,13 +3,13 @@
 #include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../ECS/IRegistrySystem.h"
+#include "../ECS/ISystem.h"
 #include "SpriteRendererSystem.h"
 #include <vector>
 
 namespace HBL 
 {
-	class HBL_API CollisionSystem final : public IRegistrySystem
+	class HBL_API CollisionSystem final : public ISystem
 	{
 	public:
 		virtual void Start() override;

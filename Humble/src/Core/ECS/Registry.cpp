@@ -1,2 +1,2 @@
 #include "Registry.h"
-#include "IRegistrySystem.h"
+#include "ISystem.h"

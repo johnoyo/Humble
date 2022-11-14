@@ -2,15 +2,17 @@
 
 namespace HBL {
 
-	void Renderer::AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, const glm::mat4& m_Camera_vp)
+	void Renderer::AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, IEntity& camera)
 	{
+		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
+
 		rendererData.push_back(new RendererData());
 
 		rendererData[size]->vbuffer.total_size = vertexBufferSize;
 		rendererData[size]->vbuffer.Initialize(vertexBufferSize);
 		rendererData[size]->ibuffer.Make_Indecies(rendererData[size]->vbuffer.GetSize());
 
-		Prepare(m_Camera_vp, shader_path);
+		Prepare(cameraVP, shader_path);
 
 		rendererData[size]->vbuffer.Reset();
 
@@ -19,8 +21,10 @@ namespace HBL {
 		size++;
 	}
 
-	void Renderer::Render(const glm::mat4& camera_vp)
+	void Renderer::Render(IEntity& camera)
 	{
+		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
+
 		currentIndex = 0;
 
 		BeginFrame();
@@ -29,7 +33,7 @@ namespace HBL {
 		{
 			Bind();
 
-			UpdateCameraUniform(camera_vp);
+			UpdateCameraUniform(cameraVP);
 
 			// Set dynamic vertex buffer
 			glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.GetSize() * sizeof(Vertex_Array), data->vbuffer.GetBuffer());
@@ -171,7 +175,7 @@ namespace HBL {
 	{
 	}
 
-	void Renderer::Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path, bool debug)
+	void Renderer::Prepare(const glm::mat4& cameraVP, const std::string& shader_path, bool debug)
 	{
 		FUNCTION_PROFILE();
 
@@ -226,7 +230,7 @@ namespace HBL {
 		if (location1 == -1) {
 			ENGINE_LOG("Uniform not found!!!");
 		}
-		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp));
+		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(cameraVP));
 	}
 
 	void Renderer::UpdateIndexBuffer(uint32_t size, uint32_t vindex)
@@ -234,13 +238,13 @@ namespace HBL {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
 	}
 
-	void Renderer::UpdateCameraUniform(const glm::mat4& m_Camera_vp)
+	void Renderer::UpdateCameraUniform(const glm::mat4& cameraVP)
 	{
 		auto location1 = glGetUniformLocation(rendererData[currentIndex]->shader, "u_VP");
 		if (location1 == -1) {
 			ENGINE_LOG("Uniform not found!!!");
 		}
-		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp));
+		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(cameraVP));
 	}
 
 	ShaderProgramSource Renderer::ParseShader(const std::string& filepath)

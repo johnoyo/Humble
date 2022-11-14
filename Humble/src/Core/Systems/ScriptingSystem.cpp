@@ -44,8 +44,6 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Clean();
-
 		int current_level = Globals::Current_Level;
 
 		View<Component::Script>().ForEach([&](Component::Script& script)
@@ -56,7 +54,7 @@ namespace HBL {
 			}
 		}).Run();
 
-		Registry::Get().GetArray<Component::Script>().clear();
+		Registry::Get().ClearArray<Component::Script>();
 	}
 
 }

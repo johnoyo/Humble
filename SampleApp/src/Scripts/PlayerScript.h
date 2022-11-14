@@ -49,14 +49,30 @@ namespace HBL {
 		{
 			Component::Transform& transform_p = Registry::Get().GetComponent<Component::Transform>(player);
 			Component::Transform& transform_bg = Registry::Get().GetComponent<Component::Transform>(background);
+			Component::Transform& transform_cam = Registry::Get().GetComponent<Component::Transform>(camera);
 			Component::Animation& animation_p = Registry::Get().GetComponent<Component::Animation>(player);
+
+			if (Globals::Current_Level == 0)
+			{
+				if (InputManager::GetKeyDown(GLFW_KEY_C))
+				{
+					Registry::Get().GetComponent<Component::Camera>(camera).primary = false;
+					Registry::Get().GetComponent<Component::Camera>(clipCamera).primary = true;
+				}
+				else 
+				{
+					Registry::Get().GetComponent<Component::Camera>(camera).primary = true;
+					Registry::Get().GetComponent<Component::Camera>(clipCamera).primary = false;
+				}
+			}
 
 			// Background follow player
 			transform_bg.position.x = transform_p.position.x;
 			transform_bg.position.y = transform_p.position.y;
 
 			// Camera follow player
-			GlobalSystems::cameraSystem.Follow(camera, player, (-GlobalSystems::windowSystem.Get_Width() / 2.0f), (-GlobalSystems::windowSystem.Get_Height() / 2.0f));
+			transform_cam.position.x = transform_p.position.x + (-GlobalSystems::windowSystem.Get_Width() / 2.0f);
+			transform_cam.position.y = transform_p.position.y + (-GlobalSystems::windowSystem.Get_Height() / 2.0f);
 			
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) 

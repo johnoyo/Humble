@@ -37,8 +37,7 @@ namespace HBL {
 
 	void TransformSystem::Clear()
 	{
-		Clean();
-		Registry::Get().GetArray<Component::Transform>().clear();
+		Registry::Get().ClearArray<Component::Transform>();
 	}
 
 }

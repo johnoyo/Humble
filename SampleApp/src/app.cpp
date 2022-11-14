@@ -8,6 +8,7 @@ HBL::IEntity enemy;
 HBL::IEntity wall[400];
 HBL::IEntity level[10000];
 HBL::IEntity camera;
+HBL::IEntity clipCamera;
 HBL::IEntity lvlHandler;
 HBL::IEntity sps;
 HBL::IEntity text;

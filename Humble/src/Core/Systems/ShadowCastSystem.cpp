@@ -140,7 +140,7 @@ namespace HBL {
 
 	void ShadowCastSystem::Clear()
 	{
-		Registry::Get().GetArray<Component::Shadow>().clear();
+		Registry::Get().ClearArray<Component::Shadow>();
 	}
 
 }

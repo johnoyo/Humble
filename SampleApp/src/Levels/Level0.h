@@ -24,6 +24,7 @@ namespace HBL {
 			Registry::Get().EnrollEntity(player);
 			Registry::Get().EnrollEntity(enemy);
 			Registry::Get().EnrollEntity(camera, "Camera");
+			Registry::Get().EnrollEntity(clipCamera, "ClipCamera");
 			Registry::Get().EnrollEntity(lvlHandler);
 			Registry::Get().EnrollEntity(sps);
 			Registry::Get().EnrollEntity(text);
@@ -58,7 +59,11 @@ namespace HBL {
 			
 			Registry::Get().AddComponent<Component::Script>(lvlHandler);
 				
+			Registry::Get().AddComponent<Component::Camera>(camera);
 			Registry::Get().AddComponent<Component::Transform>(camera);
+
+			Registry::Get().AddComponent<Component::Camera>(clipCamera);
+			Registry::Get().AddComponent<Component::Transform>(clipCamera);
 			
 			Registry::Get().AddComponent<Component::SpriteRenderer>(sps);
 				
@@ -93,6 +98,19 @@ namespace HBL {
 			Registry::Get().GetComponent<Component::Transform>(player).Static = false;
 			Registry::Get().GetComponent<Component::Transform>(enemy).Static = false;
 			Registry::Get().GetComponent<Component::Transform>(background).Static = false;
+
+			Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
+																				0.0f, GlobalSystems::windowSystem.Get_Width(), 
+																				0.0f, GlobalSystems::windowSystem.Get_Height(),
+																				-1.0f, 1.0f);
+
+			Registry::Get().GetComponent<Component::Camera>(clipCamera).projection = glm::ortho(
+																				0.0f, GlobalSystems::windowSystem.Get_Width() / 2.0f,
+																				0.0f, GlobalSystems::windowSystem.Get_Height() / 2.0f,
+																				-1.0f, 1.0f);
+
+			Registry::Get().GetComponent<Component::Camera>(clipCamera).primary = false;
+			Registry::Get().GetComponent<Component::Camera>(clipCamera).Static = true;
 			
 			for (uint32_t i = 0; i < 400; i++)
 				Registry::Get().GetComponent<Component::Transform>(wall[i]).Static = true;
@@ -126,7 +144,6 @@ namespace HBL {
 
 		void Init_Systems() override
 		{
-			GlobalSystems::cameraSystem.Initialize(0.0f, GlobalSystems::windowSystem.Get_Width(), 0.0f, GlobalSystems::windowSystem.Get_Height());
 			GlobalSystems::gravitySystem.InitializeGravity(1000.0f, -1000.0f);
 		}
 

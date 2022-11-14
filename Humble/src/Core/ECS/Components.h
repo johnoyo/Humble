@@ -26,6 +26,17 @@ namespace HBL {
 			bool Enabled = true;
 		};
 
+		struct HBL_API Camera
+		{
+			glm::mat4 projection = glm::mat4(1.0f);
+			glm::mat4 viewProjectionMatrix = glm::mat4(1.0f);
+
+			bool primary = true;
+			bool Static = false;
+
+			bool Enabled = true;
+		};
+
 		struct HBL_API CollisionBox 
 		{
 			glm::vec3 bl = { 0.0f, 0.0f, 0.0f };

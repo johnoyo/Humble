@@ -11,7 +11,7 @@
 
 namespace HBL 
 {
-	class HBL_API IRegistrySystem 
+	class HBL_API ISystem 
 	{
 	public:
 		virtual void Start() { }
@@ -19,7 +19,7 @@ namespace HBL
 		virtual void Clear() { }
 
 		template <typename... Ts>
-		IRegistrySystem& Filter()
+		ISystem& Filter()
 		{
 			m_FilteredEntities.clear();
 			m_FunctionFilter = nullptr;
@@ -35,7 +35,7 @@ namespace HBL
 
 					Caller<Ts...>(entt);
 
-					// If we found all the components requested filter entt.
+					// If we found all the components requested, filter entt.
 					if (m_ComponentCounter == m_Recursions)
 						m_FilteredEntities.emplace_back(entt);
 				}
@@ -45,7 +45,7 @@ namespace HBL
 			return *this;
 		}
 
-		IRegistrySystem& ForEach(std::function<void(IEntity&)> func)
+		ISystem& ForEach(std::function<void(IEntity&)> func)
 		{
 			m_FunctionFilter = func;
 			return *this;

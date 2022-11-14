@@ -146,7 +146,6 @@ namespace HBL
 			m_Flag = false;
 			m_Index = UINT32_MAX;
 
-			//int index = ICaller<Ts...>::Call(m_Index);
 			ICaller<Ts...>();
 
 			if (m_Index == UINT32_MAX)

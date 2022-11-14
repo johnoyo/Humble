@@ -5,7 +5,7 @@
 #include "Utilities.h"
 #include "HumbleAPI.h"
 #include "IScene.h"
-#include "ECS/IRegistrySystem.h"
+#include "ECS/ISystem.h"
 #include "ECS/Registry.h"
 
 namespace HBL {
@@ -70,7 +70,7 @@ namespace HBL {
 				SoundManager::Update();
 
 				// Render
-				Renderer::Get().Render(GlobalSystems::cameraSystem.Get_View_Projection_Matrix());
+				Renderer::Get().Render(Globals::Camera);
 				m_Frames++;
 
 				// Reset after one second
@@ -109,13 +109,12 @@ namespace HBL {
 		void Initialize_Systems() 
 		{
 			GlobalSystems::windowSystem.Create();
-			GlobalSystems::cameraSystem.Create();
 
 			Globals::Camera = m_Scenes[m_Current]->GetCamera();
 
 			SoundManager::Start();
 
-			for (IRegistrySystem* system : Registry::Get().GetSystems())
+			for (ISystem* system : Registry::Get().GetSystems())
 			{
 				system->Start();
 			}
@@ -127,11 +126,9 @@ namespace HBL {
 
 		void Restart_Systems() 
 		{
-			GlobalSystems::cameraSystem.Create();
-
 			Globals::Camera = m_Scenes[m_Current]->GetCamera();
 
-			for (IRegistrySystem* system : Registry::Get().GetSystems())
+			for (ISystem* system : Registry::Get().GetSystems())
 			{
 				system->Start();
 			}
@@ -147,7 +144,7 @@ namespace HBL {
 			while (m_FixedDeltaTime >= 1.0f)
 			{
 				// Update fixed systems
-				for (IRegistrySystem* system : Registry::Get().GetSystems())
+				for (ISystem* system : Registry::Get().GetSystems())
 				{
 					system->Run(dt);
 				}
@@ -164,7 +161,7 @@ namespace HBL {
 		{
 			if (!m_FixedTimeStep)
 			{
-				for (IRegistrySystem* system : Registry::Get().GetSystems())
+				for (ISystem* system : Registry::Get().GetSystems())
 				{
 					system->Run(dt);
 				}
@@ -180,9 +177,10 @@ namespace HBL {
 
 		void Clear() 
 		{
-			for (IRegistrySystem* system : Registry::Get().GetSystems())
+			for (ISystem* system : Registry::Get().GetSystems())
 			{
 				system->Clear();
+				system->Clean();
 			}
 
 			Registry::Get().GetArray<Component::Shadow>().clear();

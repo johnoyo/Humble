@@ -15,7 +15,7 @@
 
 namespace HBL 
 {
-	class IRegistrySystem;
+	class ISystem;
 
 	class HBL_API Registry
 	{
@@ -88,8 +88,6 @@ namespace HBL
 		void AddArray()
 		{
 			std::unordered_map<UUID, T>* array = new std::unordered_map<UUID, T>();
-			//array->max_load_factor(0.25);
-
 			m_ComponentArrays.emplace(typeid(T).hash_code(), array);
 		}
 
@@ -100,12 +98,18 @@ namespace HBL
 			return array;
 		}
 
+		template<typename T>
+		void ClearArray()
+		{
+			GetArray<T>().clear();
+		}
+
 		std::vector<IEntity>& GetEntities()
 		{
 			return m_Entities;
 		}
 
-		std::vector<IRegistrySystem*>& GetSystems()
+		std::vector<ISystem*>& GetSystems()
 		{
 			return m_Systems;
 		}
@@ -115,7 +119,7 @@ namespace HBL
 			m_Entities.clear();
 		}
 
-		void RegisterSystem(IRegistrySystem* system)
+		void RegisterSystem(ISystem* system)
 		{
 			m_Systems.push_back(system);
 		}
@@ -124,7 +128,7 @@ namespace HBL
 		Registry() { };
 		
 		std::vector<IEntity> m_Entities;
-		std::vector<IRegistrySystem*> m_Systems;
+		std::vector<ISystem*> m_Systems;
 		std::unordered_map<std::size_t, void*> m_ComponentArrays;
 	};
 

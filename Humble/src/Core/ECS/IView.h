@@ -17,7 +17,7 @@
 
 namespace HBL 
 {
-	class IRegistrySystem;
+	class ISystem;
 
 	template<typename T>
 	class IView

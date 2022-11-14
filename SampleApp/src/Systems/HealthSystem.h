@@ -2,7 +2,7 @@
 
 namespace HBL 
 {
-	class HealthSystem final : public IRegistrySystem 
+	class HealthSystem final : public ISystem 
 	{
 	public:
 		virtual void Start() override

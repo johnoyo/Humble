@@ -62,8 +62,7 @@ namespace HBL {
 	{
 		FUNCTION_PROFILE();
 
-		Clean();
-		Registry::Get().GetArray<Component::Animation>().clear();
+		Registry::Get().ClearArray<Component::Animation>();
 	}
 
 	void AnimationSystem::PlayAnimation(Component::Animation& animation, int index)

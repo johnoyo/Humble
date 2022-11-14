@@ -12,8 +12,8 @@ namespace HBL {
 		TextureManager::Get().LoadTexture("res/textures/testFont.png");
 
 		// Add another batch for text rendering (200 characters for each text component).
-		const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Registry::Get().GetArray<Component::Text>().size() * 4), vpMatrix);
+		//const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Registry::Get().GetArray<Component::Text>().size() * 4), Globals::Camera);
 		
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
@@ -205,9 +205,8 @@ namespace HBL {
 
 	void TextSystem::Clear()
 	{
-		Clean();
-		Registry::Get().GetArray<Component::Text>().clear();
-		Registry::Get().GetArray<Component::TextTransform>().clear();
+		Registry::Get().ClearArray<Component::Text>();
+		Registry::Get().ClearArray<Component::TextTransform>();
 	}
 
 	float TextSystem::GetPositionX(float position, uint32_t sdfIndex, float id)

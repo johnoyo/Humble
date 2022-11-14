@@ -15,9 +15,9 @@
 struct HBL_API GlobalSystems
 {
 	static HBL::WindowSystem windowSystem;
+	static HBL::CameraSystem cameraSystem;
 	static HBL::SpriteRendererSystem spriteRendererSystem;
 	static HBL::AnimationSystem animationSystem;
-	static HBL::CameraSystem cameraSystem;
 	static HBL::ScriptingSystem scriptingSystem;
 	static HBL::CollisionSystem collisionSystem;
 	static HBL::GravitySystem gravitySystem;

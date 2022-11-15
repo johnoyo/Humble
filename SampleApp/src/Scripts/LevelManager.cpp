@@ -255,7 +255,7 @@ namespace HBL {
 
 		is.close();
 		rend.InitVertexBuffer();
-		grav.ResetGravity(1000.0f, -1000.0f);
+	//	grav.ResetGravity(1000.0f, -1000.0f);
 	}
 
 }

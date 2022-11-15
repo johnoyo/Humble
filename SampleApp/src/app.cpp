@@ -28,16 +28,16 @@ HBL::HealthSystem healthSystem;
 
 int main() 
 {
-	HBL::Level0 level0(player, camera);
-	HBL::Level1 level1(player, camera);
+	HBL::Level0 level0(player);
+	HBL::Level1 level1(player);
 
 	HBL::Application *app = new HBL::Application(1920.0f, 1080.0f, "SampleApp", false, false, false, 30.0f);
 
 	HBL::Registry::Get().RegisterSystem(&healthSystem);
 	HBL::Registry::Get().AddArray<HBL::Component::Health>();
 
-	app->Add_Scene(&level0);
-	app->Add_Scene(&level1);
+	app->AddScene(&level0);
+	app->AddScene(&level1);
 
 	app->Start();
 

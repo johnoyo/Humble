@@ -1,52 +1,43 @@
 #include "ShadowCastSystem.h"
-#include "../GlobalSystems.h"
+#include "../Systems.h"
 
 namespace HBL {
 
-	void ShadowCastSystem::Start(glm::vec4& shadow_color, glm::vec3& player_position)
+	void ShadowCastSystem::Start()
 	{
 		FUNCTION_PROFILE();
 
-		SpriteRendererSystem& rend = GlobalSystems::spriteRendererSystem;
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		uint32_t offset = 0;
+
 		// Init shadow cast component info
-		for (uint32_t i = 0; i < Registry::Get().GetEntities().size(); i++) 
+		Filter<Component::Transform, Component::SpriteRenderer, Component::Shadow>().ForEach([&](IEntity& entt) 
 		{
-			IEntity& entt = Registry::Get().GetEntities().at(i);
-
-			if (Registry::Get().HasComponent<Component::Transform>(entt) &&
-				Registry::Get().HasComponent<Component::SpriteRenderer>(entt) &&
-				Registry::Get().HasComponent<Component::Shadow>(entt)) 
-			{
-				Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(entt);
-
-				if (shadow.Enabled)
-				{
-					Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
-
-					sprite.texture = "-";
-					sprite.color = shadow_color;
-
-					shadow.parentBufferIndex = Registry::Get().GetComponent<Component::Transform>(entt).bufferIndex;
-					shadow.bufferIndex = buffer.GetSize() + offset;
-					shadow.color = shadow_color;
-
-					offset += 12;
-				}
-			}
-		}
-
-		// Init shadow cast positions
-		glm::vec3 O = player_position;
-
-		for (auto& component : Registry::Get().GetArray<Component::Shadow>())
-		{
-			Component::Shadow& shadow = component.second;
+			Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(entt);
 
 			if (shadow.Enabled)
 			{
+				Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
+
+				sprite.texture = "-";
+				sprite.color = shadow.color;
+
+				shadow.parentBufferIndex = Registry::Get().GetComponent<Component::Transform>(entt).bufferIndex;
+				shadow.bufferIndex = buffer.GetSize() + offset;
+				shadow.color = shadow.color;
+
+				offset += 12;
+			}
+		}).Run();
+
+		// Init shadow cast positions
+		View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
+		{
+			if (shadow.Enabled)
+			{
+				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
+
 				std::vector<glm::vec2> shadow_points;
 				std::vector<glm::vec2> edge_points;
 				std::vector<glm::vec2> vertices;
@@ -58,9 +49,9 @@ namespace HBL {
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
 
 				// Find all shadow points
-				for (int j = 0; j < 4; j++) 
+				for (int j = 0; j < 4; j++)
 				{
-					glm::vec2 E = vertices[j];
+					glm::vec2& E = vertices[j];
 
 					float rdx, rdy;
 					rdx = E.x - O.x;
@@ -79,7 +70,7 @@ namespace HBL {
 				Renderer::Get().DrawQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
 				Renderer::Get().DrawQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
 			}
-		}
+		}).Run();
 
 		// Reset rendering buffers
 		Renderer::Get().Bind(0);
@@ -87,21 +78,18 @@ namespace HBL {
 		Renderer::Get().UnBind();
 	}
 
-	void ShadowCastSystem::Run(glm::vec3& player_position)
+	void ShadowCastSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 
-		//SpriteRendererSystem& rend = GlobalSystems::spriteRendererSystem;
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		glm::vec3 O = player_position;
-
-		for (auto& component : Registry::Get().GetArray<Component::Shadow>())
+		View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
 		{
-			Component::Shadow& shadow = component.second;
-
 			if (shadow.Enabled)
 			{
+				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
+
 				std::vector<glm::vec2> shadow_points;
 				std::vector<glm::vec2> edge_points;
 
@@ -112,9 +100,9 @@ namespace HBL {
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
 
 				// Find all shadow points
-				for (int j = 0; j < 4; j++) 
+				for (int j = 0; j < 4; j++)
 				{
-					glm::vec2 E = vertices[j];
+					glm::vec2& E = vertices[j];
 
 					float rdx, rdy;
 					rdx = E.x - O.x;
@@ -135,7 +123,7 @@ namespace HBL {
 				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
 				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
 			}
-		}
+		}).Run();
 	}
 
 	void ShadowCastSystem::Clear()

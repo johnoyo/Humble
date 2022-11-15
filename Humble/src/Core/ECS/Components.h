@@ -5,10 +5,10 @@
 #include "../IScript.h"
 #include "../HumbleAPI.h"
 
-namespace HBL {
-
-	namespace Component {
-
+namespace HBL 
+{
+	namespace Component 
+	{
 		struct HBL_API Tag
 		{
 			std::string tag = "";
@@ -84,6 +84,9 @@ namespace HBL {
 		{
 			bool collides = true;
 			bool isGrounded = false;
+			float force = 0.0f;
+			float threshold = 0.0f;
+
 			float appliedForce = 0.0f;
 
 			bool Enabled = true;
@@ -98,6 +101,7 @@ namespace HBL {
 
 		struct HBL_API Shadow 
 		{
+			IEntity* source = nullptr;
 			glm::vec4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
 			float shadowDistance = 200000.0f;
 			int parentBufferIndex = -1;
@@ -130,5 +134,4 @@ namespace HBL {
 			bool Enabled = true;
 		};
 	}
-
 }

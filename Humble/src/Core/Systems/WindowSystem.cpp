@@ -46,32 +46,32 @@ namespace HBL {
 		}
 
 		if (vSync)
-			Make_Context_Current(1);
+			MakeContextCurrent(1);
 		else 
-			Make_Context_Current(0);
+			MakeContextCurrent(0);
 
 		if (glewInit() != GLEW_OK) {
 			std::cout << "Error initializing GLEW\n";
 		}
 	}
 
-	void WindowSystem::Make_Context_Current(int Vsync)
+	void WindowSystem::MakeContextCurrent(int Vsync)
 	{
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(Vsync);
 	}
 
-	int WindowSystem::Window_Should_Close()
+	int WindowSystem::WindowShouldClose()
 	{
 		return glfwWindowShouldClose(window);
 	}
 
-	void WindowSystem::Swap_Buffers()
+	void WindowSystem::SwapBuffers()
 	{
 		glfwSwapBuffers(window);
 	}
 
-	void WindowSystem::Poll_For_Events()
+	void WindowSystem::PollForEvents()
 	{
 		glfwPollEvents();
 	}
@@ -81,27 +81,27 @@ namespace HBL {
 		glfwTerminate();
 	}
 
-	GLFWwindow* WindowSystem::Get_Window()
+	GLFWwindow* WindowSystem::GetWindow()
 	{
 		return window;
 	}
 
-	float WindowSystem::Get_Width()
+	float WindowSystem::GetWidth()
 	{
 		return width;
 	}
 
-	float WindowSystem::Get_Height()
+	float WindowSystem::GetHeight()
 	{
 		return height;
 	}
 
-	float WindowSystem::Get_RefreshRate()
+	float WindowSystem::GetRefreshRate()
 	{
 		return refresh_rate;
 	}
 
-	const std::string& WindowSystem::Get_Title()
+	const std::string& WindowSystem::GetTitle()
 	{
 		return title;
 	}

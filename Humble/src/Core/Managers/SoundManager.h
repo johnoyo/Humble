@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../Core.h"
-#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include <thread>
-#include "fmod.hpp"
+#include "../GlobalArrays.h"
+
+#include <fmod.hpp>
 #include <fmod_errors.h>
 
 namespace HBL {

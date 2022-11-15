@@ -5,18 +5,15 @@ namespace HBL {
 
 	class HBL_API IScene {
 	public:
-		IScene(IEntity& player, IEntity& camera) : m_Player(player), m_Camera(camera) {  }
+		IScene(IEntity& player) : m_Player(player) {  }
 
-		virtual void Enroll_Entities() = 0;
-		virtual void Add_Components() = 0;
-		virtual void Init_Components() = 0;
-		virtual void Init_Systems() = 0;
+		virtual void EnrollEntities() = 0;
+		virtual void AddComponents() = 0;
+		virtual void InitComponents() = 0;
 
 		IEntity& GetPlayer() { return m_Player; }
-		IEntity& GetCamera() { return m_Camera; }
 	private:
 		IEntity& m_Player;
-		IEntity& m_Camera;
 	};
 
 }

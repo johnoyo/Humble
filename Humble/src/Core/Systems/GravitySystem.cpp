@@ -5,29 +5,10 @@ namespace HBL {
 	void GravitySystem::Start()
 	{
 		FUNCTION_PROFILE();
-	}
-
-	void GravitySystem::InitializeGravity(float gravityForce, float thres)
-	{
-		FUNCTION_PROFILE();
-
-		// Initialize Gravity forces
-		force = gravityForce;
-		threshold = thres;
-	}
-
-	void GravitySystem::ResetGravity(float gravityForce, float thres)
-	{
-		FUNCTION_PROFILE();
-
-		// Reset Gravity forces
-		force = gravityForce;
-		threshold = thres;
-
-		Filter<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
+		
+		View<Component::Gravity>().ForEach([&](Component::Gravity& gravity)
 		{
-			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
-			gravity.appliedForce = 0.0f;
+			gravity.appliedForce = gravity.force;
 		}).Run();
 	}
 
@@ -43,7 +24,7 @@ namespace HBL {
 			if (gravity.Enabled && !gravity.isGrounded)
 			{
 				if (!gravity.collides)
-					gravity.appliedForce += -0.1f * force * dt;
+					gravity.appliedForce += -0.1f * gravity.force * dt;
 				else
 					gravity.appliedForce = -1.0f;
 
@@ -51,8 +32,8 @@ namespace HBL {
 			}
 			else if (gravity.Enabled && gravity.isGrounded)
 			{
-				if (gravity.appliedForce <= threshold)
-					gravity.appliedForce = threshold;
+				if (gravity.appliedForce <= gravity.threshold)
+					gravity.appliedForce = gravity.threshold;
 			}
 		}).Run();
 	}

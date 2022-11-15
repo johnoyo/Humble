@@ -19,7 +19,7 @@ namespace HBL {
 		static double Double(double floor, double ceiling)
 		{
 			ASSERT(floor < ceiling);
-			return (double)((((double)s_Distribution(s_RandomEngine) / (double)std::numeric_limits<uint32_t>::max()) * (ceiling - floor) + floor));
+			return (double)((((double)s_Distribution(s_RandomEngine) / (double)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
 		}
 
 		static float Float(float floor, float ceiling)

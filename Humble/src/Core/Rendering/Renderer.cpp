@@ -2,7 +2,7 @@
 
 namespace HBL {
 
-	void Renderer::AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, IEntity& camera)
+	void Renderer::AddBatch(const std::string& shaderPath, uint32_t vertexBufferSize, IEntity& camera)
 	{
 		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
 
@@ -12,7 +12,7 @@ namespace HBL {
 		rendererData[size]->vbuffer.Initialize(vertexBufferSize);
 		rendererData[size]->ibuffer.Make_Indecies(rendererData[size]->vbuffer.GetSize());
 
-		Prepare(cameraVP, shader_path);
+		Prepare(cameraVP, shaderPath);
 
 		rendererData[size]->vbuffer.Reset();
 
@@ -175,7 +175,7 @@ namespace HBL {
 	{
 	}
 
-	void Renderer::Prepare(const glm::mat4& cameraVP, const std::string& shader_path, bool debug)
+	void Renderer::Prepare(const glm::mat4& cameraVP, const std::string& shaderPath, bool debug)
 	{
 		FUNCTION_PROFILE();
 
@@ -216,7 +216,7 @@ namespace HBL {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.GetSize() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
 
 		/* shaders */
-		ShaderProgramSource shaderSource = ParseShader(shader_path);
+		ShaderProgramSource shaderSource = ParseShader(shaderPath);
 		rendererData[size]->shader = CreateShader(shaderSource.VertexSource, shaderSource.FragmentSource);
 		glUseProgram(rendererData[size]->shader);
 

@@ -12,7 +12,7 @@ namespace HBL {
 		using IScene::IScene;
 
 	public:
-		void Enroll_Entities() override
+		void EnrollEntities() override
 		{
 			Registry::Get().EnrollEntity(background);
 			Registry::Get().EnrollEntity(player);
@@ -28,7 +28,7 @@ namespace HBL {
 				Registry::Get().EnrollEntity(level[i]);
 		}
 
-		void Add_Components() override
+		void AddComponents() override
 		{
 			Registry::Get().AddComponent<Component::Transform>(background);
 			Registry::Get().AddComponent<Component::SpriteRenderer>(background);
@@ -69,7 +69,7 @@ namespace HBL {
 			}
 		}
 
-		void Init_Components() override
+		void InitComponents() override
 		{
 			Registry::Get().GetComponent<Component::Script>(player).script.push_back(new PlayerScript());
 			Registry::Get().GetComponent<Component::Script>(enemy).script.push_back(new EnemyScript());
@@ -79,21 +79,23 @@ namespace HBL {
 			Registry::Get().GetComponent<Component::Transform>(enemy).Static = false;
 			Registry::Get().GetComponent<Component::Transform>(background).Static = false;
 
+			Registry::Get().GetComponent<Component::Shadow>(enemy).source = &player;
+			Registry::Get().GetComponent<Component::Gravity>(enemy).force = 1000.0f;
+			Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -1000.0f;
+
 			Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
-																				0.0f, GlobalSystems::windowSystem.Get_Width(), 
-																				0.0f, GlobalSystems::windowSystem.Get_Height(), 
+																				0.0f, Systems::Window.GetWidth(), 
+																				0.0f, Systems::Window.GetHeight(), 
 																				-1.0f, 1.0f);
 
 			for (uint32_t i = 0; i < 400; i++)
+			{
 				Registry::Get().GetComponent<Component::Transform>(wall[i]).Static = true;
+				Registry::Get().GetComponent<Component::Shadow>(wall[i]).source = &player;
+			}
 
 			for (uint32_t i = 0; i < 100; i++)
 				Registry::Get().GetComponent<Component::Transform>(level[i]).Static = true;
-		}
-
-		void Init_Systems() override
-		{
-			GlobalSystems::gravitySystem.InitializeGravity(1000.0f, -1000.0f);
 		}
 
 	};

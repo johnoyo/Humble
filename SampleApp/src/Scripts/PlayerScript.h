@@ -71,21 +71,21 @@ namespace HBL {
 			transform_bg.position.y = transform_p.position.y;
 
 			// Camera follow player
-			transform_cam.position.x = transform_p.position.x + (-GlobalSystems::windowSystem.Get_Width() / 2.0f);
-			transform_cam.position.y = transform_p.position.y + (-GlobalSystems::windowSystem.Get_Height() / 2.0f);
+			transform_cam.position.x = transform_p.position.x + (-Systems::Window.GetWidth() / 2.0f);
+			transform_cam.position.y = transform_p.position.y + (-Systems::Window.GetHeight() / 2.0f);
 			
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) 
 			{
 				transform_p.position.x += 210.0f * dt;
-				GlobalSystems::animationSystem.PlayAnimation(animation_p, 0);
+				Systems::Animation.PlayAnimation(animation_p, 0);
 			}
 			else
 			{
-				GlobalSystems::animationSystem.StopAnimation(animation_p, 0);
+				Systems::Animation.StopAnimation(animation_p, 0);
 			}
 			if (InputManager::GetKeyRelease(GLFW_KEY_D))
-				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
+				Systems::Animation.ResetAnimation(animation_p, 0, 5);
 
 			if (InputManager::GetKeyPress(GLFW_KEY_SPACE))
 				SoundManager::Play("res/audio/bleep.mp3", false, false);
@@ -100,16 +100,16 @@ namespace HBL {
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
 				transform_p.position.y += 210.0f * dt;
-				GlobalSystems::animationSystem.PlayAnimation(animation_p, 1);
+				Systems::Animation.PlayAnimation(animation_p, 1);
 			}
 			else
 			{
-				GlobalSystems::animationSystem.StopAnimation(animation_p, 1);
+				Systems::Animation.StopAnimation(animation_p, 1);
 			}
 			if (InputManager::GetKeyRelease(GLFW_KEY_W))
-				GlobalSystems::animationSystem.ResetAnimation(animation_p, 1, 5);
+				Systems::Animation.ResetAnimation(animation_p, 1, 5);
 
-			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy))
+			if (Systems::Collision.CollisionBetween(player, enemy))
 				ENGINE_LOG("Player collided with enemy!!!");
 		}
 

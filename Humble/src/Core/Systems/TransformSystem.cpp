@@ -1,5 +1,4 @@
 #include "TransformSystem.h"
-#include "../GlobalSystems.h"
 
 namespace HBL {
 

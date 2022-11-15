@@ -12,16 +12,16 @@
 #include "..\Core\Systems\ShadowCastSystem.h"
 #include "..\Core\Systems\TextSystem.h"
 
-struct HBL_API GlobalSystems
+struct HBL_API Systems
 {
-	static HBL::WindowSystem windowSystem;
-	static HBL::CameraSystem cameraSystem;
-	static HBL::SpriteRendererSystem spriteRendererSystem;
-	static HBL::AnimationSystem animationSystem;
-	static HBL::ScriptingSystem scriptingSystem;
-	static HBL::CollisionSystem collisionSystem;
-	static HBL::GravitySystem gravitySystem;
-	static HBL::TransformSystem transformSystem;
-	static HBL::ShadowCastSystem shadowSystem;
-	static HBL::TextSystem textSystem;
+	static HBL::WindowSystem Window;
+	static HBL::CameraSystem Camera;
+	static HBL::SpriteRendererSystem SpriteRenderer;
+	static HBL::AnimationSystem Animation;
+	static HBL::ScriptingSystem Scripting;
+	static HBL::CollisionSystem Collision;
+	static HBL::GravitySystem Gravity;
+	static HBL::TransformSystem Transform;
+	static HBL::ShadowCastSystem Shadow;
+	static HBL::TextSystem Text;
 };

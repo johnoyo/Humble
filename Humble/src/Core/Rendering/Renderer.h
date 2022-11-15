@@ -48,7 +48,7 @@ namespace HBL {
 			return instance;
 		}
 
-		void AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, IEntity& camera);
+		void AddBatch(const std::string& shaderPath, uint32_t vertexBufferSize, IEntity& camera);
 		void Render(IEntity& camera);
 
 		void Bind(uint32_t index);
@@ -74,7 +74,7 @@ namespace HBL {
 		void BeginFrame();
 		void EndFrame();
 
-		void Prepare(const glm::mat4& cameraVP, const std::string& shader_path, bool debug = true);
+		void Prepare(const glm::mat4& cameraVP, const std::string& shaderPath, bool debug = true);
 
 		void UpdateIndexBuffer(uint32_t size, uint32_t vindex);
 		void UpdateCameraUniform(const glm::mat4& cameraVP);

@@ -12,7 +12,7 @@ namespace HBL {
 		using IScene::IScene;
 
 	public:
-		void Enroll_Entities() override
+		void EnrollEntities() override
 		{
 			HBL::Random::Init();
 
@@ -37,7 +37,7 @@ namespace HBL {
 				Registry::Get().EnrollEntity(level[i]);
 		}
 
-		void Add_Components() override
+		void AddComponents() override
 		{
 			Registry::Get().AddComponent<Component::Transform>(background);
 			Registry::Get().AddComponent<Component::SpriteRenderer>(background);
@@ -89,7 +89,7 @@ namespace HBL {
 			Registry::Get().AddComponent<Component::Text>(FPSCounter);
 		}
 
-		void Init_Components() override
+		void InitComponents() override
 		{
 			Registry::Get().GetComponent<Component::Script>(player).script.push_back(new PlayerScript());
 			Registry::Get().GetComponent<Component::Script>(enemy).script.push_back(new EnemyScript());
@@ -99,14 +99,18 @@ namespace HBL {
 			Registry::Get().GetComponent<Component::Transform>(enemy).Static = false;
 			Registry::Get().GetComponent<Component::Transform>(background).Static = false;
 
+			Registry::Get().GetComponent<Component::Shadow>(enemy).source = &player;
+			Registry::Get().GetComponent<Component::Gravity>(enemy).force = 1000.0f;
+			Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -1000.0f;
+
 			Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
-																				0.0f, GlobalSystems::windowSystem.Get_Width(), 
-																				0.0f, GlobalSystems::windowSystem.Get_Height(),
+																				0.0f, Systems::Window.GetWidth(), 
+																				0.0f, Systems::Window.GetHeight(),
 																				-1.0f, 1.0f);
 
 			Registry::Get().GetComponent<Component::Camera>(clipCamera).projection = glm::ortho(
-																				0.0f, GlobalSystems::windowSystem.Get_Width() / 2.0f,
-																				0.0f, GlobalSystems::windowSystem.Get_Height() / 2.0f,
+																				0.0f, Systems::Window.GetWidth() / 2.0f,
+																				0.0f, Systems::Window.GetHeight() / 2.0f,
 																				-1.0f, 1.0f);
 
 			Registry::Get().GetComponent<Component::Camera>(clipCamera).primary = false;
@@ -140,11 +144,6 @@ namespace HBL {
 
 			Registry::Get().GetComponent<Component::Health>(player).health = 99;
 			Registry::Get().GetComponent<Component::Health>(player).health = 88;
-		}
-
-		void Init_Systems() override
-		{
-			GlobalSystems::gravitySystem.InitializeGravity(1000.0f, -1000.0f);
 		}
 
 	};

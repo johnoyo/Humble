@@ -1,8 +1,8 @@
 #pragma once
-#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "SpriteRendererSystem.h"
+#include "../ECS/ISystem.h"
+#include "../GlobalArrays.h"
 
  /*
   * Let O be the position of the player
@@ -15,12 +15,12 @@
 
 namespace HBL 
 {
-    class HBL_API ShadowCastSystem 
+    class HBL_API ShadowCastSystem final : public ISystem
     {
     public:
-        void Start(glm::vec4& shadow_color, glm::vec3& player_position);
-        void Run(glm::vec3& player_position);
-        void Clear();
+        virtual void Start() override;
+        virtual void Run(float dt) override;
+        virtual void Clear() override;
     };
 
 }

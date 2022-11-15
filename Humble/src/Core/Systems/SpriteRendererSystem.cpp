@@ -1,11 +1,9 @@
 #include "SpriteRendererSystem.h"
-#include "../GlobalSystems.h"
 
 void HBL::SpriteRendererSystem::Start()
 {
 	FUNCTION_PROFILE();
 
-	//const glm::mat4& vpMatrix = GlobalSystems::cameraSystem.Get_View_Projection_Matrix();
 	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), Globals::Camera);
 	InitVertexBuffer();
 
@@ -67,6 +65,7 @@ void HBL::SpriteRendererSystem::Clear()
 void HBL::SpriteRendererSystem::InitVertexBuffer()
 {
 	FUNCTION_PROFILE();
+
 	Renderer::Get().GetVertexBuffer(0).Reset();
 
 	ENGINE_LOG("Transform size: %d", Registry::Get().GetArray<Component::Transform>().size());

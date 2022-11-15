@@ -7,7 +7,7 @@
 
 #include "Core/GlobalArrays.h"
 #include "Core/Utilities.h"
-#include "Core/GlobalSystems.h"
+#include "Core/Systems.h"
 
 #include "Core/ECS/Registry.h"
 #include "Core/ECS/ISystem.h"

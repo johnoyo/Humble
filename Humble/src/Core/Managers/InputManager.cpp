@@ -1,11 +1,11 @@
 #include "InputManager.h"
-#include "../GlobalSystems.h"
+#include "../Systems.h"
 
 namespace HBL {
 
 	int InputManager::IGetKeyDown(int Key_Code, int Mode)
 	{
-		GLFWwindow* window = GlobalSystems::windowSystem.Get_Window();
+		GLFWwindow* window = Systems::Window.GetWindow();
 
 		int result;
 		result = (glfwGetKey(window, Key_Code) == Mode);
@@ -14,7 +14,7 @@ namespace HBL {
 
 	int InputManager::IGetKeyPress(int Key_Code)
 	{
-		GLFWwindow* window = GlobalSystems::windowSystem.Get_Window();
+		GLFWwindow* window = Systems::Window.GetWindow();
 
 		int result = 0;
 		if (Check_State(Key_Code) == GLFW_PRESS && last_state_p[Key_Code] == GLFW_RELEASE) result = Get().IGetKeyDown(Key_Code, GLFW_PRESS);
@@ -24,7 +24,7 @@ namespace HBL {
 
 	int InputManager::IGetKeyRelease(int Key_Code)
 	{
-		GLFWwindow* window = GlobalSystems::windowSystem.Get_Window();
+		GLFWwindow* window = Systems::Window.GetWindow();
 
 		int result = 0;
 		if (Check_State(Key_Code) == GLFW_RELEASE && last_state_r[Key_Code] == GLFW_PRESS) result = Get().IGetKeyDown(Key_Code, GLFW_RELEASE);
@@ -34,7 +34,7 @@ namespace HBL {
 
 	int InputManager::Check_State(int Key_Code)
 	{
-		GLFWwindow* window = GlobalSystems::windowSystem.Get_Window();
+		GLFWwindow* window = Systems::Window.GetWindow();
 
 		return glfwGetKey(window, Key_Code);
 	}

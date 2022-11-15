@@ -12,17 +12,17 @@ namespace HBL
 		void Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync);
 		void Create();
 
-		void Make_Context_Current(int Vsync);
-		int Window_Should_Close();
-		void Swap_Buffers();
-		void Poll_For_Events();
+		void MakeContextCurrent(int Vsync);
+		int WindowShouldClose();
+		void SwapBuffers();
+		void PollForEvents();
 		void Terminate();
 
-		GLFWwindow* Get_Window();
-		float Get_Width();
-		float Get_Height();
-		float Get_RefreshRate();
-		const std::string& Get_Title();
+		GLFWwindow* GetWindow();
+		float GetWidth();
+		float GetHeight();
+		float GetRefreshRate();
+		const std::string& GetTitle();
 
 	private:
 		void Init();

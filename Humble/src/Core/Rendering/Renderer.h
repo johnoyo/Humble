@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 
@@ -7,18 +8,17 @@
 #include "../ECS/Registry.h"
 #include "../Utilities/OpenGLDebug.h"
 
-#include "stb_image/stb_image.h"
 #include "glm/glm.hpp"
+#include "stb_image/stb_image.h"
 #include "glm/gtc/type_ptr.hpp"
 
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <vector>
 
-
-namespace HBL {
-
+namespace HBL 
+{
 	struct ShaderProgramSource 
 	{
 		std::string VertexSource;
@@ -87,5 +87,4 @@ namespace HBL {
 		uint32_t size = 0;
 		uint32_t currentIndex = 0;
 	};
-
 }

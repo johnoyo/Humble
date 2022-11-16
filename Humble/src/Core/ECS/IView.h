@@ -2,18 +2,18 @@
 
 #include "UUID.h"
 #include "IEntity.h"
-#include "Components.h"
 #include "Registry.h"
+#include "Components.h"
 
 #include "../Core.h"
 #include "../HumbleAPI.h"
 #include "../Utilities.h"
 
 #include <iostream>
-#include <functional>
-#include <unordered_map>
 #include <execution>
 #include <algorithm>
+#include <functional>
+#include <unordered_map>
 
 namespace HBL 
 {
@@ -40,7 +40,7 @@ namespace HBL
 
 		void Run()
 		{
-			for (auto& [uuid, component] : Registry::Get().GetArray<T>()) 
+			for (auto&& [uuid, component] : Registry::Get().GetArray<T>()) 
 			{
 				m_FunctionView(component);
 			}

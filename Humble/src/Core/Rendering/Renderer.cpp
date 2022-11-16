@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void Renderer::AddBatch(const std::string& shaderPath, uint32_t vertexBufferSize, IEntity& camera)
 	{
 		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
@@ -10,7 +10,7 @@ namespace HBL {
 
 		rendererData[size]->vbuffer.total_size = vertexBufferSize;
 		rendererData[size]->vbuffer.Initialize(vertexBufferSize);
-		rendererData[size]->ibuffer.Make_Indecies(rendererData[size]->vbuffer.GetSize());
+		rendererData[size]->ibuffer.MakeIndecies(rendererData[size]->vbuffer.GetSize());
 
 		Prepare(cameraVP, shaderPath);
 
@@ -126,7 +126,7 @@ namespace HBL {
 		ENGINE_LOG("Vertex buffer size: %d", rendererData[vindex]->vbuffer.GetSize() / 4);
 
 		rendererData[vindex]->ibuffer.Clean();
-		rendererData[vindex]->ibuffer.Make_Indecies(rendererData[vindex]->vbuffer.GetSize());
+		rendererData[vindex]->ibuffer.MakeIndecies(rendererData[vindex]->vbuffer.GetSize());
 		UpdateIndexBuffer(rendererData[vindex]->vbuffer.GetSize(), vindex);
 	}
 
@@ -213,7 +213,7 @@ namespace HBL {
 		/* index buffer */
 		glGenBuffers(1, &rendererData[size]->ib);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[size]->ib);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.GetSize() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.GetSize() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.GetIndexBuffer(), GL_STATIC_DRAW);
 
 		/* shaders */
 		ShaderProgramSource shaderSource = ParseShader(shaderPath);
@@ -235,7 +235,7 @@ namespace HBL {
 
 	void Renderer::UpdateIndexBuffer(uint32_t size, uint32_t vindex)
 	{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.GetIndexBuffer(), GL_STATIC_DRAW);
 	}
 
 	void Renderer::UpdateCameraUniform(const glm::mat4& cameraVP)
@@ -316,5 +316,4 @@ namespace HBL {
 
 		return program;
 	}
-
 }

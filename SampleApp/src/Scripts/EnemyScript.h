@@ -1,21 +1,21 @@
 #pragma once
 
-namespace HBL {
-
+namespace HBL 
+{
 	class EnemyScript final : public IScript
 	{
 	public:
 		EnemyScript() {}
 		~EnemyScript() {}
 
-		virtual void Init() override 
+		virtual void OnCreate() override 
 		{
 			Registry::Get().GetComponent<Component::SpriteRenderer>(enemy).texture = "res/textures/player_r.png";
 			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation = 45.0f;
 
 		}
 
-		virtual void Update(float dt) override 
+		virtual void OnUpdate(float dt) override 
 		{
 			Registry::Get().GetComponent<Component::Transform>(enemy).position.x -= 30.0f * dt;
 			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation++;
@@ -42,5 +42,4 @@ namespace HBL {
 		}
 
 	};
-
 }

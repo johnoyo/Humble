@@ -1,9 +1,12 @@
 #pragma once
+
 #include "HumbleAPI.h"
+#include "ECS\IEntity.h"
 
-namespace HBL {
-
-	class HBL_API IScene {
+namespace HBL 
+{
+	class HBL_API IScene 
+	{
 	public:
 		IScene(IEntity& player) : m_Player(player) {  }
 
@@ -12,8 +15,8 @@ namespace HBL {
 		virtual void InitComponents() = 0;
 
 		IEntity& GetPlayer() { return m_Player; }
+
 	private:
 		IEntity& m_Player;
 	};
-
 }

@@ -179,10 +179,9 @@ namespace HBL {
 
 	void Application::Shutdown()
 	{
+		Clear();
+
 		SoundManager::Clean();
-		Renderer::Get().Clear();
-		Systems::Scripting.Clear();
-		Systems::SpriteRenderer.Clear();
 		Systems::Window.Terminate();
 	}
 

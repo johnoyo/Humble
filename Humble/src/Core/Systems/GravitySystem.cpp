@@ -1,7 +1,7 @@
 #include "GravitySystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void GravitySystem::Start()
 	{
 		FUNCTION_PROFILE();
@@ -42,5 +42,4 @@ namespace HBL {
 	{
 		Registry::Get().ClearArray<Component::Gravity>();
 	}
-
 }

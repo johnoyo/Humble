@@ -1,8 +1,8 @@
 #include "InputManager.h"
 #include "../Systems.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	int InputManager::IGetKeyDown(int Key_Code, int Mode)
 	{
 		GLFWwindow* window = Systems::Window.GetWindow();
@@ -38,5 +38,4 @@ namespace HBL {
 
 		return glfwGetKey(window, Key_Code);
 	}
-
 }

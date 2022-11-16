@@ -1,10 +1,11 @@
 #pragma once
+
 #include "../Core.h"
-#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "SpriteRendererSystem.h"
 #include "../ECS/ISystem.h"
+#include "../GlobalArrays.h"
+#include "SpriteRendererSystem.h"
 
 namespace HBL 
 {
@@ -15,5 +16,4 @@ namespace HBL
 		virtual void Run(float dt) override;
 		virtual void Clear() override;
 	};
-
 }

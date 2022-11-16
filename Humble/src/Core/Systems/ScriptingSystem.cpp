@@ -1,7 +1,7 @@
 #include "ScriptingSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void ScriptingSystem::Start()
 	{
 		FUNCTION_PROFILE();
@@ -14,9 +14,9 @@ namespace HBL {
 			{
 				int size = script.script.size();
 				if (current_level < size)
-					script.script[current_level]->Init();
+					script.script[current_level]->OnCreate();
 				else
-					script.script[size - 1]->Init();
+					script.script[size - 1]->OnCreate();
 			}
 		}).Run();
 	}
@@ -33,9 +33,9 @@ namespace HBL {
 			{
 				int size = script.script.size();
 				if (current_level < size)
-					script.script[current_level]->Update(dt);
+					script.script[current_level]->OnUpdate(dt);
 				else
-					script.script[size - 1]->Update(dt);
+					script.script[size - 1]->OnUpdate(dt);
 			}
 		}).Run();
 	}

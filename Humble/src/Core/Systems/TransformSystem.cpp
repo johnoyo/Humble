@@ -1,7 +1,7 @@
 #include "TransformSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void TransformSystem::Start()
 	{
 		FUNCTION_PROFILE();
@@ -38,5 +38,4 @@ namespace HBL {
 	{
 		Registry::Get().ClearArray<Component::Transform>();
 	}
-
 }

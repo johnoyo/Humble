@@ -1,8 +1,7 @@
 #include "TextureManager.h"
-#include "../Systems.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void TextureManager::InitTransparentTexture()
 	{
 		uint32_t whiteTextureID;
@@ -57,5 +56,4 @@ namespace HBL {
 		LoadTexture(path);
 		return (float)m_TextureMap.size() - 1;
 	}
-
 }

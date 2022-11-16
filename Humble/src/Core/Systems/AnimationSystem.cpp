@@ -1,7 +1,7 @@
 #include "AnimationSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void AnimationSystem::Start()
 	{
 		FUNCTION_PROFILE()
@@ -92,5 +92,4 @@ namespace HBL {
 		animation.animations[index].start_coords.x -= diff;
 		animation.animations[index].sprite->coords = animation.animations[index].start_coords;
 	}
-
 }

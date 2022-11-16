@@ -1,15 +1,17 @@
 #pragma once
 
-#include "../HumbleAPI.h"
 #include "../Core.h"
-#include "../GlobalArrays.h"
+#include "../HumbleAPI.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
+#include "../GlobalArrays.h"
 #include "../Systems/SpriteRendererSystem.h"
+
+#include "stb_image/stb_image.h"
+
 #include <vector>
 #include <string>
 #include <iostream>
-#include "stb_image/stb_image.h"
 
 namespace HBL {
 

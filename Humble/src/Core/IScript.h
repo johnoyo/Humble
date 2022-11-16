@@ -8,8 +8,8 @@ namespace HBL {
 		IScript() {}
 		virtual ~IScript() {}
 
-		virtual void Init() = 0;
-		virtual void Update(float dt) = 0;
+		virtual void OnCreate() = 0;
+		virtual void OnUpdate(float dt) = 0;
 	};
 
 }

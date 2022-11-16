@@ -1,16 +1,19 @@
 #pragma once
-#include <vector>
-#include "GlobalArrays.h"
+
+#include "IScene.h"
 #include "Systems.h"
 #include "Utilities.h"
 #include "HumbleAPI.h"
-#include "IScene.h"
 #include "ECS/ISystem.h"
+#include "GlobalArrays.h"
 #include "ECS/Registry.h"
 
-namespace HBL {
+#include <vector>
 
-	class HBL_API Application {
+namespace HBL 
+{
+	class HBL_API Application 
+	{
 	public:
 		Application(float width, float height, const std::string& name, bool full_screen, bool vSync, bool fixedTimeStep, float fixedUpdates = 60.0f);
 
@@ -31,7 +34,6 @@ namespace HBL {
 
 		void UpdateFixedSystems(float dt);
 		void UpdateSystems(float dt);
-		
 
 		void Clear();
 		void Shutdown();
@@ -45,5 +47,4 @@ namespace HBL {
 		float m_FixedDeltaTime = 0.0f;
 		int m_FixedUpdates = 0;
 	};
-
 }

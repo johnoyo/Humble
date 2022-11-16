@@ -4,8 +4,8 @@
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	struct Vertex_Array 
 	{
 		glm::vec2 position;
@@ -44,5 +44,4 @@ namespace HBL {
 		uint32_t m_Index = 0;
 		void FillBuffer(glm::vec2 position, glm::vec4 color, glm::vec2 tex_coords, float tex_id);
 	};
-
 }

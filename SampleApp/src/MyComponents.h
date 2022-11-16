@@ -1,9 +1,9 @@
 #pragma once
 
-namespace HBL {
-
-	namespace Component {
-
+namespace HBL 
+{
+	namespace Component 
+	{
 		struct Health {
 			int health = 100;
 

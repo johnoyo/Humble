@@ -1,7 +1,7 @@
 #include "WindowSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void WindowSystem::Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync)
 	{
 		width = w;
@@ -105,5 +105,4 @@ namespace HBL {
 	{
 		return title;
 	}
-
 }

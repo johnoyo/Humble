@@ -1,9 +1,10 @@
 #pragma once
 
-#include <functional>
 #include "glm/glm.hpp"
 #include "../IScript.h"
 #include "../HumbleAPI.h"
+
+#include <functional>
 
 namespace HBL 
 {

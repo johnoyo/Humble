@@ -1,7 +1,7 @@
 #include "LevelManager.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void LevelManager::ILoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, SpriteRendererSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer, IEntity& background, bool first)
 	{
 		std::ifstream is(level_path);
@@ -255,7 +255,5 @@ namespace HBL {
 
 		is.close();
 		rend.InitVertexBuffer();
-	//	grav.ResetGravity(1000.0f, -1000.0f);
 	}
-
 }

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "ECS/Registry.h"
 #include "ECS/IEntity.h"
+#include "ECS/Registry.h"
 #include "ECS/Components.h"
+
 #include <vector>
 #include <string>
 

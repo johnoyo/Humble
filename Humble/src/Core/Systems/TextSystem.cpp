@@ -1,8 +1,8 @@
 #include "TextSystem.h"
 #include "../Systems.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void TextSystem::Start()
 	{
 		// Import SDF data
@@ -289,5 +289,4 @@ namespace HBL {
 
 		return;
 	}
-
 }

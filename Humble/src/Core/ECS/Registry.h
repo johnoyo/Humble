@@ -131,5 +131,4 @@ namespace HBL
 		std::vector<ISystem*> m_Systems;
 		std::unordered_map<std::size_t, void*> m_ComponentArrays;
 	};
-
 }

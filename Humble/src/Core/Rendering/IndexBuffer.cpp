@@ -1,8 +1,8 @@
 #include "IndexBuffer.h"
 
-namespace HBL {
-
-	void IndexBuffer::Make_Indecies(uint32_t size)
+namespace HBL 
+{
+	void IndexBuffer::MakeIndecies(uint32_t size)
 	{
 		m_IndexBuffer = (uint32_t*)malloc((size / 4u) * 6u * sizeof(uint32_t));
 		int w = 0;
@@ -24,9 +24,8 @@ namespace HBL {
 		m_Index = 0;
 	}
 
-	uint32_t* IndexBuffer::Get_Index_Buffer()
+	uint32_t* IndexBuffer::GetIndexBuffer()
 	{
 		return m_IndexBuffer;
 	}
-
 }

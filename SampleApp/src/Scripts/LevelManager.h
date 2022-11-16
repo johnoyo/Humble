@@ -14,9 +14,10 @@ extern HBL::IEntity sps;
 #include <vector>
 #include <fstream>
 
-namespace HBL {
-
-	class LevelManager {
+namespace HBL 
+{
+	class LevelManager 
+	{
 	public:
 		LevelManager(const LevelManager&) = delete;
 
@@ -51,5 +52,4 @@ namespace HBL {
 		std::string m_level_path;
 		uint32_t m_current_level = -1;
 	};
-
 }

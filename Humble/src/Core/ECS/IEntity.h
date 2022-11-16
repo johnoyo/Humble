@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../HumbleAPI.h"
 #include "UUID.h"
+#include "../HumbleAPI.h"
+
 #include <stdint.h>
 
-namespace HBL {
-
+namespace HBL 
+{
 	struct HBL_API IEntity
 	{
 		UUID m_UUID;

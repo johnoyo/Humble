@@ -2,15 +2,15 @@
 
 #include "LevelManager.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	class LevelHandlerScript final : public IScript
 	{
 	public:
 		LevelHandlerScript() {}
 		~LevelHandlerScript() {}
 
-		virtual void Init() override {
+		virtual void OnCreate() override {
 			std::cout << "Calling level init 0\n";
 			if (LevelManager::GetCurrentLevel() == -1)
 				LevelManager::Load_Level("res/levels/test1.txt", true);
@@ -18,7 +18,7 @@ namespace HBL {
 				LevelManager::Load_Level("res/levels/test2.txt", false);
 		}
 
-		virtual void Update(float dt) override {
+		virtual void OnUpdate(float dt) override {
 			if (InputManager::GetKeyPress(GLFW_KEY_K))
 				Globals::Scene_Change = true;
 
@@ -27,5 +27,4 @@ namespace HBL {
 		}
 
 	};
-
 }

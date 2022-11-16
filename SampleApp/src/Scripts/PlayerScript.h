@@ -1,14 +1,14 @@
 #pragma once
 
-namespace HBL {
-
+namespace HBL 
+{
 	class PlayerScript final : public IScript
 	{
 	public:
 		PlayerScript() {}
 		~PlayerScript() {}
 
-		virtual void Init() override 
+		virtual void OnCreate() override 
 		{
 			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 			sprite.texture = "res/textures/super_mario_tiles.png";
@@ -45,7 +45,7 @@ namespace HBL {
 			animation.animations[1].Enabled = false;
 		}
 
-		virtual void Update(float dt) override 
+		virtual void OnUpdate(float dt) override 
 		{
 			Component::Transform& transform_p = Registry::Get().GetComponent<Component::Transform>(player);
 			Component::Transform& transform_bg = Registry::Get().GetComponent<Component::Transform>(background);
@@ -114,5 +114,4 @@ namespace HBL {
 		}
 
 	};
-
 }

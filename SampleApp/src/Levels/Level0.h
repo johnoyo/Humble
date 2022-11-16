@@ -4,8 +4,8 @@
 #include "..\Scripts\EnemyScript.h"
 #include "..\Scripts\LevelHandlerScript.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	class Level0 final : public IScene
 	{
 		// This is so the class Level0 also inherits the constructor of class Scene
@@ -147,6 +147,5 @@ namespace HBL {
 		}
 
 	};
-
 }
 

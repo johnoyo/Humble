@@ -1,7 +1,7 @@
 #include "CollisionSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void CollisionSystem::Start()
 	{
 		FUNCTION_PROFILE();
@@ -61,8 +61,8 @@ namespace HBL {
 						collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 						// collision check on x-axis
-						//Check_For_Sector_Collisions(entt, index, buffer, X_AXIS);
-						Check_For_Collisions(entt, buffer, X_AXIS);
+						//CheckForSectorCollisions(entt, index, buffer, X_AXIS);
+						CheckForCollisions(entt, buffer, X_AXIS);
 
 						// update collision box on y-axis
 						collisionBox.tl.y = tr.y + sc.y / 2.0f;
@@ -71,8 +71,8 @@ namespace HBL {
 						collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 						// collision check on y-axis
-						//Check_For_Sector_Collisions(entt, index, buffer, Y_AXIS);
-						Check_For_Collisions(entt, buffer, Y_AXIS);
+						//CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
+						CheckForCollisions(entt, buffer, Y_AXIS);
 					//}
 				}
 			}
@@ -372,7 +372,7 @@ namespace HBL {
 		return false;
 	}
 
-	void CollisionSystem::Check_For_Collisions(IEntity& p, VertexBuffer& buffer, int axis)
+	void CollisionSystem::CheckForCollisions(IEntity& p, VertexBuffer& buffer, int axis)
 	{
 		//FUNCTION_PROFILE();
 
@@ -479,7 +479,7 @@ namespace HBL {
 		return;
 	}
 
-	void CollisionSystem::Check_For_Sector_Collisions(IEntity& p, int index, VertexBuffer& buffer, int axis)
+	void CollisionSystem::CheckForSectorCollisions(IEntity& p, int index, VertexBuffer& buffer, int axis)
 	{
 		//FUNCTION_PROFILE();
 
@@ -590,7 +590,6 @@ namespace HBL {
 
 		return;
 	}
-
 }
 
 /*

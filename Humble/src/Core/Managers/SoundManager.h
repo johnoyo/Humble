@@ -8,9 +8,10 @@
 #include <fmod.hpp>
 #include <fmod_errors.h>
 
-namespace HBL {
-
-	class HBL_API SoundManager {
+namespace HBL 
+{
+	class HBL_API SoundManager 
+	{
 	public:
 		SoundManager(const SoundManager&) = delete;
 
@@ -41,5 +42,4 @@ namespace HBL {
 		FMOD_RESULT result;
 		std::unordered_map<std::string, FMOD::Sound*> sounds;
 	};
-
 }

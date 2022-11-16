@@ -1,8 +1,8 @@
 #include "ShadowCastSystem.h"
 #include "../Systems.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void ShadowCastSystem::Start()
 	{
 		FUNCTION_PROFILE();
@@ -38,8 +38,6 @@ namespace HBL {
 			{
 				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
-				std::vector<glm::vec2> shadow_points;
-				std::vector<glm::vec2> edge_points;
 				std::vector<glm::vec2> vertices;
 
 				// Retrieve vertices of entity
@@ -47,6 +45,8 @@ namespace HBL {
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
+
+				std::vector<glm::vec2> shadow_points;
 
 				// Find all shadow points
 				for (int j = 0; j < 4; j++)
@@ -69,6 +69,9 @@ namespace HBL {
 				Renderer::Get().DrawQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
 				Renderer::Get().DrawQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
 				Renderer::Get().DrawQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+
+				vertices.clear();
+				shadow_points.clear();
 			}
 		}).Run();
 
@@ -90,14 +93,13 @@ namespace HBL {
 			{
 				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
-				std::vector<glm::vec2> shadow_points;
-				std::vector<glm::vec2> edge_points;
-
 				std::vector<glm::vec2> vertices;
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
 				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
+
+				std::vector<glm::vec2> shadow_points;
 
 				// Find all shadow points
 				for (int j = 0; j < 4; j++)
@@ -114,14 +116,15 @@ namespace HBL {
 					rdy = (shadow.shadowDistance) * sinf(base_ang);
 
 					shadow_points.push_back({ rdx, rdy });
-
-					// Find Intersection points between shadow line and all edges, store closer one for each edge 
 				}
 
 				// Update shadow quad positions
 				buffer.UpdatePositionOnQuad(shadow.bufferIndex, vertices[3], shadow_points[3], shadow_points[0], vertices[0]);
 				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
 				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
+
+				vertices.clear();
+				shadow_points.clear();
 			}
 		}).Run();
 	}

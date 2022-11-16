@@ -7,9 +7,10 @@
 #include <vector>
 #include <algorithm>
 
-namespace HBL {
-
-	struct SDFData {
+namespace HBL 
+{
+	struct SDFData 
+	{
 		int code;
 		int xCoord;
 		int yCoord;
@@ -37,5 +38,4 @@ namespace HBL {
 		std::vector<SDFData> sdfData;
 		float cursorPosition = 0.0f;
 	};
-
 }

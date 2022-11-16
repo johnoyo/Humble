@@ -2,19 +2,19 @@
 
 #include "UUID.h"
 #include "IEntity.h"
-#include "Components.h"
 #include "Registry.h"
+#include "Components.h"
 
 #include "../Core.h"
 #include "../HumbleAPI.h"
 #include "../Utilities.h"
 
+#include <utility>
 #include <iostream>
-#include <functional>
 #include <execution>
 #include <algorithm>
+#include <functional>
 #include <type_traits>
-#include <utility>
 
 namespace HBL
 {

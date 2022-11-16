@@ -1,7 +1,7 @@
 #include "VertexBuffer.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void VertexBuffer::Initialize(int total_m_Buffer_size)
 	{
 		total_size = total_m_Buffer_size;
@@ -53,8 +53,8 @@ namespace HBL {
 		glm::vec4 quad_vertex_position[4];
 
 		quad_vertex_position[0] = { -0.5f,  0.5f, 0.0f, 1.0f };
-		quad_vertex_position[1] = { 0.5f,  0.5f, 0.0f, 1.0f };
-		quad_vertex_position[2] = { 0.5f, -0.5f, 0.0f, 1.0f };
+		quad_vertex_position[1] = {  0.5f,  0.5f, 0.0f, 1.0f };
+		quad_vertex_position[2] = {  0.5f, -0.5f, 0.0f, 1.0f };
 		quad_vertex_position[3] = { -0.5f, -0.5f, 0.0f, 1.0f };
 
 		m_Buffer[indx].position = transform * quad_vertex_position[0];
@@ -179,5 +179,4 @@ namespace HBL {
 		total_size = 0;
 		m_Index = 0;
 	}
-
 }

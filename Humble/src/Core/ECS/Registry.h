@@ -47,6 +47,20 @@ namespace HBL
 			m_Entities.emplace_back(Entity);
 		}
 
+		IEntity* FindEntity(const std::string& tag)
+		{
+			for (IEntity& entt : m_Entities)
+			{
+				Component::Tag& tagComponent = GetComponent<Component::Tag>(entt);
+
+				if (tagComponent.tag == tag)
+					return &entt;
+			}
+
+			ENGINE_LOG("Could not find entity with tag: %s", tag);
+			return nullptr;
+		}
+
 		template<typename T>
 		T& AddComponent(IEntity& Entity)
 		{

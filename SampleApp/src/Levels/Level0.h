@@ -18,15 +18,15 @@ namespace HBL
 			std::cout << "Random Double: " << Random::Double(0.0, 10.0) << "\n";
 			std::cout << "Random Int: " << Random::Int32(-20, 5) << "\n";
 
-			Registry::Get().EnrollEntity(background);
-			Registry::Get().EnrollEntity(player);
-			Registry::Get().EnrollEntity(enemy);
+			Registry::Get().EnrollEntity(background, "Background");
+			Registry::Get().EnrollEntity(player, "Player");
+			Registry::Get().EnrollEntity(enemy, "Enemy");
 			Registry::Get().EnrollEntity(camera, "Camera");
 			Registry::Get().EnrollEntity(clipCamera, "ClipCamera");
 			Registry::Get().EnrollEntity(lvlHandler);
-			Registry::Get().EnrollEntity(sps);
-			Registry::Get().EnrollEntity(text);
-			Registry::Get().EnrollEntity(FPSCounter);
+			Registry::Get().EnrollEntity(sps, "Spritesheet");
+			Registry::Get().EnrollEntity(text, "Text");
+			Registry::Get().EnrollEntity(FPSCounter, "FPSCounter");
 			
 			for (uint32_t i = 0; i < 400; i++)
 				Registry::Get().EnrollEntity(wall[i]);

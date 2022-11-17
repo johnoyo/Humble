@@ -12,9 +12,9 @@ namespace HBL
 		void OnAttach() override
 		{
 			// Enroll entities.
-			Registry::Get().EnrollEntity(background);
-			Registry::Get().EnrollEntity(player);
-			Registry::Get().EnrollEntity(enemy);
+			Registry::Get().EnrollEntity(background, "Background");
+			Registry::Get().EnrollEntity(player, "Player");
+			Registry::Get().EnrollEntity(enemy, "Enemy");
 			Registry::Get().EnrollEntity(camera, "Camera");
 			Registry::Get().EnrollEntity(sps);
 			Registry::Get().EnrollEntity(lvlHandler);

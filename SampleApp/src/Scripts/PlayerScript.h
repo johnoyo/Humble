@@ -10,6 +10,8 @@ namespace HBL
 
 		virtual void OnCreate() override 
 		{
+			IEntity* enemyEntity = Registry::Get().FindEntity("Enemy");
+
 			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 			sprite.texture = "res/textures/super_mario_tiles.png";
 			sprite.coords = { 6.0f, 1.0f };

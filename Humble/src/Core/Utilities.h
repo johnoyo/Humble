@@ -1,7 +1,22 @@
 #pragma once
 
-#include "Utilities/ProfilerScope.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <string>
+#include <iostream>
+#include <algorithm>
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
+#include "Utilities/ProfilerScope.h"
+
+#define X_AXIS 1
+#define Y_AXIS 2
+#define PI 3.14159265f
+
+#define ASSERT(x) if (!(x)) __debugbreak();
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 

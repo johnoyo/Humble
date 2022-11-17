@@ -3,7 +3,6 @@
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 
-#include "../Core.h"
 #include "../HumbleAPI.h"
 #include "../ECS/Registry.h"
 #include "../Utilities/OpenGLDebug.h"

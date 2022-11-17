@@ -3,12 +3,14 @@
 #include "../HumbleAPI.h"
 #include "../ECS/ISystem.h"
 
-#include "../Core.h"
 #include "../Utilities.h"
 #include "../ECS/Group.h"
-#include "../GlobalArrays.h"
+#include "../ECS/IEntity.h"
+#include "../ECS/Registry.h"
+#include "../ECS/Components.h"
 #include "../ECS/Components.h"
 #include "../Rendering/Renderer.h"
+#include "../Managers/SceneManager.h"
 #include "../Managers/TextureManager.h"
 
 #include <vector>

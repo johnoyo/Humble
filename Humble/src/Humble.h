@@ -7,7 +7,6 @@
 
 #include "Core/Systems.h"
 #include "Core/Utilities.h"
-#include "Core/GlobalArrays.h"
 
 #include "Core/ECS/ISystem.h"
 #include "Core/ECS/Registry.h"
@@ -16,5 +15,6 @@
 #include "Core/Utilities/Random.h"
 #include "Core/Managers/InputManager.h"
 #include "Core/Managers/SoundManager.h"
+#include "Core/Managers/SceneManager.h"
 
 #include "Core/Application.h"

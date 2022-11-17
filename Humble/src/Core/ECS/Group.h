@@ -5,7 +5,6 @@
 #include "Registry.h"
 #include "Components.h"
 
-#include "../Core.h"
 #include "../HumbleAPI.h"
 #include "../Utilities.h"
 

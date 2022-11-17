@@ -1,8 +1,10 @@
 #pragma once
-#include "../Core.h"
-#include "../GlobalArrays.h"
+
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
+#include "../ECS/IEntity.h"
+#include "../ECS/Registry.h"
+#include "../ECS/Components.h"
 
 namespace HBL 
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../HumbleAPI.h"
-#include "../Core.h"
+#include "../Utilities.h"
 
 #include <stdint.h>
 #include <random>

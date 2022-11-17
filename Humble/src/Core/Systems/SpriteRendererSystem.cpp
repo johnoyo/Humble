@@ -4,7 +4,7 @@ void HBL::SpriteRendererSystem::Start()
 {
 	FUNCTION_PROFILE();
 
-	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), Globals::Camera);
+	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), SceneManager::Get().GetMainCamera());
 	InitVertexBuffer();
 
 	TextureManager::Get().InitTransparentTexture();

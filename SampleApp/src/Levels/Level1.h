@@ -8,12 +8,10 @@ namespace HBL
 {
 	class Level1 final : public IScene
 	{
-		// This is so the class Level1 also inherits the constructor of class Scene
-		using IScene::IScene;
-
 	public:
-		void EnrollEntities() override
+		void OnAttach() override
 		{
+			// Enroll entities.
 			Registry::Get().EnrollEntity(background);
 			Registry::Get().EnrollEntity(player);
 			Registry::Get().EnrollEntity(enemy);
@@ -26,10 +24,8 @@ namespace HBL
 
 			for (uint32_t i = 0; i < 100; i++)
 				Registry::Get().EnrollEntity(level[i]);
-		}
 
-		void AddComponents() override
-		{
+			// Add components.
 			Registry::Get().AddComponent<Component::Transform>(background);
 			Registry::Get().AddComponent<Component::SpriteRenderer>(background);
 
@@ -67,10 +63,8 @@ namespace HBL
 				Registry::Get().AddComponent<Component::CollisionBox>(level[i]);
 				Registry::Get().AddComponent<Component::SpriteRenderer>(level[i]);
 			}
-		}
 
-		void InitComponents() override
-		{
+			// Initialize components.
 			Registry::Get().GetComponent<Component::Script>(player).script.push_back(new PlayerScript());
 			Registry::Get().GetComponent<Component::Script>(enemy).script.push_back(new EnemyScript());
 			Registry::Get().GetComponent<Component::Script>(lvlHandler).script.push_back(new LevelHandlerScript());
@@ -96,6 +90,11 @@ namespace HBL
 
 			for (uint32_t i = 0; i < 100; i++)
 				Registry::Get().GetComponent<Component::Transform>(level[i]).Static = true;
+		}
+
+		virtual void OnDetach() override 
+		{
+
 		}
 
 	};

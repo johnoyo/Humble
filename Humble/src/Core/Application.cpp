@@ -12,20 +12,20 @@ namespace HBL {
 
 	void Application::ManageScenes()
 	{
-		if (Globals::Scene_Change) 
+		if (SceneManager::Get().m_SceneChange)
 		{
 			if (m_Current < m_Scenes.size() - 1)
 			{
-				Globals::Scene_Change = false;
-				Globals::Current_Level++;
+				m_Scenes[m_Current]->OnDetach();
+
+				SceneManager::Get().m_SceneChange = false;
+				SceneManager::Get().m_CurrentLevel++;
 				m_Current++;
 
 				// Clear Systems and ECS
 				Clear();
 
-				m_Scenes[m_Current]->EnrollEntities();
-				m_Scenes[m_Current]->AddComponents();
-				m_Scenes[m_Current]->InitComponents();
+				m_Scenes[m_Current]->OnAttach();
 
 				// Initialize Systems
 				RestartSystems();
@@ -35,9 +35,7 @@ namespace HBL {
 
 	void Application::Start()
 	{
-		m_Scenes[m_Current]->EnrollEntities();
-		m_Scenes[m_Current]->AddComponents();
-		m_Scenes[m_Current]->InitComponents();
+		m_Scenes[m_Current]->OnAttach();
 
 		InitializeSystems();
 
@@ -59,7 +57,7 @@ namespace HBL {
 			SoundManager::Update();
 
 			// Render
-			Renderer::Get().Render(Globals::Camera);
+			Renderer::Get().Render(SceneManager::Get().m_MainCamera);
 			m_Frames++;
 
 			// Reset after one second

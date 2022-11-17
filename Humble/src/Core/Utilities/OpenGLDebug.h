@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core.h"
+
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 

@@ -12,7 +12,7 @@ namespace HBL
 		TextureManager::Get().LoadTexture("res/textures/testFont.png");
 
 		// Add another batch for text rendering (200 characters for each text component).
-		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Registry::Get().GetArray<Component::Text>().size() * 4), Globals::Camera);
+		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Registry::Get().GetArray<Component::Text>().size() * 4), SceneManager::Get().GetMainCamera());
 		
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
@@ -24,8 +24,8 @@ namespace HBL
 
 			if (textTransform.screenSpace)
 			{
-				textTransform.position.x = Registry::Get().GetComponent<Component::Transform>(Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
-				textTransform.position.y = Registry::Get().GetComponent<Component::Transform>(Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
+				textTransform.position.x = Registry::Get().GetComponent<Component::Transform>(SceneManager::Get().GetMainCamera()).position.x + textTransform.sreenSpaceOffset.x;
+				textTransform.position.y = Registry::Get().GetComponent<Component::Transform>(SceneManager::Get().GetMainCamera()).position.y + textTransform.sreenSpaceOffset.y;
 			}
 
 			uint32_t prevIndex = INVALID_INDEX;
@@ -102,8 +102,8 @@ namespace HBL
 			// If screen space text follow camera.
 			if (textTransform.screenSpace)
 			{
-				textTransform.position.x = Registry::Get().GetComponent<Component::Transform>(Globals::Camera).position.x + textTransform.sreenSpaceOffset.x;
-				textTransform.position.y = Registry::Get().GetComponent<Component::Transform>(Globals::Camera).position.y + textTransform.sreenSpaceOffset.y;
+				textTransform.position.x = Registry::Get().GetComponent<Component::Transform>(SceneManager::Get().GetMainCamera()).position.x + textTransform.sreenSpaceOffset.x;
+				textTransform.position.y = Registry::Get().GetComponent<Component::Transform>(SceneManager::Get().GetMainCamera()).position.y + textTransform.sreenSpaceOffset.y;
 			}
 
 			uint32_t prevIndex = INVALID_INDEX;

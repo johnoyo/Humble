@@ -21,7 +21,7 @@ namespace HBL
 			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation++;
 			//Registry::Get().GetComponent<Component::Gravity>(enemy).Enabled = false;
 
-			if (Globals::Current_Level == 0)
+			if (SceneManager::Get().GetCurrentLevel() == 0)
 			{
 				if (InputManager::GetKeyDown(GLFW_KEY_H))
 				{

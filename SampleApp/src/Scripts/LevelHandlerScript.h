@@ -20,7 +20,7 @@ namespace HBL
 
 		virtual void OnUpdate(float dt) override {
 			if (InputManager::GetKeyPress(GLFW_KEY_K))
-				Globals::Scene_Change = true;
+				SceneManager::Get().TriggerSceneChange();
 
 			if (InputManager::GetKeyPress(GLFW_KEY_L))
 				LevelManager::Load_Level("res/levels/test4.txt", true);

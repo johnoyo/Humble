@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../Core.h"
 #include "../HumbleAPI.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include "../GlobalArrays.h"
+#include "../ECS/IEntity.h"
+#include "../ECS/Registry.h"
+#include "../ECS/Components.h"
 #include "../Systems/SpriteRendererSystem.h"
 
 #include "stb_image/stb_image.h"

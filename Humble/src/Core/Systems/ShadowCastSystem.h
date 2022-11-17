@@ -1,8 +1,13 @@
 #pragma once
+
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include "../ECS/ISystem.h"
-#include "../GlobalArrays.h"
+#include "../ECS/IEntity.h"
+#include "../ECS/Registry.h"
+#include "../ECS/Components.h"
+
+#include "../Managers/SceneManager.h"
 
  /*
   * Let O be the position of the player

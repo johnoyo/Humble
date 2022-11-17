@@ -1,11 +1,13 @@
 #pragma once
-#include "../ECS/ISystem.h"
-#include "../Rendering/Renderer.h"
+
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iterator>
-#include <vector>
 #include <algorithm>
+
+#include "../ECS/ISystem.h"
+#include "../Rendering/Renderer.h"
 
 namespace HBL 
 {

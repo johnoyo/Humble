@@ -5,7 +5,6 @@
 #include "IEntity.h"
 
 #include "../HumbleAPI.h"
-#include "../GlobalArrays.h"
 
 #include <functional>
 

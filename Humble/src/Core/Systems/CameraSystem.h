@@ -2,6 +2,7 @@
 
 #include "../HumbleAPI.h"
 #include "../ECS/ISystem.h"
+#include "../Managers/SceneManager.h"
 
 namespace HBL
 {

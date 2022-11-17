@@ -8,15 +8,9 @@ namespace HBL
 	class HBL_API IScene 
 	{
 	public:
-		IScene(IEntity& player) : m_Player(player) {  }
+		IScene() = default;
 
-		virtual void EnrollEntities() = 0;
-		virtual void AddComponents() = 0;
-		virtual void InitComponents() = 0;
-
-		IEntity& GetPlayer() { return m_Player; }
-
-	private:
-		IEntity& m_Player;
+		virtual void OnAttach() = 0;
+		virtual void OnDetach() = 0;
 	};
 }

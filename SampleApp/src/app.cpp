@@ -28,8 +28,8 @@ HBL::HealthSystem healthSystem;
 
 int main() 
 {
-	HBL::Level0 level0(player);
-	HBL::Level1 level1(player);
+	HBL::Level0 level0;
+	HBL::Level1 level1;
 
 	HBL::Application *app = new HBL::Application(1920.0f, 1080.0f, "SampleApp", false, false, false, 30.0f);
 

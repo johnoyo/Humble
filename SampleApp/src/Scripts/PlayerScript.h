@@ -52,7 +52,7 @@ namespace HBL
 			Component::Transform& transform_cam = Registry::Get().GetComponent<Component::Transform>(camera);
 			Component::Animation& animation_p = Registry::Get().GetComponent<Component::Animation>(player);
 
-			if (Globals::Current_Level == 0)
+			if (SceneManager::Get().GetCurrentLevel() == 0)
 			{
 				if (InputManager::GetKeyDown(GLFW_KEY_C))
 				{

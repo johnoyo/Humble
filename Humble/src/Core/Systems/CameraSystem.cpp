@@ -17,7 +17,7 @@ void HBL::CameraSystem::Start()
 			camera.viewProjectionMatrix = camera.projection * glm::inverse(tranform);
 
 			if (camera.primary)
-				Globals::Camera = entt;
+				SceneManager::Get().SetMainCamera(entt);
 		}
 	}).Run();
 }
@@ -39,12 +39,12 @@ void HBL::CameraSystem::Run(float dt)
 			camera.viewProjectionMatrix = camera.projection * glm::inverse(tranform);
 
 			if (camera.primary)
-				Globals::Camera = entt;
+				SceneManager::Get().SetMainCamera(entt);
 		}
 		else if (camera.Enabled && camera.Static)
 		{
 			if (camera.primary)
-				Globals::Camera = entt;
+				SceneManager::Get().SetMainCamera(entt);
 		}
 	}).Run();
 }

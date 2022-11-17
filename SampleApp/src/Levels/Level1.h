@@ -26,16 +26,13 @@ namespace HBL
 				Registry::Get().EnrollEntity(level[i]);
 
 			// Add components.
-			Registry::Get().AddComponent<Component::Transform>(background);
 			Registry::Get().AddComponent<Component::SpriteRenderer>(background);
 
-			Registry::Get().AddComponent<Component::Transform>(player);
 			Registry::Get().AddComponent<Component::Script>(player);
 			Registry::Get().AddComponent<Component::SpriteRenderer>(player);
 			Registry::Get().AddComponent<Component::CollisionBox>(player);
 			Registry::Get().AddComponent<Component::Animation>(player);
 
-			Registry::Get().AddComponent<Component::Transform>(enemy);
 			Registry::Get().AddComponent<Component::Script>(enemy);
 			Registry::Get().AddComponent<Component::SpriteRenderer>(enemy);
 			Registry::Get().AddComponent<Component::CollisionBox>(enemy);
@@ -43,7 +40,6 @@ namespace HBL
 			Registry::Get().AddComponent<Component::Shadow>(enemy);
 
 			Registry::Get().AddComponent<Component::Camera>(camera);
-			Registry::Get().AddComponent<Component::Transform>(camera);
 
 			Registry::Get().AddComponent<Component::SpriteRenderer>(sps);
 
@@ -51,7 +47,6 @@ namespace HBL
 
 			for (uint32_t i = 0; i < 400; i++) 
 			{
-				Registry::Get().AddComponent<Component::Transform>(wall[i]);
 				Registry::Get().AddComponent<Component::CollisionBox>(wall[i]);
 				Registry::Get().AddComponent<Component::SpriteRenderer>(wall[i]);
 				Registry::Get().AddComponent<Component::Shadow>(wall[i]);
@@ -59,7 +54,6 @@ namespace HBL
 
 			for (uint32_t i = 0; i < 100; i++) 
 			{
-				Registry::Get().AddComponent<Component::Transform>(level[i]);
 				Registry::Get().AddComponent<Component::CollisionBox>(level[i]);
 				Registry::Get().AddComponent<Component::SpriteRenderer>(level[i]);
 			}

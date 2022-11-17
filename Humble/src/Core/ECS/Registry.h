@@ -32,6 +32,7 @@ namespace HBL
 			Entity.m_UUID = UUID(Random::UInt64(0, UINT64_MAX));
 			m_Entities.emplace_back(Entity);
 
+			AddComponent<Component::Transform>(Entity);
 			AddComponent<Component::Tag>(Entity);
 
 			if (name.empty())
@@ -40,12 +41,10 @@ namespace HBL
 				GetComponent<Component::Tag>(Entity).tag = name;
 		}
 
-		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid, const std::string& name)
+		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid)
 		{
 			Entity.m_UUID = UUID(uuid);
 			m_Entities.emplace_back(Entity);
-
-			AddComponent<Component::Tag>(Entity).tag = name;
 		}
 
 		template<typename T>

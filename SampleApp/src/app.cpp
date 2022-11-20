@@ -1,19 +1,6 @@
 #include "../../Humble/src/Humble.h"
 #include "../../Humble/src/Graphics.h"
 
-// User defined entities
-HBL::IEntity background;
-HBL::IEntity player;
-HBL::IEntity enemy;
-HBL::IEntity wall[400];
-HBL::IEntity level[10000];
-HBL::IEntity camera;
-HBL::IEntity clipCamera;
-HBL::IEntity lvlHandler;
-HBL::IEntity sps;
-HBL::IEntity text;
-HBL::IEntity FPSCounter;
-
 // User defined components
 #include "MyComponents.h"
 

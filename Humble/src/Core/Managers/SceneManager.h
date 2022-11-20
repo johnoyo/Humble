@@ -9,6 +9,7 @@
 
 namespace HBL 
 {
+	class IScene;
 	class Application;
 
 	class HBL_API SceneManager
@@ -22,6 +23,8 @@ namespace HBL
 			return instance;
 		}
 
+		IScene* m_ActiveScene = nullptr;
+
 		void TriggerSceneChange();
 		HBL::IEntity& GetMainCamera();
 		void SetMainCamera(HBL::IEntity& mainCamera);
@@ -32,8 +35,8 @@ namespace HBL
 
 		friend class Application;
 
+		HBL::IEntity m_MainCamera;
 		bool m_SceneChange = false;
 		uint32_t m_CurrentLevel = 0;
-		HBL::IEntity m_MainCamera;
 	};
 }

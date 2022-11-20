@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "../Application.h"
+#include "../IScene.h"
 
 namespace HBL
 {

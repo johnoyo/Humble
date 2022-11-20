@@ -16,7 +16,7 @@ namespace HBL
 		{
 			Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(entt);
 
-			if (shadow.Enabled)
+			if (shadow.Enabled && shadow.source != nullptr)
 			{
 				Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 
@@ -25,7 +25,6 @@ namespace HBL
 
 				shadow.parentBufferIndex = Registry::Get().GetComponent<Component::Transform>(entt).bufferIndex;
 				shadow.bufferIndex = buffer.GetSize() + offset;
-				shadow.color = shadow.color;
 
 				offset += 12;
 			}
@@ -34,7 +33,7 @@ namespace HBL
 		// Init shadow cast positions
 		View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
 		{
-			if (shadow.Enabled)
+			if (shadow.Enabled && shadow.source != nullptr)
 			{
 				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
@@ -69,9 +68,6 @@ namespace HBL
 				Renderer::Get().DrawQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
 				Renderer::Get().DrawQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
 				Renderer::Get().DrawQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
-
-				vertices.clear();
-				shadow_points.clear();
 			}
 		}).Run();
 
@@ -89,7 +85,7 @@ namespace HBL
 
 		View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
 		{
-			if (shadow.Enabled)
+			if (shadow.Enabled && shadow.source != nullptr)
 			{
 				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
@@ -118,13 +114,15 @@ namespace HBL
 					shadow_points.push_back({ rdx, rdy });
 				}
 
-				// Update shadow quad positions
+				// Update shadow quad positions and colors.
 				buffer.UpdatePositionOnQuad(shadow.bufferIndex, vertices[3], shadow_points[3], shadow_points[0], vertices[0]);
-				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
-				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
+				buffer.UpdateMaterialOnQuad(shadow.bufferIndex, shadow.color, 0);
 
-				vertices.clear();
-				shadow_points.clear();
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
+				buffer.UpdateMaterialOnQuad(shadow.bufferIndex + 4, shadow.color, 0);
+
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
+				buffer.UpdateMaterialOnQuad(shadow.bufferIndex + 8, shadow.color, 0);
 			}
 		}).Run();
 	}

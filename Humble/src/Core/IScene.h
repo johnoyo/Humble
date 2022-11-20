@@ -11,6 +11,7 @@ namespace HBL
 		IScene() = default;
 
 		virtual void OnAttach() = 0;
+		virtual void OnCreate() = 0;
 		virtual void OnDetach() = 0;
 	};
 }

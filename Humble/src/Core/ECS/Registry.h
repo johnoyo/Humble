@@ -47,7 +47,7 @@ namespace HBL
 			m_Entities.emplace_back(Entity);
 		}
 
-		IEntity* FindEntity(const std::string& tag)
+		IEntity* FindEntityWithTag(const std::string& tag)
 		{
 			for (IEntity& entt : m_Entities)
 			{

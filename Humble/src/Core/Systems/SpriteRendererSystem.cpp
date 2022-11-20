@@ -13,7 +13,7 @@ void HBL::SpriteRendererSystem::Start()
 	{
 		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 		if (sprite.texture != "-")
-			TextureManager::Get().LoadTexture(sprite.texture);
+			TextureManager::Get().Find(sprite.texture);
 	}).Run();
 }
 

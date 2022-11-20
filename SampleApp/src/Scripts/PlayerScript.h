@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Humble.h"
+
 namespace HBL 
 {
 	class PlayerScript final : public IScript
@@ -8,9 +10,21 @@ namespace HBL
 		PlayerScript() {}
 		~PlayerScript() {}
 
+		IEntity player;
+		IEntity enemy;
+		IEntity background;
+		IEntity camera;
+		IEntity clipCamera;
+
 		virtual void OnCreate() override 
 		{
-			IEntity* enemyEntity = Registry::Get().FindEntity("Enemy");
+			player = *(Registry::Get().FindEntityWithTag("Player"));
+			enemy = *(Registry::Get().FindEntityWithTag("Enemy"));
+			background = *(Registry::Get().FindEntityWithTag("Background"));
+			camera = *(Registry::Get().FindEntityWithTag("Camera"));
+
+			if (SceneManager::Get().GetCurrentLevel() == 0)
+				clipCamera = *(Registry::Get().FindEntityWithTag("ClipCamera"));
 
 			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 			sprite.texture = "res/textures/super_mario_tiles.png";

@@ -8,6 +8,9 @@ namespace HBL {
 		RegisterArrays();
 
 		Systems::Window.Initialize(width, height, name, full_screen, vSync);
+
+		if (m_Scenes.size() != 0)
+			SceneManager::Get().m_ActiveScene = m_Scenes[m_Current];
 	}
 
 	void Application::ManageScenes()
@@ -22,10 +25,14 @@ namespace HBL {
 				SceneManager::Get().m_CurrentLevel++;
 				m_Current++;
 
+				SceneManager::Get().m_ActiveScene = m_Scenes[m_Current];
+
 				// Clear Systems and ECS
 				Clear();
 
 				m_Scenes[m_Current]->OnAttach();
+
+				m_Scenes[m_Current]->OnCreate();
 
 				// Initialize Systems
 				RestartSystems();
@@ -36,6 +43,8 @@ namespace HBL {
 	void Application::Start()
 	{
 		m_Scenes[m_Current]->OnAttach();
+
+		m_Scenes[m_Current]->OnCreate();
 
 		InitializeSystems();
 

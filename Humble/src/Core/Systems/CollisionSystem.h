@@ -8,6 +8,7 @@
 #include "../ECS/Components.h"
 #include "SpriteRendererSystem.h"
 
+#include <list>
 #include <vector>
 
 namespace HBL 
@@ -21,13 +22,13 @@ namespace HBL
 
 		void CreateSectors(uint32_t dimension, glm::vec2 worldSize);
 
-		int Categorize(Component::Transform& transfom, IEntity& entt);
+		int Categorize(Component::Transform& transfom, Component::CollisionBox& collisionBox, const IEntity& entt);
 		int FindSector(Component::Transform& transfom);
 
 		bool CollisionBetween(IEntity& e0, IEntity& e1);
 
 	private:
-		std::vector<std::vector<IEntity>> sectors;
+		std::vector<std::list<UUID>> sectors;
 		uint32_t sectorDimension;
 		glm::vec2 sectorSize;
 

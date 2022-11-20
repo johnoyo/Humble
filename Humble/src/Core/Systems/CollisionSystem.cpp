@@ -25,7 +25,7 @@ namespace HBL
 			collisionBox.bl.x = transfom.position.x - transfom.scale.x / 2.0f;
 			collisionBox.bl.y = transfom.position.y - transfom.scale.y / 2.0f;
 
-			Categorize(transfom, entt);
+			Categorize(transfom, collisionBox, entt);
 		}).Run();
 
 	}
@@ -50,10 +50,10 @@ namespace HBL
 					glm::vec3& tr = transfom.position;
 					glm::vec3& sc = transfom.scale;
 
-					//int index = Categorize(transfom, entt);
+					int index = Categorize(transfom, collisionBox, entt);
 
-					//if (index != -1)
-					//{
+					if (index != -1)
+					{
 						// update collision box on x-axis
 						collisionBox.tl.x = tr.x - sc.x / 2.0f;
 						collisionBox.tr.x = tr.x + sc.x / 2.0f;
@@ -61,8 +61,8 @@ namespace HBL
 						collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 						// collision check on x-axis
-						//CheckForSectorCollisions(entt, index, buffer, X_AXIS);
-						CheckForCollisions(entt, buffer, X_AXIS);
+						CheckForSectorCollisions(entt, index, buffer, X_AXIS);
+						//CheckForCollisions(entt, buffer, X_AXIS);
 
 						// update collision box on y-axis
 						collisionBox.tl.y = tr.y + sc.y / 2.0f;
@@ -71,9 +71,9 @@ namespace HBL
 						collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 						// collision check on y-axis
-						//CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
-						CheckForCollisions(entt, buffer, Y_AXIS);
-					//}
+						CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
+						//CheckForCollisions(entt, buffer, Y_AXIS);
+					}
 				}
 			}
 		}).Run();
@@ -91,18 +91,24 @@ namespace HBL
 
 		for (uint32_t i = 0; i < (sectorDimension * sectorDimension); i++)
 		{
-			sectors.push_back(std::vector<IEntity>());
+			sectors.push_back(std::list<UUID>());
 		}
 
 		return;
 	}
 
-	int CollisionSystem::Categorize(Component::Transform& transfom, IEntity& entt)
+	int CollisionSystem::Categorize(Component::Transform& transfom, Component::CollisionBox& collisionBox, const IEntity& entt)
 	{
 		//FUNCTION_PROFILE();
 
+		uint32_t cachedIndex = 0;
+
 		if (transfom.Enabled)
 		{
+			// Remove entity from all sectors.
+			for (uint32_t k = 0; k < sectorDimension * sectorDimension; k++)
+				sectors[k].remove(entt.m_UUID);
+
 			for (uint32_t i = 0; i < sectorDimension; i++)
 			{
 				for (uint32_t j = 0; j < sectorDimension; j++)
@@ -112,14 +118,17 @@ namespace HBL
 					if (transfom.position.x <= (sectorSize.x * j) + sectorSize.x && transfom.position.x >= (sectorSize.x * j) 
 					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
 					{
-						sectors[index].emplace_back(entt);
-						return index;
+						// Add entity to sector.
+						sectors[index].emplace_back(entt.m_UUID);
+
+						// Cache index.
+						cachedIndex = index;
 					}
 				}
 			}
 		}
 
-		return -1;
+		return cachedIndex;
 	}
 
 	int CollisionSystem::FindSector(Component::Transform& transfom)
@@ -483,12 +492,12 @@ namespace HBL
 	{
 		//FUNCTION_PROFILE();
 
-		for (IEntity& entt : sectors[index])
+		for (UUID& entt : sectors[index])
 		{
 			bool tmp = false;
-			Component::CollisionBox& cb_i = Registry::Get().GetComponent<Component::CollisionBox>(entt);
+			Component::CollisionBox& cb_i = Registry::Get().GetComponent<Component::CollisionBox>(*(IEntity*)&entt);
 
-			if (p.m_UUID != entt.m_UUID && cb_i.Enabled) 
+			if (p.m_UUID != entt && cb_i.Enabled) 
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 

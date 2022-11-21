@@ -6,7 +6,7 @@ namespace HBL
 	{
 		FUNCTION_PROFILE();
 
-		CreateSectors(3, { 30, 30 });
+		CreateSectors(SceneManager::Get().m_SectorSize, SceneManager::Get().m_WorldSize);
 
 		Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
@@ -84,12 +84,12 @@ namespace HBL
 		Registry::Get().ClearArray<Component::CollisionBox>();
 	}
 
-	void CollisionSystem::CreateSectors(uint32_t dimension, glm::vec2 worldSize)
+	void CollisionSystem::CreateSectors(glm::vec2& dimension, glm::vec2& worldSize)
 	{
 		sectorDimension = dimension;
-		sectorSize = { (worldSize.x * 30.0f) / sectorDimension, (worldSize.y * 30.0f) / sectorDimension };
+		sectorSize = { glm::ceil((worldSize.x * SceneManager::Get().m_TileSize) / sectorDimension[0]), glm::ceil((worldSize.y * SceneManager::Get().m_TileSize) / sectorDimension[1]) };
 
-		for (uint32_t i = 0; i < (sectorDimension * sectorDimension); i++)
+		for (uint32_t i = 0; i < (sectorDimension[0] * sectorDimension[1]); i++)
 		{
 			sectors.push_back(std::list<UUID>());
 		}
@@ -106,14 +106,14 @@ namespace HBL
 		if (transfom.Enabled)
 		{
 			// Remove entity from all sectors.
-			for (uint32_t k = 0; k < sectorDimension * sectorDimension; k++)
+			for (uint32_t k = 0; k < sectorDimension[0] * sectorDimension[1]; k++)
 				sectors[k].remove(entt.m_UUID);
 
-			for (uint32_t i = 0; i < sectorDimension; i++)
+			for (uint32_t i = 0; i < sectorDimension[1]; i++)
 			{
-				for (uint32_t j = 0; j < sectorDimension; j++)
+				for (uint32_t j = 0; j < sectorDimension[0]; j++)
 				{
-					int index = (i * sectorDimension) + j;
+					int index = (i * sectorDimension[1]) + j;
 
 					if (transfom.position.x <= (sectorSize.x * j) + sectorSize.x && transfom.position.x >= (sectorSize.x * j) 
 					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
@@ -137,11 +137,11 @@ namespace HBL
 
 		if (transfom.Enabled)
 		{
-			for (uint32_t i = 0; i < sectorDimension; i++)
+			for (uint32_t i = 0; i < sectorDimension[0]; i++)
 			{
-				for (uint32_t j = 0; j < sectorDimension; j++)
+				for (uint32_t j = 0; j < sectorDimension[1]; j++)
 				{
-					int index = (i * sectorDimension) + j;
+					int index = (i * sectorDimension[0]) + j;
 
 					if (transfom.position.x <= (sectorSize.x * j) + sectorSize.x && transfom.position.x >= (sectorSize.x * j)
 						&& transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))

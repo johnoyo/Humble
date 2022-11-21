@@ -24,6 +24,9 @@ namespace HBL
 		}
 
 		IScene* m_ActiveScene = nullptr;
+		glm::vec2 m_WorldSize = { 0.0f, 0.0f };
+		glm::vec2 m_SectorSize = { 0.0f, 0.0f };
+		float m_TileSize = 30.0f;
 
 		void TriggerSceneChange();
 		HBL::IEntity& GetMainCamera();

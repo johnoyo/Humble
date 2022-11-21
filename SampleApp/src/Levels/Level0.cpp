@@ -169,6 +169,10 @@ void HBL::Level0::ILoadLevel(const std::string& level_path)
 
 	i = h - 1;
 
+	SceneManager::Get().m_WorldSize = { (float)w, (float)h };
+	SceneManager::Get().m_SectorSize = { 3.0f, 3.0f };
+	SceneManager::Get().m_TileSize = 30.0f;
+
 	struct pos {
 		int i;
 		int j;

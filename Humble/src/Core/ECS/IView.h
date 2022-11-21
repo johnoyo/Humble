@@ -55,7 +55,7 @@ namespace HBL
 				array.end(),
 				[&](auto&& item)
 				{
-					m_FunctionView(item);
+					m_FunctionView(item.second);
 				});
 		}
 

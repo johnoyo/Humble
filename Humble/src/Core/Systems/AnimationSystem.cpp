@@ -37,7 +37,7 @@ namespace HBL
 							}
 							else
 							{
-								// If is looping animation, reset component state.
+								// If its a looping animation, reset component state.
 								if (anim.loop)
 								{
 									anim.frames = anim.cached_frames;

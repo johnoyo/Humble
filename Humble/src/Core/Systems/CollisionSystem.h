@@ -20,7 +20,7 @@ namespace HBL
 		virtual void Run(float dt) override;
 		virtual void Clear() override;
 
-		void CreateSectors(uint32_t dimension, glm::vec2 worldSize);
+		void CreateSectors(glm::vec2& dimension, glm::vec2& worldSize);
 
 		int Categorize(Component::Transform& transfom, Component::CollisionBox& collisionBox, const IEntity& entt);
 		int FindSector(Component::Transform& transfom);
@@ -29,7 +29,7 @@ namespace HBL
 
 	private:
 		std::vector<std::list<UUID>> sectors;
-		uint32_t sectorDimension;
+		glm::vec2 sectorDimension;
 		glm::vec2 sectorSize;
 
 		bool check_corner_br_tl_bool(glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br);

@@ -8,7 +8,7 @@ namespace HBL
 
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		View<Component::Transform>().ForEach([&](Component::Transform& tr)
+		Registry::Get().View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
 			if (tr.Static == false)
 			{
@@ -24,7 +24,7 @@ namespace HBL
 
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		View<Component::Transform>().ForEach([&](Component::Transform& tr)
+		Registry::Get().View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
 			if (tr.Static == false)
 			{

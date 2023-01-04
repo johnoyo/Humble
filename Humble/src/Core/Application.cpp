@@ -177,10 +177,10 @@ namespace HBL {
 		for (ISystem* system : Registry::Get().GetSystems())
 		{
 			system->Clear();
-			system->Clean();
 		}
 
 		Renderer::Get().Clear();
+		Registry::Get().Clean();
 		Registry::Get().Flush();
 	}
 

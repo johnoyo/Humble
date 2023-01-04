@@ -12,7 +12,7 @@ namespace HBL
 		uint32_t offset = 0;
 
 		// Init shadow cast component info
-		Filter<Component::Transform, Component::SpriteRenderer, Component::Shadow>().ForEach([&](IEntity& entt) 
+		Registry::Get().Filter<Component::Transform, Component::SpriteRenderer, Component::Shadow>().ForEach([&](IEntity& entt)
 		{
 			Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(entt);
 
@@ -31,7 +31,7 @@ namespace HBL
 		}).Run();
 
 		// Init shadow cast positions
-		View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
+		Registry::Get().View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
 		{
 			if (shadow.Enabled && shadow.source != nullptr)
 			{
@@ -83,7 +83,7 @@ namespace HBL
 
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
-		View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
+		Registry::Get().View<Component::Shadow>().ForEach([&](Component::Shadow& shadow)
 		{
 			if (shadow.Enabled && shadow.source != nullptr)
 			{

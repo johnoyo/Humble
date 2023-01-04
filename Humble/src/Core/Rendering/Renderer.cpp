@@ -25,8 +25,6 @@ namespace HBL
 	{
 		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
 
-		currentIndex = 0;
-
 		BeginFrame();
 
 		for (RendererData* data : rendererData)
@@ -167,6 +165,8 @@ namespace HBL
 
 	void HBL::Renderer::BeginFrame()
 	{
+		currentIndex = 0;
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}

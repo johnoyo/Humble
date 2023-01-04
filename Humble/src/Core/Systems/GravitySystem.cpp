@@ -6,7 +6,7 @@ namespace HBL
 	{
 		FUNCTION_PROFILE();
 		
-		View<Component::Gravity>().ForEach([&](Component::Gravity& gravity)
+		Registry::Get().View<Component::Gravity>().ForEach([&](Component::Gravity& gravity)
 		{
 			gravity.appliedForce = gravity.force;
 		}).Run();
@@ -16,7 +16,7 @@ namespace HBL
 	{
 		//FUNCTION_PROFILE();
 
-		Filter<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
+		Registry::Get().Filter<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
 		{
 			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
 			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);

@@ -6,7 +6,7 @@ namespace HBL
 	{
 		FUNCTION_PROFILE()
 
-		View<Component::Animation>().ForEach([&](Component::Animation& animation)
+		Registry::Get().View<Component::Animation>().ForEach([&](Component::Animation& animation)
 		{
 			for (auto anim : animation.animations)
 				anim.time = glfwGetTime();
@@ -15,7 +15,7 @@ namespace HBL
 
 	void AnimationSystem::Run(float dt)
 	{
-		View<Component::Animation>().ForEach([&](Component::Animation& animation)
+		Registry::Get().View<Component::Animation>().ForEach([&](Component::Animation& animation)
 		{
 			if (animation.Enabled)
 			{

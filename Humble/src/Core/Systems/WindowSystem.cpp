@@ -2,13 +2,13 @@
 
 namespace HBL 
 {
-	void WindowSystem::Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync)
+	void WindowSystem::Initialize(float w, float h, const std::string& name, bool fullScreen, bool VSync)
 	{
-		width = w;
-		height = h;
-		title = name;
-		fullscreen = full_screen;
-		vSync = v_sync;
+		m_Width = w;
+		m_Height = h;
+		m_Title = name;
+		m_FullScreen = fullScreen;
+		m_VSync = VSync;
 	}
 
 	void WindowSystem::Init()
@@ -30,22 +30,22 @@ namespace HBL
 		glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-		refresh_rate = mode->refreshRate;
+		m_RefreshRate = mode->refreshRate;
 		std::cout << mode->refreshRate << "\n";
 
-		if (fullscreen) {
-			window = glfwCreateWindow(mode->width, mode->height, title.c_str(), glfwGetPrimaryMonitor(), NULL);
+		if (m_FullScreen) {
+			m_Window = glfwCreateWindow(mode->width, mode->height, m_Title.c_str(), glfwGetPrimaryMonitor(), NULL);
 		}
 		else {
-			window = glfwCreateWindow((int)width, (int)height, title.c_str(), NULL, NULL);
+			m_Window = glfwCreateWindow((int)m_Width, (int)m_Height, m_Title.c_str(), NULL, NULL);
 		}
-		if (!window) {
+		if (!m_Window) {
 			std::cout << "Error Creating window!!!\n";
 			Terminate();
 			exit(-1);
 		}
 
-		if (vSync)
+		if (m_VSync)
 			MakeContextCurrent(1);
 		else 
 			MakeContextCurrent(0);
@@ -57,18 +57,18 @@ namespace HBL
 
 	void WindowSystem::MakeContextCurrent(int Vsync)
 	{
-		glfwMakeContextCurrent(window);
+		glfwMakeContextCurrent(m_Window);
 		glfwSwapInterval(Vsync);
 	}
 
 	int WindowSystem::WindowShouldClose()
 	{
-		return glfwWindowShouldClose(window);
+		return glfwWindowShouldClose(m_Window);
 	}
 
 	void WindowSystem::SwapBuffers()
 	{
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(m_Window);
 	}
 
 	void WindowSystem::PollForEvents()
@@ -83,26 +83,26 @@ namespace HBL
 
 	GLFWwindow* WindowSystem::GetWindow()
 	{
-		return window;
+		return m_Window;
 	}
 
 	float WindowSystem::GetWidth()
 	{
-		return width;
+		return m_Width;
 	}
 
 	float WindowSystem::GetHeight()
 	{
-		return height;
+		return m_Height;
 	}
 
 	float WindowSystem::GetRefreshRate()
 	{
-		return refresh_rate;
+		return m_RefreshRate;
 	}
 
 	const std::string& WindowSystem::GetTitle()
 	{
-		return title;
+		return m_Title;
 	}
 }

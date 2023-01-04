@@ -8,7 +8,7 @@ namespace HBL
 
 		int current_level = SceneManager::Get().GetCurrentLevel();;
 
-		View<Component::Script>().ForEach([&](Component::Script& script)
+		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
 		{
 			if (script.Enabled) 
 			{
@@ -27,7 +27,7 @@ namespace HBL
 
 		int current_level = SceneManager::Get().GetCurrentLevel();
 
-		View<Component::Script>().ForEach([&](Component::Script& script)
+		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
 		{
 			if (script.Enabled) 
 			{
@@ -46,7 +46,7 @@ namespace HBL
 
 		int current_level = SceneManager::Get().GetCurrentLevel();
 
-		View<Component::Script>().ForEach([&](Component::Script& script)
+		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
 		{
 			for (uint32_t j = 0; j < current_level; j++) 
 			{

@@ -17,7 +17,7 @@ namespace HBL
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
 
-		Filter<Component::Text, Component::TextTransform>().ForEach([&](IEntity& entt)
+		Registry::Get().Filter<Component::Text, Component::TextTransform>().ForEach([&](IEntity& entt)
 		{
 			Component::Text& text = Registry::Get().GetComponent<Component::Text>(entt);
 			Component::TextTransform& textTransform = Registry::Get().GetComponent<Component::TextTransform>(entt);
@@ -94,7 +94,7 @@ namespace HBL
 
 		bool invalidate = false;
 
-		Filter<Component::Text, Component::TextTransform>().ForEach([&] (IEntity& entt)
+		Registry::Get().Filter<Component::Text, Component::TextTransform>().ForEach([&] (IEntity& entt)
 		{
 			Component::Text& text = Registry::Get().GetComponent<Component::Text>(entt);
 			Component::TextTransform& textTransform = Registry::Get().GetComponent<Component::TextTransform>(entt);

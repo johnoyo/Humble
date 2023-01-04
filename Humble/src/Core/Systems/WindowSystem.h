@@ -9,7 +9,7 @@ namespace HBL
 	class HBL_API WindowSystem 
 	{
 	public:
-		void Initialize(float w, float h, const std::string& name, bool full_screen, bool v_sync);
+		void Initialize(float w, float h, const std::string& name, bool fullScreen, bool VSync);
 		void Create();
 
 		void MakeContextCurrent(int Vsync);
@@ -27,13 +27,13 @@ namespace HBL
 	private:
 		void Init();
 
-		GLFWwindow* window;
-		std::string title;
-		float refresh_rate;
-		float width;
-		float height;
-		bool fullscreen;
-		bool vSync;
+		GLFWwindow* m_Window;
+		std::string m_Title;
+		float m_RefreshRate;
+		float m_Width;
+		float m_Height;
+		bool m_FullScreen;
+		bool m_VSync;
 	};
 
 }

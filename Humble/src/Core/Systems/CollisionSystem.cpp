@@ -8,7 +8,7 @@ namespace HBL
 
 		CreateSectors(SceneManager::Get().m_SectorSize, SceneManager::Get().m_WorldSize);
 
-		Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
+		Registry::Get().Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
 			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
 			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
@@ -37,7 +37,7 @@ namespace HBL
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		// Update collision boxes of non-static objects
-		Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
+		Registry::Get().Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
 			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 			

@@ -5,11 +5,12 @@ void HBL::SpriteRendererSystem::Start()
 	FUNCTION_PROFILE();
 
 	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), SceneManager::Get().GetMainCamera());
+	
 	InitVertexBuffer();
 
 	TextureManager::Get().InitTransparentTexture();
 
-	Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
+	Registry::Get().Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
 	{
 		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 		if (sprite.texture != "-")
@@ -25,7 +26,7 @@ void HBL::SpriteRendererSystem::Run(float dt)
 
 	uint32_t indx = 0;
 
-	Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
+	Registry::Get().Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
 	{
 		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 		if (sprite.Enabled)
@@ -70,7 +71,7 @@ void HBL::SpriteRendererSystem::InitVertexBuffer()
 
 	ENGINE_LOG("Transform size: %d", Registry::Get().GetArray<Component::Transform>().size());
 
-	Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
+	Registry::Get().Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
 	{
 		Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
 		if (transform.Enabled)

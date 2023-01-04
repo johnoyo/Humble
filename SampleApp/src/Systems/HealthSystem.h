@@ -11,7 +11,7 @@ namespace HBL
 		}
 		virtual void Run(float dt) override
 		{
-			View<Component::Health>().ForEach([&](Component::Health& health)
+			Registry::Get().View<Component::Health>().ForEach([&](Component::Health& health)
 			{
 				//std::cout << "Entity health: " << h.health << "\n";
 			}).Run();

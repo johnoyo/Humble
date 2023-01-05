@@ -91,7 +91,7 @@ namespace HBL
 			T component;
 
 			auto& array = GetArray<T>();
-			array.emplace(Entity.m_UUID, component);
+			array.emplace(Entity, component);
 			
 			return component;
 		}
@@ -102,14 +102,14 @@ namespace HBL
 			//ASSERT(HasComponent<T>(Entity));
 
 			auto& array = GetArray<T>();
-			return array[Entity.m_UUID];
+			return array[Entity];
 		}
 
 		template<typename T>
 		bool HasComponent(IEntity& Entity)
 		{
 			auto& array = GetArray<T>();
-			return (array.find(Entity.m_UUID) != array.end());
+			return (array.find(Entity) != array.end());
 		}
 
 		template<typename T>

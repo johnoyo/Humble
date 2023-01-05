@@ -4,7 +4,7 @@ namespace HBL
 {
 	void Registry::EnrollEntity(IEntity& Entity, const std::string& name)
 	{
-		Entity.m_UUID = UUID(Random::UInt64(0, UINT64_MAX));
+		Entity = Random::UInt64(0, UINT64_MAX);
 		m_Entities.emplace_back(Entity);
 
 		AddComponent<Component::Transform>(Entity);
@@ -18,7 +18,7 @@ namespace HBL
 
 	void Registry::EnrollEntityWithUUID(IEntity& Entity, UUID& uuid)
 	{
-		Entity.m_UUID = UUID(uuid);
+		Entity = uuid;
 		m_Entities.emplace_back(Entity);
 	}
 

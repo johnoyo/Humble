@@ -176,7 +176,7 @@ namespace HBL
 					m_ComponentCounter = 0;
 					m_Recursions = 0;
 
-					Caller<Ts...>(entt);
+					HashCodeFiller<Ts...>(entt);
 
 					// If we found all the components requested, filter entt.
 					if (m_ComponentCounter == m_Recursions)
@@ -184,7 +184,10 @@ namespace HBL
 				}
 
 				if (m_AllFilteredEntities[m_Index].size() == 0)
+				{
 					m_ActiveRelationShips[m_Index] = false;
+					EmptyHashCodeFiller<Ts...>(m_Index);
+				}
 			}
 			return *this;
 		}
@@ -197,6 +200,9 @@ namespace HBL
 
 		void Run()
 		{
+			if (m_Index == UINT32_MAX)
+				return;
+
 			for (IEntity& entt : m_AllFilteredEntities[m_Index])
 			{
 				m_FunctionFilter(entt);
@@ -205,6 +211,9 @@ namespace HBL
 
 		void Scedule()
 		{
+			if (m_Index == UINT32_MAX)
+				return;
+
 			std::for_each(
 				std::execution::par,
 				m_AllFilteredEntities[m_Index].begin(),
@@ -247,13 +256,10 @@ namespace HBL
 	private:
 
 		template <typename... Ts>
-		typename std::enable_if<sizeof...(Ts) == 0>::type Caller(IEntity& entt)
-		{
-
-		}
+		typename std::enable_if<sizeof...(Ts) == 0>::type HashCodeFiller(IEntity& entt) { }
 
 		template <typename T, typename... Ts>
-		void Caller(IEntity& entt)
+		void HashCodeFiller(IEntity& entt)
 		{
 			m_Recursions++;
 
@@ -268,82 +274,72 @@ namespace HBL
 						break;
 					}
 				}
+
 				if (!exists)
 					m_HashCodes[m_HashCodes.size() - 1].push_back(typeid(T).hash_code());
 
 				m_ComponentCounter++;
 			}
 
-			Caller<Ts...>(entt);
+			HashCodeFiller<Ts...>(entt);
 		}
 
 		template <typename... Ts>
-		typename std::enable_if<sizeof...(Ts) == 0>::type ICaller()
+		typename std::enable_if<sizeof...(Ts) == 0>::type EmptyHashCodeFiller(uint32_t index) { }
+
+		template <typename T, typename... Ts>
+		void EmptyHashCodeFiller(uint32_t index)
+		{
+			m_HashCodes[index].push_back(typeid(T).hash_code());
+			EmptyHashCodeFiller<Ts...>(index);
+		}
+
+		template <typename... Ts>
+		typename std::enable_if<sizeof...(Ts) == 0>::type HashCodeSearcher(int index)
 		{
 			if (m_ComponentRecursions != m_ComponentsFound)
 			{
-				if (m_ComponentRecursions == m_EmptyRelationShips)
-					m_Index = m_EmptyIndex;
-				else
-					m_Index = UINT32_MAX;
+				m_Index = UINT32_MAX;
+			}
+			else
+			{
+				m_Index = index;
 			}
 		}
 
 		template <typename T, typename... Ts>
-		void ICaller()
+		void HashCodeSearcher(int index)
 		{
 			m_ComponentRecursions++;
 
-			for (int i = 0; i < m_HashCodes.size(); i++)
+			for (int j = 0; j < m_HashCodes[index].size(); j++)
 			{
-				bool found = false;
-
-				if (!m_ActiveRelationShips[i])
+				if (m_HashCodes[index][j] == typeid(T).hash_code())
 				{
-					m_EmptyIndex = i;
-					m_EmptyRelationShips++;
-					continue;
-				}
-
-				for (int j = 0; j < m_HashCodes[i].size(); j++)
-				{
-					if (m_HashCodes[i][j] == typeid(T).hash_code())
-					{
-						found = true;
-						m_Index = i;
-						m_ComponentsFound++;
-						break;
-					}
-				}
-
-				if (found)
-				{
-					found = false;
+					m_ComponentsFound++;
 					break;
 				}
 			}
 
-			ICaller<Ts...>();
+			HashCodeSearcher<Ts...>(index);
 		}
 
 		template <typename... Ts>
 		bool CachedRelationship()
 		{
-			m_ComponentRecursions = 0;
-			m_EmptyRelationShips = 0;
-			m_ComponentsFound = 0;
-
-			m_EmptyIndex = UINT32_MAX;
-			m_Index = UINT32_MAX;
-
-			ICaller<Ts...>();
-
-			if (m_Index == UINT32_MAX)
+			for (int i = 0; i < m_HashCodes.size(); i++)
 			{
-				return false;
+				m_ComponentRecursions = 0;
+				m_ComponentsFound = 0;
+				m_Index = UINT32_MAX;
+
+				HashCodeSearcher<Ts...>(i);
+
+				if (m_Index != UINT32_MAX)
+					return true;
 			}
 
-			return true;
+			return false;
 		}
 
 		std::function<void(IEntity&)> m_FunctionFilter = nullptr;

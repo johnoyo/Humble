@@ -163,46 +163,86 @@ namespace HBL
 		Component::CollisionBox& collisionBox0 = Registry::Get().GetComponent<Component::CollisionBox>(e0);
 		Component::CollisionBox& collisionBox1 = Registry::Get().GetComponent<Component::CollisionBox>(e1);
 
-		collision = check_corner_br_tl_bool(collisionBox0.br, collisionBox1.tl, collisionBox1.br);
+		collision = CheckCornerBRTL(collisionBox0.br, collisionBox1.tl, collisionBox1.br);
 		if (collision) return true;
 
-		collision = check_corner_tr_bl_bool(collisionBox0.tr, collisionBox1.bl, collisionBox1.tr);
+		collision = CheckCornerTRBL(collisionBox0.tr, collisionBox1.bl, collisionBox1.tr);
 		if (collision) return true;
 
-		collision = check_corner_tl_br_bool(collisionBox0.tl, collisionBox1.br, collisionBox1.tl);
+		collision = CheckCornerTLBR(collisionBox0.tl, collisionBox1.br, collisionBox1.tl);
 		if (collision) return true;
 
-		collision = check_corner_bl_tr_bool(collisionBox0.bl, collisionBox1.tr, collisionBox1.bl);
+		collision = CheckCornerBLTR(collisionBox0.bl, collisionBox1.tr, collisionBox1.bl);
+		if (collision) return true;
+
+		collision = CheckSideLR(collisionBox0.br, collisionBox0.tr, collisionBox1.bl, collisionBox1.tl, collisionBox1.tr);
+		if (collision) return true;
+
+		collision = CheckSideLR(collisionBox0.tl, collisionBox0.bl, collisionBox1.tr, collisionBox1.br, collisionBox1.bl);
+		if (collision) return true;
+
+		collision = CheckSideLR(collisionBox0.tl, collisionBox0.tr, collisionBox1.bl, collisionBox1.br, collisionBox1.tl);
+		if (collision) return true;
+
+		collision = CheckSideLR(collisionBox0.br, collisionBox0.bl, collisionBox1.tr, collisionBox1.tl, collisionBox1.bl);
 		if (collision) return true;
 
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_br_tl_bool(glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br) {
+	bool CollisionSystem::CheckCornerBRTL(glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br) {
 		if (p_br.y <= e_tl.y && p_br.x >= e_tl.x && p_br.y >= e_br.y && p_br.x <= e_br.x)
 			return true;
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tr_bl_bool(glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr) {
+	bool CollisionSystem::CheckCornerTRBL(glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr) {
 		if (p_tr.y >= e_bl.y && p_tr.x >= e_bl.x && p_tr.y <= e_tr.y && p_tr.x <= e_tr.x)
 			return true;
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tl_br_bool(glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl) {
+	bool CollisionSystem::CheckCornerTLBR(glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl) {
 		if (p_tl.y >= e_br.y && p_tl.x <= e_br.x && p_tl.y <= e_tl.y && p_tl.x >= e_tl.x)
 			return true;
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_bl_tr_bool(glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl) {
+	bool CollisionSystem::CheckCornerBLTR(glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl) {
 		if (p_bl.y <= e_tr.y && p_bl.x <= e_tr.x && p_bl.y >= e_bl.y && p_bl.x >= e_bl.x)
 			return true;
 		return false;
 	}
 
-	void CollisionSystem::change_position_x(IEntity& p, VertexBuffer& buffer) 
+	bool CollisionSystem::CheckSideLR(glm::vec3& p_br, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tl, glm::vec3& e_tr)
+	{
+		if (p_br.y <= e_bl.y && p_tr.y >= e_tl.y && p_br.x >= e_bl.x && p_tr.x >= e_tl.x && p_tr.x <= e_tr.x)
+			return true;
+		return false;
+	}
+
+	bool CollisionSystem::CheckSideRL(glm::vec3& p_tl, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_br, glm::vec3& e_bl)
+	{
+		if (p_tl.y >= e_tr.y && p_bl.y <= e_br.y && p_tl.x <= e_tr.x && p_bl.x <= e_br.x && p_tl.x >= e_bl.x)
+			return true;
+		return false;
+	}
+
+	bool CollisionSystem::CheckSideBT(glm::vec3& p_tl, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_br, glm::vec3& e_tl)
+	{
+		if (p_tl.x <= e_bl.x && p_tl.y >= e_bl.y && p_tr.x >= e_br.x && p_tr.y >= e_br.y && p_tl.y <=e_tl.y)
+			return true;
+		return false;
+	}
+
+	bool CollisionSystem::CheckSideTB(glm::vec3& p_br, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_tl, glm::vec3& e_bl)
+	{
+		if (p_bl.x <= e_tl.x && p_bl.y <= e_tl.y && p_br.y <= e_tr.y && p_br.x >= e_tr.x && p_bl.y >= e_bl.y)
+			return true;
+		return false;
+	}
+
+	void CollisionSystem::ChangePositionX(IEntity& p, VertexBuffer& buffer) 
 	{
 		Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(p);
 		Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(p);
@@ -220,7 +260,7 @@ namespace HBL
 		buffer.UpdatePositionXOnQuad(transfom.bufferIndex, transfom);
 	}
 
-	void CollisionSystem::change_position_y(IEntity& p, VertexBuffer& buffer) 
+	void CollisionSystem::ChangePositionY(IEntity& p, VertexBuffer& buffer) 
 	{
 		Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(p);
 		Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(p);
@@ -238,25 +278,25 @@ namespace HBL
 		buffer.UpdatePositionYOnQuad(transfom.bufferIndex, transfom);
 	}
 
-	bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br, int axis)
+	bool CollisionSystem::CheckCornerBRTL(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br, int axis)
 	{
 		if (p_br.y < e_tl.y && p_br.x > e_tl.x && p_br.y > e_br.y && p_br.x < e_br.x) 
 		{
 			//ENGINE_LOG("bottom right");
 			if (axis == X_AXIS) {
 				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_tl.x - p_br.x;
-				change_position_x(p, buffer);
+				ChangePositionX(p, buffer);
 			}
 			else if (axis == Y_AXIS) {
 				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_tl.y - p_br.y;
-				change_position_y(p, buffer);
+				ChangePositionY(p, buffer);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tr_bl(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr, int axis)
+	bool CollisionSystem::CheckCornerTRBL(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr, int axis)
 	{
 		if (p_tr.y > e_bl.y && p_tr.x > e_bl.x && p_tr.y < e_tr.y && p_tr.x < e_tr.x) 
 		{
@@ -264,20 +304,20 @@ namespace HBL
 			if (axis == X_AXIS) 
 			{
 				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_bl.x - p_tr.x;
-				change_position_x(p, buffer);
+				ChangePositionX(p, buffer);
 			}
 			else if (axis == Y_AXIS) 
 			{
 				//Transform.at(p.Transform).position.y += e_bl.y - 0.5f - p_tr.y;
 				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_bl.y - p_tr.y;
-				change_position_y(p, buffer);
+				ChangePositionY(p, buffer);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_tl_br(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
+	bool CollisionSystem::CheckCornerTLBR(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
 	{
 		if (p_tl.y > e_br.y && p_tl.x < e_br.x && p_tl.y < e_tl.y && p_tl.x > e_tl.x) 
 		{
@@ -285,19 +325,19 @@ namespace HBL
 			if (axis == X_AXIS) 
 			{
 				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_br.x - p_tl.x;
-				change_position_x(p, buffer);
+				ChangePositionX(p, buffer);
 			}
 			else if (axis == Y_AXIS) 
 			{
 				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_br.y - p_tl.y;
-				change_position_y(p, buffer);
+				ChangePositionY(p, buffer);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	bool CollisionSystem::check_corner_bl_tr(VertexBuffer& buffer, IEntity& p, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl, int axis)
+	bool CollisionSystem::CheckCornerBLTR(VertexBuffer& buffer, IEntity& p, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_bl, int axis)
 	{
 		if (p_bl.y < e_tr.y && p_bl.x < e_tr.x && p_bl.y > e_bl.y && p_bl.x > e_bl.x) 
 		{
@@ -305,19 +345,19 @@ namespace HBL
 			if (axis == X_AXIS) 
 			{
 				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_tr.x - p_bl.x;
-				change_position_x(p, buffer);
+				ChangePositionX(p, buffer);
 			}
 			else if (axis == Y_AXIS) 
 			{
 				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_tr.y - p_bl.y;
-				change_position_y(p, buffer);
+				ChangePositionY(p, buffer);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	bool CollisionSystem::check_side_l_r(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tl, glm::vec3& e_tr, int axis)
+	bool CollisionSystem::CheckSideLR(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tl, glm::vec3& e_tr, int axis)
 	{
 		if (p_br.y <= e_bl.y && p_tr.y >= e_tl.y && p_br.x > e_bl.x && p_tr.x > e_tl.x && p_tr.x < e_tr.x) 
 		{
@@ -325,7 +365,7 @@ namespace HBL
 			{
 				//ENGINE_LOG("left to right");
 				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_bl.x - p_br.x;
-				change_position_x(p, buffer);
+				ChangePositionX(p, buffer);
 			}
 
 			return true;
@@ -333,7 +373,7 @@ namespace HBL
 		return false;
 	}
 
-	bool CollisionSystem::check_side_r_l(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_br, glm::vec3& e_bl, int axis)
+	bool CollisionSystem::CheckSideRL(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_br, glm::vec3& e_bl, int axis)
 	{
 		if (p_tl.y >= e_tr.y && p_bl.y <= e_br.y && p_tl.x < e_tr.x && p_bl.x < e_br.x && p_tl.x > e_bl.x) 
 		{
@@ -341,7 +381,7 @@ namespace HBL
 			{
 				//ENGINE_LOG("right to left");
 				Registry::Get().GetComponent<Component::Transform>(p).position.x += e_br.x - p_bl.x;
-				change_position_x(p, buffer);
+				ChangePositionX(p, buffer);
 			}
 
 			return true;
@@ -349,7 +389,7 @@ namespace HBL
 		return false;
 	}
 
-	bool CollisionSystem::check_side_b_t(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
+	bool CollisionSystem::CheckSideBT(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_br, glm::vec3& e_tl, int axis)
 	{
 		if (p_tl.x <= e_bl.x && p_tl.y > e_bl.y && p_tr.x >= e_br.x && p_tr.y > e_br.y && p_tl.y < e_tl.y) 
 		{
@@ -357,7 +397,7 @@ namespace HBL
 			{
 				//ENGINE_LOG("bottom to top");
 				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_bl.y - p_tl.y;
-				change_position_y(p, buffer);
+				ChangePositionY(p, buffer);
 			}
 
 			return true;
@@ -365,7 +405,7 @@ namespace HBL
 		return false;
 	}
 
-	bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_tl, glm::vec3& e_bl, int axis)
+	bool CollisionSystem::CheckSideTB(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_tl, glm::vec3& e_bl, int axis)
 	{
 		if (p_bl.x <= e_tl.x && p_bl.y < e_tl.y && p_br.y < e_tr.y && p_br.x >= e_tr.x && p_bl.y > e_bl.y) 
 		{
@@ -373,7 +413,7 @@ namespace HBL
 			{
 				//ENGINE_LOG("top to bottom");
 				Registry::Get().GetComponent<Component::Transform>(p).position.y += e_tl.y - p_bl.y;
-				change_position_y(p, buffer);
+				ChangePositionY(p, buffer);
 			}
 
 			return true;
@@ -396,7 +436,7 @@ namespace HBL
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
-				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
+				tmp = CheckCornerBRTL(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -406,7 +446,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
+				tmp = CheckCornerTRBL(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -416,7 +456,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
+				tmp = CheckCornerTLBR(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -426,7 +466,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
+				tmp = CheckCornerBLTR(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -436,7 +476,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
+				tmp = CheckSideLR(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -446,7 +486,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
+				tmp = CheckSideRL(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -456,7 +496,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
+				tmp = CheckSideTB(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -466,7 +506,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
+				tmp = CheckSideBT(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) {
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
@@ -501,7 +541,7 @@ namespace HBL
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
-				tmp = check_corner_br_tl(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
+				tmp = CheckCornerBRTL(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -512,7 +552,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_corner_tr_bl(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
+				tmp = CheckCornerTRBL(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -523,7 +563,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_corner_tl_br(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
+				tmp = CheckCornerTLBR(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -534,7 +574,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_corner_bl_tr(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
+				tmp = CheckCornerBLTR(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -545,7 +585,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_l_r(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
+				tmp = CheckSideLR(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -556,7 +596,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_r_l(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
+				tmp = CheckSideRL(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -567,7 +607,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_t_b(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
+				tmp = CheckSideTB(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
@@ -578,7 +618,7 @@ namespace HBL
 					return;
 				}
 
-				tmp = check_side_b_t(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
+				tmp = CheckSideBT(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
 				if (tmp != false) 
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))

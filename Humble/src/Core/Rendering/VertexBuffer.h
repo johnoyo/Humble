@@ -21,11 +21,10 @@ namespace HBL
 	public:
 		void Initialize(int total_buffer_size);
 
-		void UpdatePositionOnQuad(uint32_t indx, Component::Transform& tr);
 		void UpdatePositionOnQuad(uint32_t indx, glm::vec3& position, float rotation, glm::vec3& scale);
 		void UpdatePositionOnQuad(uint32_t indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3);
-		void UpdatePositionXOnQuad(uint32_t indx, Component::Transform& tr);
-		void UpdatePositionYOnQuad(uint32_t indx, Component::Transform& tr);
+		void UpdatePositionXOnQuad(uint32_t indx, glm::vec3& position, glm::vec3& scale);
+		void UpdatePositionYOnQuad(uint32_t indx, glm::vec3& position, glm::vec3& scale);
 		void UpdateMaterialOnQuad(uint32_t indx, glm::vec4& color, float tex_id);
 		void UpdateMaterialOnQuad(uint32_t indx, glm::vec4& color, float tex_id, glm::vec2& coords, glm::vec2& sheet_size, glm::vec2& sp_size);
 

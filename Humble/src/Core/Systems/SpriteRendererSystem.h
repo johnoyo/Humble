@@ -27,7 +27,5 @@ namespace HBL
 		virtual void Start() override;
 		virtual void Run(float dt) override;
 		virtual void Clear() override;
-
-		void InitVertexBuffer();
 	};
 }

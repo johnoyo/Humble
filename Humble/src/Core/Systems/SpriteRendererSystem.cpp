@@ -6,41 +6,49 @@ void HBL::SpriteRendererSystem::Start()
 
 	Renderer::Get().AddBatch("res/shaders/Basic.shader", (Registry::Get().GetEntities().size() * 4) + (Registry::Get().GetArray<Component::Shadow>().size() * 12), SceneManager::Get().GetMainCamera());
 	
-	InitVertexBuffer();
-
 	TextureManager::Get().InitTransparentTexture();
 
-	Registry::Get().Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
+	Renderer::Get().GetVertexBuffer(0).Reset();
+
+	Registry::Get().Group<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
 	{
+		Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
 		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
+		if (transform.Enabled)
+		{
+			sprite.bufferIndex = Renderer::Get().GetVertexBuffer(0).m_Index;
+			transform.bufferIndex = Renderer::Get().GetVertexBuffer(0).m_Index;
+			Renderer::Get().RegisterQuad(0, transform);
+		}
+
 		if (sprite.texture != "-")
 			TextureManager::Get().Find(sprite.texture);
+
 	}).Run();
+
+	Renderer::Get().Bind(0);
+	Renderer::Get().Invalidate(0);
+	Renderer::Get().UnBind();
 }
 
 void HBL::SpriteRendererSystem::Run(float dt)
 {
 	//FUNCTION_PROFILE();
 
-	VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
-
-	uint32_t indx = 0;
-
-	Registry::Get().Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
+	Registry::Get().View<Component::SpriteRenderer>().ForEach([&](Component::SpriteRenderer& sprite)
 	{
-		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
 		if (sprite.Enabled)
 		{
-			if (sprite.coords == glm::vec2(-1.0f, -1.0f) && sprite.sprite_size == glm::vec2(-1.0f, -1.0f))
+			if (sprite.coords == glm::vec2(-1.0f, -1.0f) && sprite.spriteSize == glm::vec2(-1.0f, -1.0f))
 			{
-				buffer.UpdateMaterialOnQuad(indx, sprite.color, TextureManager::Get().Find(sprite.texture));
+				Renderer::Get().UpdateQuad(0, sprite.bufferIndex, sprite.color, TextureManager::Get().Find(sprite.texture));
 			}
 			else
 			{
 				float id = TextureManager::Get().Find(sprite.texture);
-				buffer.UpdateMaterialOnQuad(indx, sprite.color, id, sprite.coords, TextureManager::Get().GetTextureSize().at(id), sprite.sprite_size);
+				glm::vec2& textureCoords = TextureManager::Get().GetTextureSize().at(id);
+				Renderer::Get().UpdateQuad(0, sprite.bufferIndex, sprite.color, id, sprite.coords, textureCoords, sprite.spriteSize);
 			}
-			indx += 4;
 		}
 	}).Run();
 
@@ -61,27 +69,4 @@ void HBL::SpriteRendererSystem::Clear()
 
 	Registry::Get().ClearArray<Component::SpriteRenderer>();
 	glDeleteTextures(32, TextureManager::Get().GetTextureSlot());
-}
-
-void HBL::SpriteRendererSystem::InitVertexBuffer()
-{
-	FUNCTION_PROFILE();
-
-	Renderer::Get().GetVertexBuffer(0).Reset();
-
-	ENGINE_LOG("Transform size: %d", Registry::Get().GetArray<Component::Transform>().size());
-
-	Registry::Get().Filter<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
-	{
-		Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
-		if (transform.Enabled)
-		{
-			transform.bufferIndex = Renderer::Get().GetVertexBuffer(0).m_Index;
-			Renderer::Get().DrawQuad(0, transform);
-		}
-	}).Run();
-
-	Renderer::Get().Bind(0);
-	Renderer::Get().Invalidate(0);
-	Renderer::Get().UnBind();
 }

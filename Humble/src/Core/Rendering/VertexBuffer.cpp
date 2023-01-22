@@ -17,31 +17,6 @@ namespace HBL
 		m_Index++;
 	}
 
-	void VertexBuffer::UpdatePositionOnQuad(uint32_t indx, Component::Transform& tr)
-	{
-		//FUNCTION_PROFILE();
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), tr.position)
-			* glm::rotate(glm::mat4(1.0f), glm::radians(tr.rotation), glm::vec3(0.0f, 0.0f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(tr.scale.x, tr.scale.y, 1.0f));
-
-		glm::vec4 quad_vertex_position[4];
-
-		quad_vertex_position[0] = { -0.5f,  0.5f, 0.0f, 1.0f };
-		quad_vertex_position[1] = {  0.5f,  0.5f, 0.0f, 1.0f };
-		quad_vertex_position[2] = {  0.5f, -0.5f, 0.0f, 1.0f };
-		quad_vertex_position[3] = { -0.5f, -0.5f, 0.0f, 1.0f };
-
-		m_Buffer[indx].position = transform * quad_vertex_position[0];
-		indx++;
-		m_Buffer[indx].position = transform * quad_vertex_position[1];
-		indx++;
-		m_Buffer[indx].position = transform * quad_vertex_position[2];
-		indx++;
-		m_Buffer[indx].position = transform * quad_vertex_position[3];
-		indx++;
-	}
-
 	void VertexBuffer::UpdatePositionOnQuad(uint32_t indx, glm::vec3& position, float rotation, glm::vec3& scale)
 	{
 		//FUNCTION_PROFILE();
@@ -79,27 +54,27 @@ namespace HBL
 		indx++;
 	}
 
-	void VertexBuffer::UpdatePositionXOnQuad(uint32_t indx, Component::Transform& tr)
+	void VertexBuffer::UpdatePositionXOnQuad(uint32_t indx, glm::vec3& position, glm::vec3& scale)
 	{
-		m_Buffer[indx].position.x = tr.position.x - tr.scale.x / 2.0f;
+		m_Buffer[indx].position.x = position.x - scale.x / 2.0f;
 		indx++;
-		m_Buffer[indx].position.x = tr.position.x + tr.scale.x / 2.0f;
+		m_Buffer[indx].position.x = position.x + scale.x / 2.0f;
 		indx++;
-		m_Buffer[indx].position.x = tr.position.x + tr.scale.x / 2.0f;
+		m_Buffer[indx].position.x = position.x + scale.x / 2.0f;
 		indx++;
-		m_Buffer[indx].position.x = tr.position.x - tr.scale.x / 2.0f;
+		m_Buffer[indx].position.x = position.x - scale.x / 2.0f;
 		indx++;
 	}
 
-	void VertexBuffer::UpdatePositionYOnQuad(uint32_t indx, Component::Transform& tr)
+	void VertexBuffer::UpdatePositionYOnQuad(uint32_t indx, glm::vec3& position, glm::vec3& scale)
 	{
-		m_Buffer[indx].position.y = tr.position.y + tr.scale.y / 2.0f;
+		m_Buffer[indx].position.y = position.y + scale.y / 2.0f;
 		indx++;
-		m_Buffer[indx].position.y = tr.position.y + tr.scale.y / 2.0f;
+		m_Buffer[indx].position.y = position.y + scale.y / 2.0f;
 		indx++;
-		m_Buffer[indx].position.y = tr.position.y - tr.scale.y / 2.0f;
+		m_Buffer[indx].position.y = position.y - scale.y / 2.0f;
 		indx++;
-		m_Buffer[indx].position.y = tr.position.y - tr.scale.y / 2.0f;
+		m_Buffer[indx].position.y = position.y - scale.y / 2.0f;
 		indx++;
 	}
 

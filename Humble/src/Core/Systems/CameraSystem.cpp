@@ -2,7 +2,7 @@
 
 void HBL::CameraSystem::Start()
 {
-	Registry::Get().Filter<Component::Camera, Component::Transform>().ForEach([&](IEntity& entt)
+	Registry::Get().Group<Component::Camera, Component::Transform>().ForEach([&](IEntity& entt)
 	{
 		Component::Camera& camera = Registry::Get().GetComponent<Component::Camera>(entt);
 
@@ -24,7 +24,7 @@ void HBL::CameraSystem::Start()
 
 void HBL::CameraSystem::Run(float dt)
 {
-	Registry::Get().Filter<Component::Camera, Component::Transform>().ForEach([&](IEntity& entt)
+	Registry::Get().Group<Component::Camera, Component::Transform>().ForEach([&](IEntity& entt)
 	{
 		Component::Camera& camera = Registry::Get().GetComponent<Component::Camera>(entt);
 

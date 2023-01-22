@@ -8,7 +8,7 @@ namespace HBL
 
 		CreateSectors(SceneManager::Get().m_SectorSize, SceneManager::Get().m_WorldSize);
 
-		Registry::Get().Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
+		Registry::Get().Group<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
 			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);
 			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
@@ -37,7 +37,7 @@ namespace HBL
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
 
 		// Update collision boxes of non-static objects
-		Registry::Get().Filter<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
+		Registry::Get().Group<Component::Transform, Component::CollisionBox>().ForEach([&](IEntity& entt)
 		{
 			Component::CollisionBox& collisionBox = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 			
@@ -50,29 +50,30 @@ namespace HBL
 					glm::vec3& tr = transfom.position;
 					glm::vec3& sc = transfom.scale;
 
+					// Update sector category.
 					int index = Categorize(transfom, collisionBox, entt);
 
 					if (index != -1)
 					{
-						// update collision box on x-axis
+						// Update collision box on x-axis.
 						collisionBox.tl.x = tr.x - sc.x / 2.0f;
 						collisionBox.tr.x = tr.x + sc.x / 2.0f;
 						collisionBox.br.x = tr.x + sc.x / 2.0f;
 						collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
-						// collision check on x-axis
+						// Collision check on x-axis.
 						CheckForSectorCollisions(entt, index, buffer, X_AXIS);
-						//CheckForCollisions(entt, buffer, X_AXIS);
+						/* CheckForCollisions(entt, buffer, X_AXIS); */
 
-						// update collision box on y-axis
+						// Update collision box on y-axis.
 						collisionBox.tl.y = tr.y + sc.y / 2.0f;
 						collisionBox.tr.y = tr.y + sc.y / 2.0f;
 						collisionBox.br.y = tr.y - sc.y / 2.0f;
 						collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
-						// collision check on y-axis
+						// Collision check on y-axis.
 						CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
-						//CheckForCollisions(entt, buffer, Y_AXIS);
+						/* CheckForCollisions(entt, buffer, Y_AXIS); */
 					}
 				}
 			}
@@ -257,7 +258,7 @@ namespace HBL
 		collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 		// move player on x-axis
-		buffer.UpdatePositionXOnQuad(transfom.bufferIndex, transfom);
+		buffer.UpdatePositionXOnQuad(transfom.bufferIndex, transfom.position, transfom.scale);
 	}
 
 	void CollisionSystem::ChangePositionY(IEntity& p, VertexBuffer& buffer) 
@@ -275,7 +276,7 @@ namespace HBL
 		collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 		// move player on y-axis
-		buffer.UpdatePositionYOnQuad(transfom.bufferIndex, transfom);
+		buffer.UpdatePositionYOnQuad(transfom.bufferIndex, transfom.position, transfom.scale);
 	}
 
 	bool CollisionSystem::CheckCornerBRTL(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br, int axis)

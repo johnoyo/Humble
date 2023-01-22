@@ -71,7 +71,9 @@ namespace HBL
 		glUseProgram(0);
 	}
 
-	uint32_t Renderer::DrawQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
+
+
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
@@ -83,7 +85,7 @@ namespace HBL
 		return vertex_index;
 	}
 
-	uint32_t Renderer::DrawQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
@@ -95,7 +97,7 @@ namespace HBL
 		return vertex_index;
 	}
 
-	uint32_t Renderer::DrawQuad(uint32_t vindex, Component::Transform& tr)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, Component::Transform& tr)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
@@ -107,7 +109,7 @@ namespace HBL
 		return vertex_index;
 	}
 
-	uint32_t Renderer::DrawQuad(uint32_t vindex, Component::TextTransform& tr, float width, float height)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, Component::TextTransform& tr, float width, float height)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
@@ -117,6 +119,42 @@ namespace HBL
 		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
+	}
+
+	void Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec3& position, float rotation, glm::vec3& scale)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdatePositionOnQuad(vertexIndex, position, rotation, scale);
+	}
+
+	void HBL::Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec4& color, uint32_t textureIndex)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdateMaterialOnQuad(vertexIndex, color, textureIndex);
+	}
+
+	void HBL::Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec4& color, float textureIndex, glm::vec2& texCoords, glm::vec2& sheetSize, glm::vec2& spriteSize)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdateMaterialOnQuad(vertexIndex, color, textureIndex, texCoords, sheetSize, spriteSize);
+	}
+
+	void HBL::Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec3& position, float rotation, glm::vec3& scale, glm::vec4& color, uint32_t textureIndex)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdateMaterialOnQuad(vertexIndex, color, textureIndex);
 	}
 
 	void Renderer::Invalidate(uint32_t vindex)

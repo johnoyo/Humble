@@ -17,7 +17,7 @@ namespace HBL
 		// Retrieve vertex buffer for text
 		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
 
-		Registry::Get().Filter<Component::Text, Component::TextTransform>().ForEach([&](IEntity& entt)
+		Registry::Get().Group<Component::Text, Component::TextTransform>().ForEach([&](IEntity& entt)
 		{
 			Component::Text& text = Registry::Get().GetComponent<Component::Text>(entt);
 			Component::TextTransform& textTransform = Registry::Get().GetComponent<Component::TextTransform>(entt);
@@ -50,7 +50,7 @@ namespace HBL
 					tTr.position.x += cursorPosition;
 
 					// Draw the current letter as a new quad
-					int index = Renderer::Get().DrawQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
+					int index = Renderer::Get().RegisterQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 					// Retrieve font atlas texture id
 					float id = TextureManager::Get().Find("res/textures/testFont.png");
@@ -94,7 +94,7 @@ namespace HBL
 
 		bool invalidate = false;
 
-		Registry::Get().Filter<Component::Text, Component::TextTransform>().ForEach([&] (IEntity& entt)
+		Registry::Get().Group<Component::Text, Component::TextTransform>().ForEach([&] (IEntity& entt)
 		{
 			Component::Text& text = Registry::Get().GetComponent<Component::Text>(entt);
 			Component::TextTransform& textTransform = Registry::Get().GetComponent<Component::TextTransform>(entt);
@@ -136,7 +136,7 @@ namespace HBL
 						invalidate = true;
 
 						// Draw the current letter as a new quad.
-						int index = Renderer::Get().DrawQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
+						int index = Renderer::Get().RegisterQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
 						textTransform.bufferIndex.push_back(index);
 					}

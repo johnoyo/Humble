@@ -6,14 +6,11 @@ namespace HBL
 	{
 		FUNCTION_PROFILE();
 
-		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
-
 		Registry::Get().View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
 			if (tr.Static == false)
 			{
-				if (tr.bufferIndex != -1)
-					buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
+				Renderer::Get().UpdateQuad(0, tr.bufferIndex, tr.position, tr.rotation, tr.scale);
 			}
 		}).Run();
 	}
@@ -22,14 +19,11 @@ namespace HBL
 	{
 		//FUNCTION_PROFILE();
 
-		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
-
 		Registry::Get().View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
 			if (tr.Static == false)
 			{
-				if (tr.bufferIndex != -1)
-					buffer.UpdatePositionOnQuad(tr.bufferIndex, tr);
+				Renderer::Get().UpdateQuad(0, tr.bufferIndex, tr.position, tr.rotation, tr.scale);
 			}
 		}).Run(); 
 	}

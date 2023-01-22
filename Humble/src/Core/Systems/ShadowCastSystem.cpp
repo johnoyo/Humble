@@ -12,7 +12,7 @@ namespace HBL
 		uint32_t offset = 0;
 
 		// Init shadow cast component info
-		Registry::Get().Filter<Component::Transform, Component::SpriteRenderer, Component::Shadow>().ForEach([&](IEntity& entt)
+		Registry::Get().Group<Component::Transform, Component::SpriteRenderer, Component::Shadow>().ForEach([&](IEntity& entt)
 		{
 			Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(entt);
 
@@ -65,9 +65,9 @@ namespace HBL
 				}
 
 				// Set shadow quad positions
-				Renderer::Get().DrawQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
-				Renderer::Get().DrawQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
-				Renderer::Get().DrawQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+				Renderer::Get().RegisterQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
+				Renderer::Get().RegisterQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
+				Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
 			}
 		}).Run();
 

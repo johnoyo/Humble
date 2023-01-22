@@ -16,7 +16,7 @@ namespace HBL
 	{
 		//FUNCTION_PROFILE();
 
-		Registry::Get().Filter<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
+		Registry::Get().Group<Component::Transform, Component::Gravity>().ForEach([&](IEntity& entt)
 		{
 			Component::Gravity& gravity = Registry::Get().GetComponent<Component::Gravity>(entt);
 			Component::Transform& transfom = Registry::Get().GetComponent<Component::Transform>(entt);

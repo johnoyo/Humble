@@ -29,7 +29,7 @@ namespace HBL
 			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 			sprite.texture = "res/textures/super_mario_tiles.png";
 			sprite.coords = { 6.0f, 1.0f };
-			sprite.sprite_size = { 16.0f, 16.0f };
+			sprite.spriteSize = { 16.0f, 16.0f };
 
 			Component::Animation& animation = Registry::Get().GetComponent<Component::Animation>(player);
 

@@ -66,100 +66,19 @@ namespace HBL
 		std::function<void(T&)> m_FunctionView = nullptr;
 	};
 
-	class HBL_API Registry
+	class IGroup
 	{
 	public:
-		Registry(const Registry&) = delete;
+		IGroup(const IGroup&) = delete;
 
-		static Registry& Get()
+		static IGroup& Get()
 		{
-			static Registry instance;
+			static IGroup instance;
 			return instance;
 		}
 
-		void EnrollEntity(IEntity& Entity, const std::string& name = "");
-
-		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid);
-
-		IEntity* FindEntityWithTag(const std::string& tag);
-
-		template<typename T>
-		T& AddComponent(IEntity& Entity)
-		{
-			//ASSERT(!HasComponent<T>(Entity));
-
-			T component;
-
-			auto& array = GetArray<T>();
-			array.emplace(Entity, component);
-			
-			return component;
-		}
-
-		template<typename T>
-		T& GetComponent(IEntity& Entity)
-		{
-			//ASSERT(HasComponent<T>(Entity));
-
-			auto& array = GetArray<T>();
-			return array[Entity];
-		}
-
-		template<typename T>
-		bool HasComponent(IEntity& Entity)
-		{
-			auto& array = GetArray<T>();
-			return (array.find(Entity) != array.end());
-		}
-
-		template<typename T>
-		void RemoveComponent(IEntity& Entity)
-		{
-			ASSERT(HasComponent<T>(Entity));
-		}
-
-		template<typename T>
-		void AddArray()
-		{
-			std::unordered_map<UUID, T>* array = new std::unordered_map<UUID, T>();
-			m_ComponentArrays.emplace(typeid(T).hash_code(), array);
-		}
-
-		template<typename T>
-		std::unordered_map<UUID, T>& GetArray()
-		{
-			auto& array = *(std::unordered_map<UUID, T>*)m_ComponentArrays[typeid(T).hash_code()];
-			return array;
-		}
-
-		template<typename T>
-		void ClearArray()
-		{
-			GetArray<T>().clear();
-		}
-
-		std::vector<IEntity>& GetEntities()
-		{
-			return m_Entities;
-		}
-
-		std::vector<ISystem*>& GetSystems()
-		{
-			return m_Systems;
-		}
-
-		void Flush()
-		{
-			m_Entities.clear();
-		}
-
-		void RegisterSystem(ISystem* system)
-		{
-			m_Systems.push_back(system);
-		}
-
-		template <typename... Ts>
-		Registry& Filter()
+		template<typename... Ts>
+		IGroup& Filter()
 		{
 			m_FunctionFilter = nullptr;
 
@@ -192,7 +111,7 @@ namespace HBL
 			return *this;
 		}
 
-		Registry& ForEach(std::function<void(IEntity&)> func)
+		IGroup& ForEach(std::function<void(IEntity&)> func)
 		{
 			m_FunctionFilter = func;
 			return *this;
@@ -241,19 +160,8 @@ namespace HBL
 			m_ActiveRelationShips.clear();
 		}
 
-		template<typename T>
-		IView<T>& View()
-		{
-			return IView<T>::Get();
-		}
-
-		template<typename T>
-		IView<T>& ForEach(std::function<void(T&)> func)
-		{
-			return IView<T>::Get().ForEach(func);
-		}
-
 	private:
+		IGroup() { };
 
 		template <typename... Ts>
 		typename std::enable_if<sizeof...(Ts) == 0>::type HashCodeFiller(IEntity& entt) { }
@@ -356,7 +264,129 @@ namespace HBL
 		std::vector<bool> m_ActiveRelationShips;
 		std::vector<std::vector<std::size_t>> m_HashCodes;
 		std::vector<std::vector<IEntity>> m_AllFilteredEntities;
+	};
 
+	class HBL_API Registry
+	{
+	public:
+		Registry(const Registry&) = delete;
+
+		static Registry& Get()
+		{
+			static Registry instance;
+			return instance;
+		}
+
+		void EnrollEntity(IEntity& Entity, const std::string& name = "");
+
+		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid);
+
+		IEntity* FindEntityWithTag(const std::string& tag);
+
+		template<typename T>
+		T& AddComponent(IEntity& Entity)
+		{
+			//ASSERT(!HasComponent<T>(Entity));
+
+			T component;
+
+			auto& array = GetArray<T>();
+			array.emplace(Entity, component);
+			
+			return component;
+		}
+
+		template<typename T>
+		T& GetComponent(IEntity& Entity)
+		{
+			//ASSERT(HasComponent<T>(Entity));
+
+			auto& array = GetArray<T>();
+			return array[Entity];
+		}
+
+		template<typename T>
+		bool HasComponent(IEntity& Entity)
+		{
+			auto& array = GetArray<T>();
+			return (array.find(Entity) != array.end());
+		}
+
+		template<typename T>
+		void RemoveComponent(IEntity& Entity)
+		{
+			ASSERT(HasComponent<T>(Entity));
+		}
+
+		template<typename T>
+		void AddArray()
+		{
+			std::unordered_map<UUID, T>* array = new std::unordered_map<UUID, T>();
+			m_ComponentArrays.emplace(typeid(T).hash_code(), array);
+		}
+
+		template<typename T>
+		std::unordered_map<UUID, T>& GetArray()
+		{
+			auto& array = *(std::unordered_map<UUID, T>*)m_ComponentArrays[typeid(T).hash_code()];
+			return array;
+		}
+
+		template<typename T>
+		void ClearArray()
+		{
+			GetArray<T>().clear();
+		}
+
+		std::vector<IEntity>& GetEntities()
+		{
+			return m_Entities;
+		}
+
+		std::vector<ISystem*>& GetSystems()
+		{
+			return m_Systems;
+		}
+
+		void Flush()
+		{
+			m_Entities.clear();
+		}
+
+		void RegisterSystem(ISystem* system)
+		{
+			m_Systems.push_back(system);
+		}
+
+		void Clean()
+		{
+			IGroup::Get().Clean();
+		}
+
+		template<typename T>
+		IView<T>& View()
+		{
+			return IView<T>::Get();
+		}
+
+		template<typename T>
+		IView<T>& ForEach(std::function<void(T&)> func)
+		{
+			return IView<T>::Get().ForEach(func);
+		}
+
+		template<typename... Ts>
+		IGroup& Group()
+		{
+			return IGroup::Get().Filter<Ts...>();
+		}
+
+		template<typename... Ts>
+		IGroup& ForEach(std::function<void(IEntity&)> func)
+		{
+			return IGroup::Get().ForEach(func);
+		}
+		
 	private:
 		Registry() { };
 		

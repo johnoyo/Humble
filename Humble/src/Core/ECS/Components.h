@@ -52,8 +52,10 @@ namespace HBL
 		{
 			std::string texture = "-";
 			glm::vec2 coords = { -1.0f, -1.0f };
-			glm::vec2 sprite_size = { -1.0f, -1.0f };
+			glm::vec2 spriteSize = { -1.0f, -1.0f };
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			int bufferIndex = -1;
+			int batchIndex = -1;
 
 			bool Enabled = true;
 		};

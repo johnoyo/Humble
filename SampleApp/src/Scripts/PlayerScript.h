@@ -157,6 +157,12 @@ namespace HBL
 			}
 
 			// Player movement
+			if (InputManager::GetKeyRelease(GLFW_KEY_P))
+			{
+				Registry::Get().RemoveComponent<Component::Shadow>(tile);
+			}
+
+			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) 
 			{
 				transform_p.position.x += 210.0f * dt;

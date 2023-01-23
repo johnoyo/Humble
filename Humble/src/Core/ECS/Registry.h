@@ -144,13 +144,28 @@ namespace HBL
 		}
 
 		template<typename T>
-		void UpdateGroups(IEntity& entt)
+		void UpdateGroupsOnAdd(IEntity& entt)
 		{
 			std::vector<uint32_t> indices = FindHashCodeIndices<T>();
 
 			for (uint32_t index : indices)
 			{
 				m_AllFilteredEntities[index].emplace_back(entt);
+			}
+		}
+
+		template<typename T>
+		void UpdateGroupsOnRemove(IEntity& entt)
+		{
+			std::vector<uint32_t> indices = FindHashCodeIndices<T>();
+
+			for (uint32_t index : indices)
+			{
+				for (int i = 0; i < m_AllFilteredEntities[index].size(); i++)
+				{
+					if (m_AllFilteredEntities[index][i] == entt)
+						m_AllFilteredEntities[index].erase(m_AllFilteredEntities[index].begin() + i);
+				}
 			}
 		}
 
@@ -324,7 +339,7 @@ namespace HBL
 			auto& array = GetArray<T>();
 			array.emplace(Entity, component);
 
-			IGroup::Get().UpdateGroups<T>(Entity);
+			IGroup::Get().UpdateGroupsOnAdd<T>(Entity);
 			
 			return component;
 		}
@@ -349,6 +364,11 @@ namespace HBL
 		void RemoveComponent(IEntity& Entity)
 		{
 			ASSERT(HasComponent<T>(Entity));
+
+			auto& array = GetArray<T>();
+			array.erase(Entity);
+
+			IGroup::Get().UpdateGroupsOnRemove<T>(Entity);
 		}
 
 		template<typename T>

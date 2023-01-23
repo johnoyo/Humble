@@ -66,7 +66,7 @@ namespace HBL
 		std::function<void(T&)> m_FunctionView = nullptr;
 	};
 
-	class IGroup
+	class HBL_API IGroup
 	{
 	public:
 		IGroup(const IGroup&) = delete;
@@ -175,7 +175,7 @@ namespace HBL
 		IGroup() { };
 
 		template<typename T>
-		std::vector<uint32_t>& FindHashCodeIndices()
+		std::vector<uint32_t> FindHashCodeIndices()
 		{
 			std::vector<uint32_t> indices;
 
@@ -323,6 +323,8 @@ namespace HBL
 
 			auto& array = GetArray<T>();
 			array.emplace(Entity, component);
+
+			//IGroup::Get().UpdateGroups<T>(Entity);
 			
 			return component;
 		}

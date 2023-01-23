@@ -6,5 +6,9 @@
 
 namespace HBL
 {
-	typedef UUID IEntity;
+	struct IEntity
+	{
+		UUID uuid = 0LU;
+		bool Enabled = true;
+	};
 }

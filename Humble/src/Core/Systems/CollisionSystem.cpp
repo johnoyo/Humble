@@ -108,7 +108,7 @@ namespace HBL
 		{
 			// Remove entity from all sectors.
 			for (uint32_t k = 0; k < sectorDimension[0] * sectorDimension[1]; k++)
-				sectors[k].remove(entt);
+				sectors[k].remove(entt.uuid);
 
 			for (uint32_t i = 0; i < sectorDimension[1]; i++)
 			{
@@ -120,7 +120,7 @@ namespace HBL
 					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
 					{
 						// Add entity to sector.
-						sectors[index].emplace_back(entt);
+						sectors[index].emplace_back(entt.uuid);
 
 						// Cache index.
 						cachedIndex = index;
@@ -433,7 +433,7 @@ namespace HBL
 			bool tmp = false;
 			Component::CollisionBox& cb_i = component.second;
 
-			if (component.first != p && cb_i.Enabled)
+			if (component.first != p.uuid && cb_i.Enabled)
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
@@ -538,7 +538,7 @@ namespace HBL
 			bool tmp = false;
 			Component::CollisionBox& cb_i = Registry::Get().GetComponent<Component::CollisionBox>(*(IEntity*)&entt);
 
-			if (p != entt && cb_i.Enabled) 
+			if (p.uuid != entt && cb_i.Enabled) 
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 

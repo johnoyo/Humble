@@ -4,7 +4,7 @@ namespace HBL
 {
 	void Registry::EnrollEntity(IEntity& Entity, const std::string& name)
 	{
-		Entity = Random::UInt64(0, UINT64_MAX);
+		Entity.uuid = Random::UInt64(0, UINT64_MAX);
 		m_Entities.emplace_back(Entity);
 
 		AddComponent<Component::Transform>(Entity);
@@ -18,7 +18,7 @@ namespace HBL
 
 	void Registry::EnrollEntityWithUUID(IEntity& Entity, UUID& uuid)
 	{
-		Entity = uuid;
+		Entity.uuid = uuid;
 		m_Entities.emplace_back(Entity);
 	}
 
@@ -33,6 +33,7 @@ namespace HBL
 		}
 
 		ENGINE_LOG("Could not find entity with tag: %s", tag);
-		return (IEntity)0LU;
+
+		return { 0LU, false };
 	}
 }

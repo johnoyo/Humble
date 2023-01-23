@@ -163,7 +163,7 @@ namespace HBL
 			{
 				for (int i = 0; i < m_AllFilteredEntities[index].size(); i++)
 				{
-					if (m_AllFilteredEntities[index][i] == entt)
+					if (m_AllFilteredEntities[index][i].uuid == entt.uuid)
 						m_AllFilteredEntities[index].erase(m_AllFilteredEntities[index].begin() + i);
 				}
 			}
@@ -337,7 +337,7 @@ namespace HBL
 			T component;
 
 			auto& array = GetArray<T>();
-			array.emplace(Entity, component);
+			array.emplace(Entity.uuid, component);
 
 			IGroup::Get().UpdateGroupsOnAdd<T>(Entity);
 			
@@ -350,14 +350,14 @@ namespace HBL
 			//ASSERT(HasComponent<T>(Entity));
 
 			auto& array = GetArray<T>();
-			return array[Entity];
+			return array[Entity.uuid];
 		}
 
 		template<typename T>
 		bool HasComponent(IEntity& Entity)
 		{
 			auto& array = GetArray<T>();
-			return (array.find(Entity) != array.end());
+			return (array.find(Entity.uuid) != array.end());
 		}
 
 		template<typename T>
@@ -366,7 +366,7 @@ namespace HBL
 			ASSERT(HasComponent<T>(Entity));
 
 			auto& array = GetArray<T>();
-			array.erase(Entity);
+			array.erase(Entity.uuid);
 
 			IGroup::Get().UpdateGroupsOnRemove<T>(Entity);
 		}

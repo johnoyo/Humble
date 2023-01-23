@@ -143,6 +143,17 @@ namespace HBL
 				});
 		}
 
+		template<typename T>
+		void UpdateGroups(IEntity& entt)
+		{
+			std::vector<uint32_t> indices = FindHashCodeIndices<T>();
+
+			for (uint32_t index : indices)
+			{
+				m_AllFilteredEntities[index].emplace_back(entt);
+			}
+		}
+
 		void Clean()
 		{
 			for (int i = 0; i < m_HashCodes.size(); i++)
@@ -162,6 +173,25 @@ namespace HBL
 
 	private:
 		IGroup() { };
+
+		template<typename T>
+		std::vector<uint32_t>& FindHashCodeIndices()
+		{
+			std::vector<uint32_t> indices;
+
+			for (int i = 0; i < m_HashCodes.size(); i++)
+			{
+				for (int j = 0; j < m_HashCodes[i].size(); j++)
+				{
+					if (m_HashCodes[i][j] == typeid(T).hash_code())
+					{
+						indices.push_back(i);
+					}
+				}
+			}
+
+			return indices;
+		}
 
 		template <typename... Ts>
 		typename std::enable_if<sizeof...(Ts) == 0>::type HashCodeFiller(IEntity& entt) { }
@@ -251,6 +281,7 @@ namespace HBL
 		}
 
 		std::function<void(IEntity&)> m_FunctionFilter = nullptr;
+
 		uint32_t m_Recursions = 0;
 		uint32_t m_ComponentCounter = 0;
 
@@ -281,7 +312,7 @@ namespace HBL
 
 		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid);
 
-		IEntity* FindEntityWithTag(const std::string& tag);
+		IEntity FindEntityWithTag(const std::string& tag);
 
 		template<typename T>
 		T& AddComponent(IEntity& Entity)

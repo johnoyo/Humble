@@ -4,7 +4,6 @@
 #include "../ECS/ISystem.h"
 
 #include "../Utilities.h"
-#include "../ECS/Group.h"
 #include "../ECS/IEntity.h"
 #include "../ECS/Registry.h"
 #include "../ECS/Components.h"

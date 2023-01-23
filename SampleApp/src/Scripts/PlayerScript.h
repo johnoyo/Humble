@@ -18,13 +18,13 @@ namespace HBL
 
 		virtual void OnCreate() override 
 		{
-			player = *(Registry::Get().FindEntityWithTag("Player"));
-			enemy = *(Registry::Get().FindEntityWithTag("Enemy"));
-			background = *(Registry::Get().FindEntityWithTag("Background"));
-			camera = *(Registry::Get().FindEntityWithTag("Camera"));
+			player = (Registry::Get().FindEntityWithTag("Player"));
+			enemy = (Registry::Get().FindEntityWithTag("Enemy"));
+			background = (Registry::Get().FindEntityWithTag("Background"));
+			camera = (Registry::Get().FindEntityWithTag("Camera"));
 
 			if (SceneManager::Get().GetCurrentLevel() == 0)
-				clipCamera = *(Registry::Get().FindEntityWithTag("ClipCamera"));
+				clipCamera = (Registry::Get().FindEntityWithTag("ClipCamera"));
 
 			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
 			sprite.texture = "res/textures/super_mario_tiles.png";
@@ -90,6 +90,12 @@ namespace HBL
 			transform_cam.position.x = transform_p.position.x + (-Systems::Window.GetWidth() / 2.0f);
 			transform_cam.position.y = transform_p.position.y + (-Systems::Window.GetHeight() / 2.0f);
 			
+			// Player movement
+			if (InputManager::GetKeyDown(GLFW_KEY_P))
+			{
+				Registry::Get().AddComponent<Component::Shadow>(player);
+			}
+
 			// Player movement
 			if (InputManager::GetKeyDown(GLFW_KEY_D)) 
 			{

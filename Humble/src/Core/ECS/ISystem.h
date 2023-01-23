@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Group.h"
 #include "IEntity.h"
 
 #include "../HumbleAPI.h"

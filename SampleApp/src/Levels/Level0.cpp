@@ -25,6 +25,8 @@ void HBL::Level0::OnAttach()
 	for (uint32_t i = 0; i < 10000; i++)
 		Registry::Get().EnrollEntity(level[i]);
 
+	Registry::Get().GetComponent<Component::Tag>(wall[0]).tag = "Tile";
+
 	// Add components.
 	Registry::Get().AddComponent<Component::SpriteRenderer>(background);
 

@@ -324,7 +324,7 @@ namespace HBL
 			auto& array = GetArray<T>();
 			array.emplace(Entity, component);
 
-			//IGroup::Get().UpdateGroups<T>(Entity);
+			IGroup::Get().UpdateGroups<T>(Entity);
 			
 			return component;
 		}

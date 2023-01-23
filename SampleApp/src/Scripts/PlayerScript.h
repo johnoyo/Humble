@@ -15,6 +15,7 @@ namespace HBL
 		IEntity background;
 		IEntity camera;
 		IEntity clipCamera;
+		IEntity tile;
 
 		virtual void OnCreate() override 
 		{
@@ -22,6 +23,7 @@ namespace HBL
 			enemy = (Registry::Get().FindEntityWithTag("Enemy"));
 			background = (Registry::Get().FindEntityWithTag("Background"));
 			camera = (Registry::Get().FindEntityWithTag("Camera"));
+			tile = Registry::Get().FindEntityWithTag("Tile");
 
 			if (SceneManager::Get().GetCurrentLevel() == 0)
 				clipCamera = (Registry::Get().FindEntityWithTag("ClipCamera"));
@@ -91,9 +93,67 @@ namespace HBL
 			transform_cam.position.y = transform_p.position.y + (-Systems::Window.GetHeight() / 2.0f);
 			
 			// Player movement
-			if (InputManager::GetKeyDown(GLFW_KEY_P))
+			if (InputManager::GetKeyPress(GLFW_KEY_P))
 			{
-				Registry::Get().AddComponent<Component::Shadow>(player);
+				Registry::Get().AddComponent<Component::Shadow>(tile);
+
+				VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
+
+				Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(tile);
+				shadow.source = &player;
+
+				if (shadow.Enabled && shadow.source != nullptr)
+				{
+					Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(tile);
+
+					sprite.texture = "-";
+					sprite.color = shadow.color;
+
+					shadow.parentBufferIndex = Registry::Get().GetComponent<Component::Transform>(tile).bufferIndex;
+					shadow.bufferIndex = buffer.GetSize();
+				}
+
+				if (shadow.Enabled && shadow.source != nullptr)
+				{
+					glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
+
+					std::vector<glm::vec2> vertices;
+
+					// Retrieve vertices of entity
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
+
+					std::vector<glm::vec2> shadow_points;
+
+					// Find all shadow points
+					for (int j = 0; j < 4; j++)
+					{
+						glm::vec2& E = vertices[j];
+
+						float rdx, rdy;
+						rdx = E.x - O.x;
+						rdy = E.y - O.y;
+
+						float base_ang = atan2f(rdy, rdx);
+
+						rdx = shadow.shadowDistance * cosf(base_ang);
+						rdy = shadow.shadowDistance * sinf(base_ang);
+
+						shadow_points.push_back({ rdx, rdy });
+					}
+
+					// Set shadow quad positions
+					Renderer::Get().RegisterQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
+					Renderer::Get().RegisterQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
+					Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+				}
+
+				// Reset rendering buffers
+				Renderer::Get().Bind(0);
+				Renderer::Get().Invalidate(0);
+				Renderer::Get().UnBind();
 			}
 
 			// Player movement

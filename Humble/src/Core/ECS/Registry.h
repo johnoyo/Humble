@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Gentle.h"
+
 #include "UUID.h"
 #include "IEntity.h"
 #include "Components.h"
@@ -422,22 +424,10 @@ namespace HBL
 			return IView<T>::Get();
 		}
 
-		template<typename T>
-		IView<T>& ForEach(std::function<void(T&)> func)
-		{
-			return IView<T>::Get().ForEach(func);
-		}
-
 		template<typename... Ts>
 		IGroup& Group()
 		{
 			return IGroup::Get().Filter<Ts...>();
-		}
-
-		template<typename... Ts>
-		IGroup& ForEach(std::function<void(IEntity&)> func)
-		{
-			return IGroup::Get().ForEach(func);
 		}
 		
 	private:

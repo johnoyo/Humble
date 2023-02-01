@@ -37,7 +37,7 @@ namespace HBL {
 		static int64_t Int64(int64_t floor, int64_t ceiling)
 		{
 			ASSERT(floor < ceiling);
-			return (int64_t)((((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
+			return (int64_t)((((double)s_Distribution(s_RandomEngine) / (double)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
 		}
 
 		static uint32_t UInt32(uint32_t floor, uint32_t ceiling)
@@ -49,7 +49,7 @@ namespace HBL {
 		static uint64_t UInt64(uint64_t floor, uint64_t ceiling)
 		{
 			ASSERT(floor < ceiling);
-			return (uint64_t)((((float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
+			return (uint64_t)((((double)s_Distribution(s_RandomEngine) / (double)std::numeric_limits<uint64_t>::max()) * (ceiling - floor) + floor));
 		}
 
 	private:

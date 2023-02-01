@@ -14,6 +14,7 @@ void HBL::SpriteRendererSystem::Start()
 	{
 		Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
 		Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(entt);
+
 		if (transform.Enabled)
 		{
 			sprite.bufferIndex = Renderer::Get().GetVertexBuffer(0).m_Index;
@@ -23,7 +24,6 @@ void HBL::SpriteRendererSystem::Start()
 
 		if (sprite.texture != "-")
 			TextureManager::Get().Find(sprite.texture);
-
 	}).Run();
 
 	Renderer::Get().Bind(0);

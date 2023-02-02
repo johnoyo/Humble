@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Gentle.h"
-
 #include "UUID.h"
 #include "IEntity.h"
 #include "Components.h"

@@ -182,12 +182,17 @@ namespace HBL
 				transform_p.position.x -= 210.0f * dt;
 			}
 
-			if (InputManager::GetKeyDown(GLFW_KEY_S))
+			if (InputManager::GetKeyDown(GLFW_KEY_S) && SceneManager::Get().GetCurrentLevel() == 1)
 				transform_p.position.y -= 210.0f * dt;
 
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
-				transform_p.position.y += 210.0f * dt;
+				if (SceneManager::Get().GetCurrentLevel() == 1)
+					transform_p.position.y += 210.0f * dt;
+				else
+					if (Registry::Get().GetComponent<Component::Gravity>(player).isGrounded)
+						Registry::Get().GetComponent<Component::Gravity>(player).appliedForce = 180.f;
+
 				Systems::Animation.PlayAnimation(animation_p, 1);
 			}
 			else
@@ -197,8 +202,8 @@ namespace HBL
 			if (InputManager::GetKeyRelease(GLFW_KEY_W))
 				Systems::Animation.ResetAnimation(animation_p, 1, 5);
 
-			if (Systems::Collision.CollisionBetween(player, enemy))
-				ENGINE_LOG("Player collided with enemy!!!");
+			/*if (Systems::Collision.CollisionBetween(player, enemy))
+				ENGINE_LOG("Player collided with enemy!!!");*/
 		}
 
 	};

@@ -56,8 +56,8 @@ void HBL::Level1::OnAttach()
 	Registry::Get().GetComponent<Component::Transform>(background).Static = false;
 
 	Registry::Get().GetComponent<Component::Shadow>(enemy).source = &player;
-	Registry::Get().GetComponent<Component::Gravity>(enemy).force = 1000.0f;
-	Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -1000.0f;
+	Registry::Get().GetComponent<Component::Gravity>(enemy).force = 3000.0f;
+	Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -3000.0f;
 
 	Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
 		0.0f, Systems::Window.GetWidth(),

@@ -11,8 +11,8 @@ void HBL::Level0::OnAttach()
 
 	Registry::Get().EnrollEntity(background, "Background");
 	Registry::Get().EnrollEntity(player, "Player");
-	Registry::Get().EnrollEntity(enemy, "Enemy");
 	Registry::Get().EnrollEntity(camera, "Camera");
+	Registry::Get().EnrollEntity(enemy, "Enemy");
 	Registry::Get().EnrollEntity(clipCamera, "ClipCamera");
 	Registry::Get().EnrollEntity(lvlHandler);
 	Registry::Get().EnrollEntity(sps, "Spritesheet");
@@ -35,6 +35,7 @@ void HBL::Level0::OnAttach()
 	Registry::Get().AddComponent<Component::Animation>(player);
 	Registry::Get().AddComponent<Component::CollisionBox>(player);
 	Registry::Get().AddComponent<Component::Health>(player);
+	Registry::Get().AddComponent<Component::Gravity>(player);
 
 	Registry::Get().AddComponent<Component::Script>(enemy);
 	Registry::Get().AddComponent<Component::SpriteRenderer>(enemy);
@@ -79,8 +80,11 @@ void HBL::Level0::OnAttach()
 	Registry::Get().GetComponent<Component::Transform>(background).Static = false;
 
 	Registry::Get().GetComponent<Component::Shadow>(enemy).source = &player;
-	Registry::Get().GetComponent<Component::Gravity>(enemy).force = 1000.0f;
-	Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -1000.0f;
+	Registry::Get().GetComponent<Component::Gravity>(enemy).force = 3000.0f;
+	Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -3000.0f;
+
+	Registry::Get().GetComponent<Component::Gravity>(player).force = 3500.0f;
+	Registry::Get().GetComponent<Component::Gravity>(player).threshold = -300.0f;
 
 	Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
 		0.0f, Systems::Window.GetWidth(),

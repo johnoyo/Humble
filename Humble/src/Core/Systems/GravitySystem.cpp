@@ -8,7 +8,7 @@ namespace HBL
 		
 		Registry::Get().View<Component::Gravity>().ForEach([&](Component::Gravity& gravity)
 		{
-			gravity.appliedForce = gravity.force;
+			gravity.appliedForce = 0.f;
 		}).Run();
 	}
 
@@ -33,7 +33,10 @@ namespace HBL
 			else if (gravity.Enabled && gravity.isGrounded)
 			{
 				if (gravity.appliedForce <= gravity.threshold)
-					gravity.appliedForce = gravity.threshold;
+					gravity.appliedForce == gravity.threshold;
+
+				if (gravity.collides)
+					transfom.position.y += 2.0f * gravity.appliedForce * dt;
 			}
 		}).Run();
 	}

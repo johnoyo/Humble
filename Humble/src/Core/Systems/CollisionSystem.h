@@ -28,9 +28,9 @@ namespace HBL
 		bool CollisionBetween(IEntity& e0, IEntity& e1);
 
 	private:
-		std::vector<std::list<UUID>> sectors;
-		glm::vec2 sectorDimension;
-		glm::vec2 sectorSize;
+		std::vector<std::list<IEntity>> sectors;
+		glm::vec2 sectorDimension = {};
+		glm::vec2 sectorSize = {};
 
 		bool CheckCornerBRTL(glm::vec3& p_br, glm::vec3& e_tl, glm::vec3& e_br);
 		bool CheckCornerTRBL(glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_tr);
@@ -55,8 +55,8 @@ namespace HBL
 		bool CheckSideBT(VertexBuffer& buffer, IEntity& p, glm::vec3& p_tl, glm::vec3& p_tr, glm::vec3& e_bl, glm::vec3& e_br, glm::vec3& e_tl, int axis);
 		bool CheckSideTB(VertexBuffer& buffer, IEntity& p, glm::vec3& p_br, glm::vec3& p_bl, glm::vec3& e_tr, glm::vec3& e_tl, glm::vec3& e_bl, int axis);
 
-		void CheckForCollisions(IEntity& p, VertexBuffer& buffer, int axis);
-		void CheckForSectorCollisions(IEntity& p, int index, VertexBuffer& buffer, int axis);
+		bool CheckForCollisions(IEntity& p, VertexBuffer& buffer, int axis);
+		bool CheckForSectorCollisions(IEntity& p, int index, VertexBuffer& buffer, int axis);
 	};
 
 }

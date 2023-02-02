@@ -62,8 +62,8 @@ namespace HBL
 						collisionBox.bl.x = tr.x - sc.x / 2.0f;
 
 						// Collision check on x-axis.
-						CheckForSectorCollisions(entt, index, buffer, X_AXIS);
-						/* CheckForCollisions(entt, buffer, X_AXIS); */
+						bool xCollision = CheckForSectorCollisions(entt, index, buffer, X_AXIS);
+						/* bool xCollision = CheckForCollisions(entt, buffer, X_AXIS); */
 
 						// Update collision box on y-axis.
 						collisionBox.tl.y = tr.y + sc.y / 2.0f;
@@ -72,8 +72,17 @@ namespace HBL
 						collisionBox.bl.y = tr.y - sc.y / 2.0f;
 
 						// Collision check on y-axis.
-						CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
-						/* CheckForCollisions(entt, buffer, Y_AXIS); */
+						bool yCollision = CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
+						/* bool yCollision = CheckForCollisions(entt, buffer, Y_AXIS); */
+
+						if (Registry::Get().HasComponent<Component::Gravity>(entt))
+						{
+							if (!xCollision && !yCollision)
+							{
+								Registry::Get().GetComponent<Component::Gravity>(entt).collides = false;
+								Registry::Get().GetComponent<Component::Gravity>(entt).isGrounded = false;
+							}
+						}
 					}
 				}
 			}
@@ -92,7 +101,7 @@ namespace HBL
 
 		for (uint32_t i = 0; i < (sectorDimension[0] * sectorDimension[1]); i++)
 		{
-			sectors.push_back(std::list<UUID>());
+			sectors.push_back(std::list<IEntity>());
 		}
 
 		return;
@@ -108,7 +117,7 @@ namespace HBL
 		{
 			// Remove entity from all sectors.
 			for (uint32_t k = 0; k < sectorDimension[0] * sectorDimension[1]; k++)
-				sectors[k].remove(entt.uuid);
+				sectors[k].remove(entt);
 
 			for (uint32_t i = 0; i < sectorDimension[1]; i++)
 			{
@@ -120,7 +129,7 @@ namespace HBL
 					 && transfom.position.y <= (sectorSize.y * i) + sectorSize.y && transfom.position.y >= (sectorSize.y * i))
 					{
 						// Add entity to sector.
-						sectors[index].emplace_back(entt.uuid);
+						sectors[index].emplace_back(entt);
 
 						// Cache index.
 						cachedIndex = index;
@@ -422,7 +431,7 @@ namespace HBL
 		return false;
 	}
 
-	void CollisionSystem::CheckForCollisions(IEntity& p, VertexBuffer& buffer, int axis)
+	bool CollisionSystem::CheckForCollisions(IEntity& p, VertexBuffer& buffer, int axis)
 	{
 		//FUNCTION_PROFILE();
 
@@ -430,215 +439,226 @@ namespace HBL
 
 		for (auto& component : Registry::Get().GetArray<Component::CollisionBox>())
 		{
-			bool tmp = false;
+			bool collision = false;
 			Component::CollisionBox& cb_i = component.second;
 
 			if (component.first != p.uuid && cb_i.Enabled)
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
-				tmp = CheckCornerBRTL(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckCornerBRTL(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckCornerTRBL(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckCornerTRBL(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckCornerTLBR(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckCornerTLBR(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckCornerBLTR(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckCornerBLTR(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideLR(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckSideLR(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideRL(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckSideRL(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideTB(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckSideTB(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideBT(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
-				if (tmp != false) {
-					if (Registry::Get().HasComponent<Component::Gravity>(p))
+				collision = CheckSideBT(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
+				if (collision) {
+					if (Registry::Get().HasComponent<Component::Gravity>(p) && axis == Y_AXIS)
 					{
 						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
 						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
 					}
-					return;
+					return true;
 				}
 			}
-
 		}
 
-		if (Registry::Get().HasComponent<Component::Gravity>(p))
-		{
-			Registry::Get().GetComponent<Component::Gravity>(p).collides = false;
-			Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
-		}
-
-		return;
+		return false;
 	}
 
-	void CollisionSystem::CheckForSectorCollisions(IEntity& p, int index, VertexBuffer& buffer, int axis)
+	bool CollisionSystem::CheckForSectorCollisions(IEntity& p, int index, VertexBuffer& buffer, int axis)
 	{
 		//FUNCTION_PROFILE();
 
-		for (UUID& entt : sectors[index])
+		for (IEntity& entt : sectors[index])
 		{
-			bool tmp = false;
-			Component::CollisionBox& cb_i = Registry::Get().GetComponent<Component::CollisionBox>(*(IEntity*)&entt);
+			bool collision = false;
+			Component::CollisionBox& cb_i = Registry::Get().GetComponent<Component::CollisionBox>(entt);
 
-			if (p.uuid != entt && cb_i.Enabled) 
+			if (p.uuid != entt.uuid && cb_i.Enabled) 
 			{
 				Component::CollisionBox& cb_p = Registry::Get().GetComponent<Component::CollisionBox>(p);
 
-				tmp = CheckCornerBRTL(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
-				if (tmp != false) 
+				collision = CheckCornerBRTL(buffer, p, cb_p.br, cb_i.tl, cb_i.br, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckCornerTRBL(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
-				if (tmp != false) 
+				collision = CheckCornerTRBL(buffer, p, cb_p.tr, cb_i.bl, cb_i.tr, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckCornerTLBR(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
-				if (tmp != false) 
+				collision = CheckCornerTLBR(buffer, p, cb_p.tl, cb_i.br, cb_i.tl, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckCornerBLTR(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
-				if (tmp != false) 
+				collision = CheckCornerBLTR(buffer, p, cb_p.bl, cb_i.tr, cb_i.bl, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideLR(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
-				if (tmp != false) 
+				collision = CheckSideLR(buffer, p, cb_p.br, cb_p.tr, cb_i.bl, cb_i.tl, cb_i.tr, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideRL(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
-				if (tmp != false) 
+				collision = CheckSideRL(buffer, p, cb_p.tl, cb_p.bl, cb_i.tr, cb_i.br, cb_i.bl, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideTB(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
-				if (tmp != false) 
+				collision = CheckSideTB(buffer, p, cb_p.br, cb_p.bl, cb_i.tr, cb_i.tl, cb_i.bl, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = true;
+						}
 					}
-					return;
+					return true;
 				}
 
-				tmp = CheckSideBT(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
-				if (tmp != false) 
+				collision = CheckSideBT(buffer, p, cb_p.tl, cb_p.tr, cb_i.bl, cb_i.br, cb_i.tl, axis);
+				if (collision)
 				{
 					if (Registry::Get().HasComponent<Component::Gravity>(p))
 					{
-						Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
-						Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						if (axis == Y_AXIS)
+						{
+							Registry::Get().GetComponent<Component::Gravity>(p).collides = true;
+							Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
+						}
 					}
-					return;
+					return true;
 				}
 			}
 		}
 
-		if (Registry::Get().HasComponent<Component::Gravity>(p))
-		{
-			Registry::Get().GetComponent<Component::Gravity>(p).collides = false;
-			Registry::Get().GetComponent<Component::Gravity>(p).isGrounded = false;
-		}
-
-		return;
+		return false;
 	}
 }
 

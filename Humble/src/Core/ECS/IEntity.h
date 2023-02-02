@@ -10,5 +10,10 @@ namespace HBL
 	{
 		UUID uuid = 0LU;
 		bool Enabled = true;
+
+		bool operator==(const IEntity& entt) const
+		{
+			return uuid == entt.uuid;
+		}
 	};
 }

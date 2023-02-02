@@ -1,35 +1,35 @@
 #include "TransformSystem.h"
-#include "../GlobalSystems.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void TransformSystem::Start()
 	{
 		FUNCTION_PROFILE();
 
-		Filter({ "Transform" });
+		Registry::Get().View<Component::Transform>().ForEach([&](Component::Transform& tr)
+		{
+			if (tr.Static == false)
+			{
+				Renderer::Get().UpdateQuad(0, tr.bufferIndex, tr.position, tr.rotation, tr.scale);
+			}
+		}).Run();
 	}
 
 	void TransformSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 
-		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
-
-		for (int i = 0; i < Globals::Transform.size(); i++)
+		Registry::Get().View<Component::Transform>().ForEach([&](Component::Transform& tr)
 		{
-			Component::Transform& tr = Globals::Transform[i];
-			if (tr.Static == false) 
+			if (tr.Static == false)
 			{
-				buffer.Update_Position_On_Quad(tr.bufferIndex, tr);
+				Renderer::Get().UpdateQuad(0, tr.bufferIndex, tr.position, tr.rotation, tr.scale);
 			}
-		}
+		}).Run(); 
 	}
 
 	void TransformSystem::Clear()
 	{
-		Clean();
-		Globals::Transform.clear();
+		Registry::Get().ClearArray<Component::Transform>();
 	}
-
 }

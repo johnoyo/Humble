@@ -1,16 +1,18 @@
 #include "Renderer.h"
 
-namespace HBL {
-
-	void Renderer::AddBatch(const std::string& shader_path, uint32_t vertexBufferSize, const glm::mat4& m_Camera_vp)
+namespace HBL 
+{
+	void Renderer::AddBatch(const std::string& shaderPath, uint32_t vertexBufferSize, IEntity& camera)
 	{
+		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
+
 		rendererData.push_back(new RendererData());
 
 		rendererData[size]->vbuffer.total_size = vertexBufferSize;
 		rendererData[size]->vbuffer.Initialize(vertexBufferSize);
-		rendererData[size]->ibuffer.Make_Indecies(rendererData[size]->vbuffer.Get_Size());
+		rendererData[size]->ibuffer.MakeIndecies(rendererData[size]->vbuffer.GetSize());
 
-		Prepare(m_Camera_vp, shader_path);
+		Prepare(cameraVP, shaderPath);
 
 		rendererData[size]->vbuffer.Reset();
 
@@ -19,9 +21,9 @@ namespace HBL {
 		size++;
 	}
 
-	void Renderer::Render(const glm::mat4& camera_vp)
+	void Renderer::Render(IEntity& camera)
 	{
-		currentIndex = 0;
+		glm::mat4& cameraVP = Registry::Get().GetComponent<Component::Camera>(camera).viewProjectionMatrix;
 
 		BeginFrame();
 
@@ -29,13 +31,13 @@ namespace HBL {
 		{
 			Bind();
 
-			UpdateCameraUniform(camera_vp);
+			UpdateCameraUniform(cameraVP);
 
 			// Set dynamic vertex buffer
-			glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.Get_Size() * sizeof(Vertex_Array), data->vbuffer.Get_Buffer());
+			glBufferSubData(GL_ARRAY_BUFFER, 0, data->vbuffer.GetSize() * sizeof(Vertex_Array), data->vbuffer.GetBuffer());
 
 			// Draw batch
-			glDrawElements(GL_TRIANGLES, (data->vbuffer.Get_Size() / 4) * 6, GL_UNSIGNED_INT, NULL);
+			glDrawElements(GL_TRIANGLES, (data->vbuffer.GetSize() / 4) * 6, GL_UNSIGNED_INT, NULL);
 
 			UnBind();
 
@@ -69,61 +71,99 @@ namespace HBL {
 		glUseProgram(0);
 	}
 
-	uint32_t Renderer::Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
-	{
-		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
 
-		rendererData[vindex]->vbuffer.Fill_Buffer(p0, color, glm::vec2(0.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer(p1, color, glm::vec2(1.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer(p2, color, glm::vec2(1.0f, 0.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer(p3, color, glm::vec2(0.0f, 0.0f), 0);
+
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
+	{
+		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
+
+		rendererData[vindex]->vbuffer.FillBuffer(p0, color, glm::vec2(0.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p1, color, glm::vec2(1.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p2, color, glm::vec2(1.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p3, color, glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
 	}
 
-	uint32_t Renderer::Draw_Quad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3)
 	{
-		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
+		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
-		rendererData[vindex]->vbuffer.Fill_Buffer(p0, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer(p1, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer(p2, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer(p3, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p0, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p1, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p2, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer(p3, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
 	}
 
-	uint32_t Renderer::Draw_Quad(uint32_t vindex, Component::Transform& tr)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, Component::Transform& tr)
 	{
-		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
+		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y + tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
 	}
 
-	uint32_t Renderer::Draw_Quad(uint32_t vindex, Component::TextTransform& tr, float width, float height)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, Component::TextTransform& tr, float width, float height)
 	{
-		uint32_t vertex_index = rendererData[vindex]->vbuffer.Get_Size();
+		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-		rendererData[vindex]->vbuffer.Fill_Buffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
 		return vertex_index;
+	}
+
+	void Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec3& position, float rotation, glm::vec3& scale)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdatePositionOnQuad(vertexIndex, position, rotation, scale);
+	}
+
+	void HBL::Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec4& color, uint32_t textureIndex)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdateMaterialOnQuad(vertexIndex, color, textureIndex);
+	}
+
+	void HBL::Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec4& color, float textureIndex, glm::vec2& texCoords, glm::vec2& sheetSize, glm::vec2& spriteSize)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdateMaterialOnQuad(vertexIndex, color, textureIndex, texCoords, sheetSize, spriteSize);
+	}
+
+	void HBL::Renderer::UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec3& position, float rotation, glm::vec3& scale, glm::vec4& color, uint32_t textureIndex)
+	{
+		if (vertexIndex == -1)
+			return;
+
+		VertexBuffer& buffer = rendererData[batchIndex]->vbuffer;
+		buffer.UpdateMaterialOnQuad(vertexIndex, color, textureIndex);
 	}
 
 	void Renderer::Invalidate(uint32_t vindex)
 	{
-		ENGINE_LOG("Vertex buffer size: %d", rendererData[vindex]->vbuffer.Get_Size() / 4);
+		ENGINE_LOG("Vertex buffer size: %d", rendererData[vindex]->vbuffer.GetSize() / 4);
 
 		rendererData[vindex]->ibuffer.Clean();
-		rendererData[vindex]->ibuffer.Make_Indecies(rendererData[vindex]->vbuffer.Get_Size());
-		UpdateIndexBuffer(rendererData[vindex]->vbuffer.Get_Size(), vindex);
+		rendererData[vindex]->ibuffer.MakeIndecies(rendererData[vindex]->vbuffer.GetSize());
+		UpdateIndexBuffer(rendererData[vindex]->vbuffer.GetSize(), vindex);
 	}
 
 	void Renderer::Clear()
@@ -147,7 +187,7 @@ namespace HBL {
 		rendererData.clear();
 	}
 
-	void Renderer::Clear_Buffers()
+	void Renderer::ClearBuffers()
 	{
 		for (RendererData* data : rendererData)
 		{
@@ -163,6 +203,8 @@ namespace HBL {
 
 	void HBL::Renderer::BeginFrame()
 	{
+		currentIndex = 0;
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
@@ -171,7 +213,7 @@ namespace HBL {
 	{
 	}
 
-	void Renderer::Prepare(const glm::mat4& m_Camera_vp, const std::string& shader_path, bool debug)
+	void Renderer::Prepare(const glm::mat4& cameraVP, const std::string& shaderPath, bool debug)
 	{
 		FUNCTION_PROFILE();
 
@@ -188,7 +230,7 @@ namespace HBL {
 		/* vertex buffer */
 		glGenBuffers(1, &rendererData[size]->vb);
 		glBindBuffer(GL_ARRAY_BUFFER, rendererData[size]->vb);
-		glBufferData(GL_ARRAY_BUFFER, rendererData[size]->vbuffer.Get_Total_Size() * sizeof(struct Vertex_Array), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, rendererData[size]->vbuffer.GetTotalSize() * sizeof(struct Vertex_Array), nullptr, GL_DYNAMIC_DRAW);
 
 		/* vertex attrib positions*/
 		glEnableVertexAttribArray(0);
@@ -209,10 +251,10 @@ namespace HBL {
 		/* index buffer */
 		glGenBuffers(1, &rendererData[size]->ib);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererData[size]->ib);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.Get_Size() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rendererData[size]->vbuffer.GetSize() / 4) * 6 * sizeof(uint32_t), rendererData[size]->ibuffer.GetIndexBuffer(), GL_STATIC_DRAW);
 
 		/* shaders */
-		ShaderProgramSource shaderSource = ParseShader(shader_path);
+		ShaderProgramSource shaderSource = ParseShader(shaderPath);
 		rendererData[size]->shader = CreateShader(shaderSource.VertexSource, shaderSource.FragmentSource);
 		glUseProgram(rendererData[size]->shader);
 
@@ -226,21 +268,21 @@ namespace HBL {
 		if (location1 == -1) {
 			ENGINE_LOG("Uniform not found!!!");
 		}
-		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp));
+		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(cameraVP));
 	}
 
 	void Renderer::UpdateIndexBuffer(uint32_t size, uint32_t vindex)
 	{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.Get_Index_Buffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size / 4) * 6 * sizeof(uint32_t), rendererData[vindex]->ibuffer.GetIndexBuffer(), GL_STATIC_DRAW);
 	}
 
-	void Renderer::UpdateCameraUniform(const glm::mat4& m_Camera_vp)
+	void Renderer::UpdateCameraUniform(const glm::mat4& cameraVP)
 	{
 		auto location1 = glGetUniformLocation(rendererData[currentIndex]->shader, "u_VP");
 		if (location1 == -1) {
 			ENGINE_LOG("Uniform not found!!!");
 		}
-		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp));
+		glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(cameraVP));
 	}
 
 	ShaderProgramSource Renderer::ParseShader(const std::string& filepath)
@@ -312,5 +354,4 @@ namespace HBL {
 
 		return program;
 	}
-
 }

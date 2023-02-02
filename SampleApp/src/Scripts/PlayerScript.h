@@ -1,26 +1,43 @@
 #pragma once
 
-namespace HBL {
+#include "Humble.h"
 
+namespace HBL 
+{
 	class PlayerScript final : public IScript
 	{
 	public:
 		PlayerScript() {}
 		~PlayerScript() {}
 
-		virtual void Init() override {
+		IEntity player;
+		IEntity enemy;
+		IEntity background;
+		IEntity camera;
+		IEntity clipCamera;
+		IEntity tile;
 
-			//GET_COMPONENT(Material, player).texture = "res/textures/player_r.png";
-			Component::Material& material = GET_COMPONENT(Material, player);
-			material.texture = "res/textures/super_mario_tiles.png";
-			material.coords = { 6.0f, 1.0f };
-			material.sprite_size = { 16.0f, 16.0f };
+		virtual void OnCreate() override 
+		{
+			player = (Registry::Get().FindEntityWithTag("Player"));
+			enemy = (Registry::Get().FindEntityWithTag("Enemy"));
+			background = (Registry::Get().FindEntityWithTag("Background"));
+			camera = (Registry::Get().FindEntityWithTag("Camera"));
+			tile = Registry::Get().FindEntityWithTag("Tile");
 
-			Component::Animation& animation = GET_COMPONENT(Animation, player);
+			if (SceneManager::Get().GetCurrentLevel() == 0)
+				clipCamera = (Registry::Get().FindEntityWithTag("ClipCamera"));
+
+			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
+			sprite.texture = "res/textures/super_mario_tiles.png";
+			sprite.coords = { 6.0f, 1.0f };
+			sprite.spriteSize = { 16.0f, 16.0f };
+
+			Component::Animation& animation = Registry::Get().GetComponent<Component::Animation>(player);
 
 			animation.animations.push_back({
 				"WalkAnim",
-				&material,
+				&sprite,
 				{ 6.0f, 1.0f },
 				0.0,
 				0.5,
@@ -32,7 +49,7 @@ namespace HBL {
 
 			animation.animations.push_back({
 				"JumpAnim",
-				&material,
+				&sprite,
 				{ 5.0f, 2.0f },
 				0.0,
 				0.5,
@@ -46,30 +63,117 @@ namespace HBL {
 			animation.animations[1].Enabled = false;
 		}
 
-		virtual void Update(float dt) override {
+		virtual void OnUpdate(float dt) override 
+		{
+			Component::Transform& transform_p = Registry::Get().GetComponent<Component::Transform>(player);
+			Component::Transform& transform_bg = Registry::Get().GetComponent<Component::Transform>(background);
+			Component::Transform& transform_cam = Registry::Get().GetComponent<Component::Transform>(camera);
+			Component::Animation& animation_p = Registry::Get().GetComponent<Component::Animation>(player);
 
-			Component::Transform& transform_p = GET_COMPONENT(Transform, player);
-			Component::Transform& transform_bg = GET_COMPONENT(Transform, background);
-			Component::Animation& animation_p = GET_COMPONENT(Animation, player);
+			if (SceneManager::Get().GetCurrentLevel() == 0)
+			{
+				if (InputManager::GetKeyDown(GLFW_KEY_C))
+				{
+					Registry::Get().GetComponent<Component::Camera>(camera).primary = false;
+					Registry::Get().GetComponent<Component::Camera>(clipCamera).primary = true;
+				}
+				else 
+				{
+					Registry::Get().GetComponent<Component::Camera>(camera).primary = true;
+					Registry::Get().GetComponent<Component::Camera>(clipCamera).primary = false;
+				}
+			}
 
 			// Background follow player
 			transform_bg.position.x = transform_p.position.x;
 			transform_bg.position.y = transform_p.position.y;
 
 			// Camera follow player
-			GlobalSystems::cameraSystem.Follow(camera, player, (-GlobalSystems::windowSystem.Get_Width() / 2.0f), (-GlobalSystems::windowSystem.Get_Height() / 2.0f));
+			transform_cam.position.x = transform_p.position.x + (-Systems::Window.GetWidth() / 2.0f);
+			transform_cam.position.y = transform_p.position.y + (-Systems::Window.GetHeight() / 2.0f);
 			
 			// Player movement
-			if (InputManager::GetKeyDown(GLFW_KEY_D)) {
+			if (InputManager::GetKeyPress(GLFW_KEY_P))
+			{
+				Registry::Get().AddComponent<Component::Shadow>(tile);
+
+				VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
+
+				Component::Shadow& shadow = Registry::Get().GetComponent<Component::Shadow>(tile);
+				shadow.source = &player;
+
+				if (shadow.Enabled && shadow.source != nullptr)
+				{
+					Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(tile);
+
+					sprite.texture = "-";
+					sprite.color = shadow.color;
+
+					shadow.parentBufferIndex = Registry::Get().GetComponent<Component::Transform>(tile).bufferIndex;
+					shadow.bufferIndex = buffer.GetSize();
+				}
+
+				if (shadow.Enabled && shadow.source != nullptr)
+				{
+					glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
+
+					std::vector<glm::vec2> vertices;
+
+					// Retrieve vertices of entity
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
+					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
+
+					std::vector<glm::vec2> shadow_points;
+
+					// Find all shadow points
+					for (int j = 0; j < 4; j++)
+					{
+						glm::vec2& E = vertices[j];
+
+						float rdx, rdy;
+						rdx = E.x - O.x;
+						rdy = E.y - O.y;
+
+						float base_ang = atan2f(rdy, rdx);
+
+						rdx = shadow.shadowDistance * cosf(base_ang);
+						rdy = shadow.shadowDistance * sinf(base_ang);
+
+						shadow_points.push_back({ rdx, rdy });
+					}
+
+					// Set shadow quad positions
+					Renderer::Get().RegisterQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
+					Renderer::Get().RegisterQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
+					Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+				}
+
+				// Reset rendering buffers
+				Renderer::Get().Bind(0);
+				Renderer::Get().Invalidate(0);
+				Renderer::Get().UnBind();
+			}
+
+			// Player movement
+			if (InputManager::GetKeyRelease(GLFW_KEY_P))
+			{
+				Registry::Get().RemoveComponent<Component::Shadow>(tile);
+			}
+
+			// Player movement
+			if (InputManager::GetKeyDown(GLFW_KEY_D)) 
+			{
 				transform_p.position.x += 210.0f * dt;
-				GlobalSystems::animationSystem.PlayAnimation(animation_p, 0);
+				Systems::Animation.PlayAnimation(animation_p, 0);
 			}
 			else
 			{
-				GlobalSystems::animationSystem.StopAnimation(animation_p, 0);
+				Systems::Animation.StopAnimation(animation_p, 0);
 			}
 			if (InputManager::GetKeyRelease(GLFW_KEY_D))
-				GlobalSystems::animationSystem.ResetAnimation(animation_p, 0, 5);
+				Systems::Animation.ResetAnimation(animation_p, 0, 5);
 
 			if (InputManager::GetKeyPress(GLFW_KEY_SPACE))
 				SoundManager::Play("res/audio/bleep.mp3", false, false);
@@ -84,19 +188,18 @@ namespace HBL {
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
 				transform_p.position.y += 210.0f * dt;
-				GlobalSystems::animationSystem.PlayAnimation(animation_p, 1);
+				Systems::Animation.PlayAnimation(animation_p, 1);
 			}
 			else
 			{
-				GlobalSystems::animationSystem.StopAnimation(animation_p, 1);
+				Systems::Animation.StopAnimation(animation_p, 1);
 			}
 			if (InputManager::GetKeyRelease(GLFW_KEY_W))
-				GlobalSystems::animationSystem.ResetAnimation(animation_p, 1, 5);
+				Systems::Animation.ResetAnimation(animation_p, 1, 5);
 
-			if (GlobalSystems::collisionSystem.CollisionBetween(player, enemy))
+			if (Systems::Collision.CollisionBetween(player, enemy))
 				ENGINE_LOG("Player collided with enemy!!!");
 		}
 
 	};
-
 }

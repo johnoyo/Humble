@@ -1,7 +1,7 @@
 #include "SoundManager.h"
 
-namespace HBL {
-
+namespace HBL 
+{
     bool SoundManager::ISucceededOrWarn(const std::string& message, FMOD_RESULT result)
     {
         if (result != FMOD_OK) {
@@ -76,5 +76,4 @@ namespace HBL {
         if (!ISucceededOrWarn("FMOD: Failed to play sound", result))
             return;
 	}
-
 }

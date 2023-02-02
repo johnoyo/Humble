@@ -1,15 +1,18 @@
 #pragma once
-#include "../ISystem.h"
-#include "../Rendering/Renderer.h"
+
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iterator>
-#include <vector>
 #include <algorithm>
 
-namespace HBL {
+#include "../ECS/ISystem.h"
+#include "../Rendering/Renderer.h"
 
-	struct SDFData {
+namespace HBL 
+{
+	struct SDFData 
+	{
 		int code;
 		int xCoord;
 		int yCoord;
@@ -20,9 +23,10 @@ namespace HBL {
 		int xAdvance;
 	};
 
-	#define INVALID_INDEX 99999
+	#define INVALID_INDEX UINT32_MAX
 
-	class HBL_API TextSystem final : public ISystem{
+	class HBL_API TextSystem final : public ISystem
+	{
 	public:
 		virtual void Start() override;
 		virtual void Run(float dt) override;
@@ -36,5 +40,4 @@ namespace HBL {
 		std::vector<SDFData> sdfData;
 		float cursorPosition = 0.0f;
 	};
-
 }

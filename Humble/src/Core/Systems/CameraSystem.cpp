@@ -1,53 +1,55 @@
 #include "CameraSystem.h"
 
-namespace HBL {
-
-	void CameraSystem::Initialize(float left, float right, float bottom, float top)
+void HBL::CameraSystem::Start()
+{
+	Registry::Get().Group<Component::Camera, Component::Transform>().ForEach([&](IEntity& entt)
 	{
-		m_View_Matrix = glm::mat4(1.0f);
-		m_Projection_Matrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
-		m_View_Projection_Matrix = m_Projection_Matrix * m_View_Matrix;
-	}
+		Component::Camera& camera = Registry::Get().GetComponent<Component::Camera>(entt);
 
-	void CameraSystem::Recalculate_View_Matrix(IEntity& camera)
+		if (camera.Enabled)
+		{
+			Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
+
+			glm::mat4 tranform =
+				glm::translate(glm::mat4(1.0f), transform.position) *
+				glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0, 0, 1));
+
+			camera.viewProjectionMatrix = camera.projection * glm::inverse(tranform);
+
+			if (camera.primary)
+				SceneManager::Get().SetMainCamera(entt);
+		}
+	}).Run();
+}
+
+void HBL::CameraSystem::Run(float dt)
+{
+	Registry::Get().Group<Component::Camera, Component::Transform>().ForEach([&](IEntity& entt)
 	{
-		glm::mat4 tranform =
-			glm::translate(glm::mat4(1.0f), GET_COMPONENT(Transform, camera).position) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(0.0f/*Rotation*/), glm::vec3(0, 0, 1));
+		Component::Camera& camera = Registry::Get().GetComponent<Component::Camera>(entt);
 
-		m_View_Matrix = glm::inverse(tranform);
-		m_View_Projection_Matrix = m_Projection_Matrix * m_View_Matrix;
-	}
+		if (camera.Enabled && !camera.Static)
+		{
+			Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
 
-	void CameraSystem::Create()
-	{
-		m_View_Projection_Matrix = m_Projection_Matrix * m_View_Matrix;
-	}
+			glm::mat4 tranform =
+				glm::translate(glm::mat4(1.0f), transform.position) *
+				glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0, 0, 1));
 
-	void CameraSystem::Follow(IEntity& camera, IEntity& player, float offset)
-	{
-		Set_Position_x(camera, GET_COMPONENT(Transform, player).position.x + offset);
-		Set_Position_y(camera, GET_COMPONENT(Transform, player).position.y + offset);
-		Recalculate_View_Matrix(camera);
-	}
+			camera.viewProjectionMatrix = camera.projection * glm::inverse(tranform);
 
-	void CameraSystem::Follow(IEntity& camera, IEntity& player, float offset_x, float offset_y)
-	{
-		Set_Position_x(camera, GET_COMPONENT(Transform, player).position.x + offset_x);
-		Set_Position_y(camera, GET_COMPONENT(Transform, player).position.y + offset_y);
-		Recalculate_View_Matrix(camera);
-	}
+			if (camera.primary)
+				SceneManager::Get().SetMainCamera(entt);
+		}
+		else if (camera.Enabled && camera.Static)
+		{
+			if (camera.primary)
+				SceneManager::Get().SetMainCamera(entt);
+		}
+	}).Run();
+}
 
-	void CameraSystem::Follow_Horizontally(IEntity& camera, IEntity& player, float offset_x)
-	{
-		Set_Position_x(camera, GET_COMPONENT(Transform, player).position.x + offset_x);
-		Recalculate_View_Matrix(camera);
-	}
-
-	void CameraSystem::Follow_Vertically(IEntity& camera, IEntity& player, float offset_y)
-	{
-		Set_Position_y(camera, GET_COMPONENT(Transform, player).position.y + offset_y);
-		Recalculate_View_Matrix(camera);
-	}
-
+void HBL::CameraSystem::Clear()
+{
+	Registry::Get().ClearArray<Component::Camera>();
 }

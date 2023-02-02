@@ -1,16 +1,16 @@
 #pragma once
 
-#include "../Core.h"
-#include "../GlobalArrays.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
-#include <thread>
-#include "fmod.hpp"
+
+#include <fmod.hpp>
 #include <fmod_errors.h>
+#include <unordered_map>
 
-namespace HBL {
-
-	class HBL_API SoundManager {
+namespace HBL 
+{
+	class HBL_API SoundManager 
+	{
 	public:
 		SoundManager(const SoundManager&) = delete;
 
@@ -41,5 +41,4 @@ namespace HBL {
 		FMOD_RESULT result;
 		std::unordered_map<std::string, FMOD::Sound*> sounds;
 	};
-
 }

@@ -1,48 +1,59 @@
 #pragma once
 
-namespace HBL {
+#include "Humble.h"
 
+namespace HBL 
+{
 	class EnemyScript final : public IScript
 	{
 	public:
 		EnemyScript() {}
 		~EnemyScript() {}
 
-		virtual void Init() override {
+		IEntity FPSCounter;
+		IEntity player;
+		IEntity enemy;
+		IEntity text;
 
-			//std::cout << "Calling enemy init 0 \n";
-			GET_COMPONENT(Material, enemy).texture = "res/textures/player_r.png";
-			//GET_COMPONENT(Transform, enemy).rotation = 45.0f;
+		virtual void OnCreate() override 
+		{
+			if (SceneManager::Get().GetCurrentLevel() == 0)
+			{
+				FPSCounter = (Registry::Get().FindEntityWithTag("FPSCounter"));
+				text = (Registry::Get().FindEntityWithTag("Text"));
+			}
+			player = (Registry::Get().FindEntityWithTag("Player"));
+			enemy = (Registry::Get().FindEntityWithTag("Enemy"));
 
+			Registry::Get().GetComponent<Component::SpriteRenderer>(enemy).texture = "res/textures/player_r.png";
+			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation = 45.0f;
 		}
 
-		virtual void Update(float dt) override {
+		virtual void OnUpdate(float dt) override 
+		{
+			Registry::Get().GetComponent<Component::Transform>(enemy).position.x -= 30.0f * dt;
+			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation++;
+			//Registry::Get().GetComponent<Component::Gravity>(enemy).Enabled = false;
 
-			//std::cout << "Calling enemy update 0 \n";
-			GET_COMPONENT(Transform, enemy).position.x -= 30.0f * dt;
-			//GET_COMPONENT(Transform, enemy).rotation++;
-			//GET_COMPONENT(Gravity, enemy).Enabled = false;
-
-			if (Globals::Current_Level == 0)
+			if (SceneManager::Get().GetCurrentLevel() == 0)
 			{
 				if (InputManager::GetKeyDown(GLFW_KEY_H))
 				{
-					GET_COMPONENT(Text, FPSCounter).text = "fllffrrrWWWffff123LffLff";
+					Registry::Get().GetComponent<Component::Text>(FPSCounter).text = "fllffrrrWWWffff123LffLff";
 				}
 				else
 				{
-					GET_COMPONENT(Text, FPSCounter).text = std::to_string((int)GET_COMPONENT(Transform, player).position.x);
+					Registry::Get().GetComponent<Component::Text>(FPSCounter).text = std::to_string((int)Registry::Get().GetComponent<Component::Transform>(player).position.x);
 				}
 
 				if (InputManager::GetKeyDown(GLFW_KEY_G))
 				{
-					GET_COMPONENT(TextTransform, FPSCounter).position.x += 30.0f * dt;
+					Registry::Get().GetComponent<Component::TextTransform>(FPSCounter).position.x += 30.0f * dt;
 				}
 
-				GET_COMPONENT(Text, text).text = std::to_string((int)GET_COMPONENT(TextTransform, FPSCounter).position.x) + " / " + std::to_string((int)GET_COMPONENT(TextTransform, FPSCounter).position.y);
+				Registry::Get().GetComponent<Component::Text>(text).text = std::to_string((int)Registry::Get().GetComponent<Component::TextTransform>(FPSCounter).position.x) + " / " + std::to_string((int)Registry::Get().GetComponent<Component::TextTransform>(FPSCounter).position.y);
 			}
 		}
 
 	};
-
 }

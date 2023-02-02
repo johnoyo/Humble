@@ -1,54 +1,60 @@
 #include "ScriptingSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void ScriptingSystem::Start()
 	{
 		FUNCTION_PROFILE();
 
-		int current_level = Globals::Current_Level;
+		int current_level = SceneManager::Get().GetCurrentLevel();;
 
-		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
-			if (Globals::Script.at(i).Enabled) {
-				int size = Globals::Script.at(i).script.size();
+		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
+		{
+			if (script.Enabled) 
+			{
+				int size = script.script.size();
 				if (current_level < size)
-					Globals::Script.at(i).script[current_level]->Init();
+					script.script[current_level]->OnCreate();
 				else
-					Globals::Script.at(i).script[size - 1]->Init();
+					script.script[size - 1]->OnCreate();
 			}
-		}
+		}).Run();
 	}
 
 	void ScriptingSystem::Run(float dt)
 	{
 		//FUNCTION_PROFILE();
 
-		int current_level = Globals::Current_Level;
+		int current_level = SceneManager::Get().GetCurrentLevel();
 
-		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
-			if (Globals::Script.at(i).Enabled) {
-				int size = Globals::Script.at(i).script.size();
+		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
+		{
+			if (script.Enabled) 
+			{
+				int size = script.script.size();
 				if (current_level < size)
-					Globals::Script.at(i).script[current_level]->Update(dt);
+					script.script[current_level]->OnUpdate(dt);
 				else
-					Globals::Script.at(i).script[size - 1]->Update(dt);
+					script.script[size - 1]->OnUpdate(dt);
 			}
-		}
+		}).Run();
 	}
 
 	void ScriptingSystem::Clear()
 	{
 		FUNCTION_PROFILE();
 
-		int current_level = Globals::Current_Level;
+		int current_level = SceneManager::Get().GetCurrentLevel();
 
-		for (uint32_t i = 0; i < Globals::Script.size(); i++) {
-			for (uint32_t j = 0; j < current_level; j++) {
-				delete Globals::Script.at(i).script[j];
+		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
+		{
+			for (uint32_t j = 0; j < current_level; j++) 
+			{
+				delete script.script[j];
 			}
-		}
+		}).Run();
 
-		Globals::Script.clear();
+		Registry::Get().ClearArray<Component::Script>();
 	}
 
 }

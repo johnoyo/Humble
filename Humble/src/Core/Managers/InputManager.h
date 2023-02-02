@@ -1,11 +1,10 @@
 #pragma once
 
-#include "../Core.h"
 #include "../Utilities.h"
 #include "../HumbleAPI.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	class HBL_API InputManager {
 	public:
 		InputManager(const InputManager&) = delete;
@@ -24,6 +23,7 @@ namespace HBL {
 		static int GetKeyPress(int Key_Code) { return Get().IGetKeyPress(Key_Code); }
 		// Returns true i.e. 1, only the momment that the key is released
 		static int GetKeyRelease(int Key_Code) { return Get().IGetKeyRelease(Key_Code); }
+
 	private:
 		int IGetKeyDown(int Key_Code, int Mode);
 		int IGetKeyPress(int Key_Code);
@@ -36,5 +36,4 @@ namespace HBL {
 
 		int Check_State(int Key_Code);
 	};
-
 }

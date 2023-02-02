@@ -1,24 +1,30 @@
 #pragma once
 
-#include "../Utilities.h"
 #include "../HumbleAPI.h"
 #include "../ECS/ISystem.h"
+
+#include "../Utilities.h"
 #include "../ECS/IEntity.h"
 #include "../ECS/Registry.h"
 #include "../ECS/Components.h"
-
+#include "../ECS/Components.h"
+#include "../Rendering/Renderer.h"
 #include "../Managers/SceneManager.h"
+#include "../Managers/TextureManager.h"
 
-#include <algorithm>
+#include <vector>
+#include <iostream>
 
-namespace HBL 
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+namespace HBL
 {
-	class HBL_API ScriptingSystem final : public ISystem
+	class HBL_API SpriteRendererSystem final : public ISystem
 	{
 	public:
 		virtual void Start() override;
 		virtual void Run(float dt) override;
 		virtual void Clear() override;
 	};
-
 }

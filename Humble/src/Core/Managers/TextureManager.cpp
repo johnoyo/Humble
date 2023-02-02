@@ -1,14 +1,13 @@
 #include "TextureManager.h"
-#include "../GlobalSystems.h"
 
-namespace HBL {
-
-	void TextureManager::I_Init_Transparent_Texture()
+namespace HBL 
+{
+	void TextureManager::InitTransparentTexture()
 	{
-		uint32_t white_texture_id;
+		uint32_t whiteTextureID;
 
-		glCreateTextures(GL_TEXTURE_2D, 1, &white_texture_id);
-		glBindTexture(GL_TEXTURE_2D, white_texture_id);
+		glCreateTextures(GL_TEXTURE_2D, 1, &whiteTextureID);
+		glBindTexture(GL_TEXTURE_2D, whiteTextureID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -17,12 +16,12 @@ namespace HBL {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &color);
 
 		std::string str = "-";
-		map.push_back(str);
-		size.push_back({ 1.0f, 1.0f });
-		texture_slot[current_index++] = white_texture_id;
+		m_TextureMap.push_back(str);
+		m_TextureSize.push_back({ 1.0f, 1.0f });
+		m_TextureSlot[m_CurrentIndex++] = whiteTextureID;
 	}
 
-	void TextureManager::I_Load_Texture(const std::string& path)
+	void TextureManager::LoadTexture(const std::string& path)
 	{
 		int w, h, bits;
 
@@ -41,21 +40,20 @@ namespace HBL {
 
 		stbi_image_free(pixels);
 
-		map.push_back(path);
-		size.push_back({ (float)w, (float)h });
-		texture_slot[current_index++] = tex_id;
-		if (current_index == 31) std::cout << "NOTE: You have reached the max amount of textures(32)\n";
-		assert(current_index < 32);
+		m_TextureMap.push_back(path);
+		m_TextureSize.push_back({ (float)w, (float)h });
+		m_TextureSlot[m_CurrentIndex++] = tex_id;
+		if (m_CurrentIndex == 31) std::cout << "NOTE: You have reached the max amount of textures(32)\n";
+		assert(m_CurrentIndex < 32);
 	}
 
-	float TextureManager::I_Find(const std::string& path)
+	float TextureManager::Find(const std::string& path)
 	{
-		for (int i = 0; i < map.size(); i++) {
-			if (path == map.at(i)) return (float)i;
+		for (int i = 0; i < m_TextureMap.size(); i++) {
+			if (path == m_TextureMap.at(i)) return (float)i;
 		}
 		std::cerr << "Error! Could not find the file specified (" << path << "). Loading it from scratch!" << "\n";
-		I_Load_Texture(path);
-		return (float)map.size() - 1;
+		LoadTexture(path);
+		return (float)m_TextureMap.size() - 1;
 	}
-
 }

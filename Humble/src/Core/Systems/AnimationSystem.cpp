@@ -1,26 +1,22 @@
 #include "AnimationSystem.h"
 
-namespace HBL {
-
+namespace HBL 
+{
 	void AnimationSystem::Start()
 	{
 		FUNCTION_PROFILE()
 
-		Filter( { "Animation" } ).For_Each([&](IEntity& entt)
+		Registry::Get().View<Component::Animation>().ForEach([&](Component::Animation& animation)
 		{
-			Component::Animation& animation = GET_COMPONENT(Animation, entt);
-
 			for (auto anim : animation.animations)
 				anim.time = glfwGetTime();
-		});
+		}).Run();
 	}
 
 	void AnimationSystem::Run(float dt)
 	{
-		For_Each([&](IEntity& entt)
+		Registry::Get().View<Component::Animation>().ForEach([&](Component::Animation& animation)
 		{
-			Component::Animation& animation = GET_COMPONENT(Animation, entt);
-
 			if (animation.Enabled)
 			{
 				for (auto& anim : animation.animations)
@@ -36,17 +32,17 @@ namespace HBL {
 							{
 								// If animation has not ended yet, progress it.
 								anim.start_coords.x++;
-								anim.material->coords = anim.start_coords;
+								anim.sprite->coords = anim.start_coords;
 								anim.frames--;
 							}
 							else
 							{
-								// If is looping animation, reset component state.
+								// If its a looping animation, reset component state.
 								if (anim.loop)
 								{
 									anim.frames = anim.cached_frames;
 									anim.start_coords.x -= anim.frames;
-									anim.material->coords = anim.start_coords;
+									anim.sprite->coords = anim.start_coords;
 								}
 							}
 
@@ -59,15 +55,14 @@ namespace HBL {
 					}
 				}
 			}
-		});
+		}).Run();
 	}
 
 	void AnimationSystem::Clear()
 	{
 		FUNCTION_PROFILE();
 
-		Clean();
-		Globals::Animation.clear();
+		Registry::Get().ClearArray<Component::Animation>();
 	}
 
 	void AnimationSystem::PlayAnimation(Component::Animation& animation, int index)
@@ -95,7 +90,6 @@ namespace HBL {
 		animation.animations[index].cached_frames = frame;
 
 		animation.animations[index].start_coords.x -= diff;
-		animation.animations[index].material->coords = animation.animations[index].start_coords;
+		animation.animations[index].sprite->coords = animation.animations[index].start_coords;
 	}
-
 }

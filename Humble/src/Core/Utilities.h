@@ -1,18 +1,22 @@
 #pragma once
 
-#include "GlobalArrays.h"
-#include "Utilities/ProfilerScope.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <string>
+#include <iostream>
+#include <algorithm>
 
-#define ENROLL_ENTITY(entity) Globals::ecs.EnrollEntity(entity, Globals::entities)
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
-#define ADD_COMPONENT(component, entity) Globals::ecs.AddComponent<HBL::Component::component>(entity, #component, Globals::entities, Globals::component)
-#define GET_COMPONENT(component, entity) Globals::ecs.GetComponent<HBL::Component::component>(entity, #component, Globals::component)
+#include "Utilities/ProfilerScope.h"
 
-#define ADD_MY_COMPONENT(component, entity) Globals::ecs.AddComponent<HBL::Component::component>(entity, #component, Globals::entities, component)
-#define GET_MY_COMPONENT(component, entity) Globals::ecs.GetComponent<HBL::Component::component>(entity, #component, component)
+#define X_AXIS 1
+#define Y_AXIS 2
+#define PI 3.14159265f
 
-#define TRY_FIND_COMPONENT(component, entity) (entity.components.find(#component) != entity.components.end())
+#define ASSERT(x) if (!(x)) __debugbreak();
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 

@@ -15,25 +15,29 @@ namespace HBL
 			return instance;
 		}
 
+		static glm::vec2 GetMousePosition() { return Get().IGetMousePosition(); }
+
 		// Returns true i.e. 1, as long as the specified key is released
-		static int GetKeyUp(int Key_Code) { return Get().IGetKeyDown(Key_Code, GLFW_RELEASE); }
+		static int GetKeyUp(int keyCode) { return Get().IGetKeyDown(keyCode, GLFW_RELEASE); }
 		// Returns true i.e. 1, as long as the specified key is pressed
-		static int GetKeyDown(int Key_Code) { return Get().IGetKeyDown(Key_Code, GLFW_PRESS); }
+		static int GetKeyDown(int keyCode) { return Get().IGetKeyDown(keyCode, GLFW_PRESS); }
 		// Returns true i.e. 1, only the momment that the key is pressed
-		static int GetKeyPress(int Key_Code) { return Get().IGetKeyPress(Key_Code); }
+		static int GetKeyPress(int keyCode) { return Get().IGetKeyPress(keyCode); }
 		// Returns true i.e. 1, only the momment that the key is released
-		static int GetKeyRelease(int Key_Code) { return Get().IGetKeyRelease(Key_Code); }
+		static int GetKeyRelease(int keyCode) { return Get().IGetKeyRelease(keyCode); }
 
 	private:
-		int IGetKeyDown(int Key_Code, int Mode);
-		int IGetKeyPress(int Key_Code);
-		int IGetKeyRelease(int Key_Code);
+		int IGetKeyDown(int keyCode, int mode);
+		int IGetKeyPress(int keyCode);
+		int IGetKeyRelease(int keyCode);
+
+		glm::vec2 IGetMousePosition();
 
 		InputManager() {}
 
-		int last_state_p[349] = { GLFW_RELEASE };
-		int last_state_r[349] = { GLFW_PRESS };
+		int m_LastReleasedState[349] = { GLFW_RELEASE };
+		int m_LastPressedState[349] = { GLFW_PRESS };
 
-		int Check_State(int Key_Code);
+		int Check_State(int keyCode);
 	};
 }

@@ -35,7 +35,8 @@ void HBL::Level0::OnAttach()
 	Registry::Get().AddComponent<Component::Animation>(player);
 	Registry::Get().AddComponent<Component::CollisionBox>(player);
 	Registry::Get().AddComponent<Component::Health>(player);
-	Registry::Get().AddComponent<Component::Gravity>(player);
+	//Registry::Get().AddComponent<Component::Gravity>(player);
+	Registry::Get().AddComponent<Component::Clickable>(player);
 
 	Registry::Get().AddComponent<Component::Script>(enemy);
 	Registry::Get().AddComponent<Component::SpriteRenderer>(enemy);
@@ -83,8 +84,10 @@ void HBL::Level0::OnAttach()
 	Registry::Get().GetComponent<Component::Gravity>(enemy).force = 3000.0f;
 	Registry::Get().GetComponent<Component::Gravity>(enemy).threshold = -3000.0f;
 
-	Registry::Get().GetComponent<Component::Gravity>(player).force = 3500.0f;
-	Registry::Get().GetComponent<Component::Gravity>(player).threshold = -300.0f;
+	Registry::Get().GetComponent<Component::Clickable>(player).OnClick = []() { std::cout << "Player Clicked!\n"; };
+
+	//Registry::Get().GetComponent<Component::Gravity>(player).force = 3500.0f;
+	//Registry::Get().GetComponent<Component::Gravity>(player).threshold = -300.0f;
 
 	Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
 		0.0f, Systems::Window.GetWidth(),

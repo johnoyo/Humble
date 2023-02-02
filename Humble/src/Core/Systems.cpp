@@ -10,3 +10,4 @@ HBL::GravitySystem Systems::Gravity;
 HBL::TransformSystem Systems::Transform;
 HBL::ShadowCastSystem Systems::Shadow;
 HBL::TextSystem Systems::Text;
+HBL::ClickableSystem Systems::Clickable;

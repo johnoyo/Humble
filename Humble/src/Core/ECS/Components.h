@@ -55,8 +55,20 @@ namespace HBL
 			glm::vec2 spriteSize = { -1.0f, -1.0f };
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 			int bufferIndex = -1;
-			int batchIndex = -1;
+			int layerIndex = -1;
 
+			bool Enabled = true;
+		};
+
+		struct HBL_API ParalaxScrolling
+		{
+			float weight = 1.0f;
+			bool Enabled = true;
+		};
+
+		struct HBL_API Clickable
+		{
+			std::function<void(void)> OnClick;
 			bool Enabled = true;
 		};
 

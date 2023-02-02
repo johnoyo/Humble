@@ -103,6 +103,7 @@ namespace HBL {
 		Registry::Get().RegisterSystem(&Systems::Collision);
 		Registry::Get().RegisterSystem(&Systems::Text);
 		Registry::Get().RegisterSystem(&Systems::Shadow);
+		Registry::Get().RegisterSystem(&Systems::Clickable);
 	}
 
 	void Application::RegisterArrays()
@@ -115,10 +116,10 @@ namespace HBL {
 		Registry::Get().AddArray<Component::Script>();
 		Registry::Get().AddArray<Component::Gravity>();
 		Registry::Get().AddArray<Component::Animation>();
-		Registry::Get().AddArray<Component::Shadow>();
 		Registry::Get().AddArray<Component::Text>();
 		Registry::Get().AddArray<Component::TextTransform>();
 		Registry::Get().AddArray<Component::Shadow>();
+		Registry::Get().AddArray<Component::Clickable>();
 	}
 
 	void Application::InitializeSystems()

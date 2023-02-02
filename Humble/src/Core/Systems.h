@@ -11,6 +11,7 @@
 #include "..\Core\Systems\CollisionSystem.h"
 #include "..\Core\Systems\ShadowCastSystem.h"
 #include "..\Core\Systems\SpriteRendererSystem.h"
+#include "..\Core\Systems\ClickableSystem.h"
 
 struct HBL_API Systems
 {
@@ -24,4 +25,5 @@ struct HBL_API Systems
 	static HBL::TransformSystem Transform;
 	static HBL::ShadowCastSystem Shadow;
 	static HBL::TextSystem Text;
+	static HBL::ClickableSystem Clickable;
 };

@@ -65,6 +65,7 @@ namespace HBL
 
 		virtual void OnUpdate(float dt) override 
 		{
+
 			Component::Transform& transform_p = Registry::Get().GetComponent<Component::Transform>(player);
 			Component::Transform& transform_bg = Registry::Get().GetComponent<Component::Transform>(background);
 			Component::Transform& transform_cam = Registry::Get().GetComponent<Component::Transform>(camera);
@@ -92,7 +93,7 @@ namespace HBL
 			transform_cam.position.x = transform_p.position.x + (-Systems::Window.GetWidth() / 2.0f);
 			transform_cam.position.y = transform_p.position.y + (-Systems::Window.GetHeight() / 2.0f);
 			
-			// Player movement
+			// Add shadow component at runtime.
 			if (InputManager::GetKeyPress(GLFW_KEY_P))
 			{
 				Registry::Get().AddComponent<Component::Shadow>(tile);
@@ -156,7 +157,7 @@ namespace HBL
 				Renderer::Get().UnBind();
 			}
 
-			// Player movement
+			// Remove shadow component at runtime.
 			if (InputManager::GetKeyRelease(GLFW_KEY_P))
 			{
 				Registry::Get().RemoveComponent<Component::Shadow>(tile);
@@ -182,12 +183,12 @@ namespace HBL
 				transform_p.position.x -= 210.0f * dt;
 			}
 
-			if (InputManager::GetKeyDown(GLFW_KEY_S) && SceneManager::Get().GetCurrentLevel() == 1)
+			if (InputManager::GetKeyDown(GLFW_KEY_S) && SceneManager::Get().GetCurrentLevel() == 0)
 				transform_p.position.y -= 210.0f * dt;
 
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
-				if (SceneManager::Get().GetCurrentLevel() == 1)
+				if (SceneManager::Get().GetCurrentLevel() == 0)
 					transform_p.position.y += 210.0f * dt;
 				else
 					if (Registry::Get().GetComponent<Component::Gravity>(player).isGrounded)

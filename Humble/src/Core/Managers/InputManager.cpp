@@ -3,39 +3,60 @@
 
 namespace HBL 
 {
-	int InputManager::IGetKeyDown(int Key_Code, int Mode)
+	int InputManager::IGetKeyDown(int keyCode, int mode)
 	{
 		GLFWwindow* window = Systems::Window.GetWindow();
 
 		int result;
-		result = (glfwGetKey(window, Key_Code) == Mode);
+
+		if (keyCode >= 0 && keyCode <= 7)
+			result = (glfwGetMouseButton(window, keyCode) == mode);
+		else
+			result = (glfwGetKey(window, keyCode) == mode);
+
 		return result;
 	}
 
-	int InputManager::IGetKeyPress(int Key_Code)
+	int InputManager::IGetKeyPress(int keyCode)
 	{
 		GLFWwindow* window = Systems::Window.GetWindow();
 
 		int result = 0;
-		if (Check_State(Key_Code) == GLFW_PRESS && last_state_p[Key_Code] == GLFW_RELEASE) result = Get().IGetKeyDown(Key_Code, GLFW_PRESS);
-		last_state_p[Key_Code] = Check_State(Key_Code);
+		if (Check_State(keyCode) == GLFW_PRESS && m_LastPressedState[keyCode] == GLFW_RELEASE)
+			result = Get().IGetKeyDown(keyCode, GLFW_PRESS);
+
+		m_LastPressedState[keyCode] = Check_State(keyCode);
+
 		return result;
 	}
 
-	int InputManager::IGetKeyRelease(int Key_Code)
+	int InputManager::IGetKeyRelease(int keyCode)
 	{
 		GLFWwindow* window = Systems::Window.GetWindow();
 
 		int result = 0;
-		if (Check_State(Key_Code) == GLFW_RELEASE && last_state_r[Key_Code] == GLFW_PRESS) result = Get().IGetKeyDown(Key_Code, GLFW_RELEASE);
-		last_state_r[Key_Code] = Check_State(Key_Code);
+		if (Check_State(keyCode) == GLFW_RELEASE && m_LastReleasedState[keyCode] == GLFW_PRESS)
+			result = Get().IGetKeyDown(keyCode, GLFW_RELEASE);
+
+		m_LastReleasedState[keyCode] = Check_State(keyCode);
+
 		return result;
 	}
 
-	int InputManager::Check_State(int Key_Code)
+	glm::vec2 InputManager::IGetMousePosition()
+	{
+		double x, y;
+		glfwGetCursorPos(Systems::Window.GetWindow(), &x, &y);
+		return glm::vec2((float)x, (float)y);
+	}
+
+	int InputManager::Check_State(int keyCode)
 	{
 		GLFWwindow* window = Systems::Window.GetWindow();
 
-		return glfwGetKey(window, Key_Code);
+		if (keyCode >= 0 && keyCode <= 7)
+			return glfwGetMouseButton(window, keyCode);
+		else
+			return glfwGetKey(window, keyCode);
 	}
 }

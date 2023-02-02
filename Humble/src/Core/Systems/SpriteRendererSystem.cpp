@@ -23,7 +23,12 @@ void HBL::SpriteRendererSystem::Start()
 		}
 
 		if (sprite.texture != "-")
-			TextureManager::Get().Find(sprite.texture);
+		{
+			if (sprite.pixelData != nullptr)
+				TextureManager::Get().Find(sprite.texture, &sprite);
+			else
+				TextureManager::Get().Find(sprite.texture);
+		}
 	}).Run();
 
 	Renderer::Get().Bind(0);
@@ -39,7 +44,11 @@ void HBL::SpriteRendererSystem::Run(float dt)
 	{
 		if (sprite.Enabled)
 		{
-			if (sprite.coords == glm::vec2(-1.0f, -1.0f) && sprite.spriteSize == glm::vec2(-1.0f, -1.0f))
+			if (sprite.pixelData != nullptr)
+			{
+				Renderer::Get().UpdateQuad(0, sprite.bufferIndex, sprite.color, TextureManager::Get().Find(sprite.texture, &sprite));
+			}
+			else if (sprite.coords == glm::vec2(-1.0f, -1.0f) && sprite.spriteSize == glm::vec2(-1.0f, -1.0f))
 			{
 				Renderer::Get().UpdateQuad(0, sprite.bufferIndex, sprite.color, TextureManager::Get().Find(sprite.texture));
 			}

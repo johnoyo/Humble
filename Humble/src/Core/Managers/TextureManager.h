@@ -29,7 +29,8 @@ namespace HBL {
 
 		void InitTransparentTexture();
 		void LoadTexture(const std::string& path);
-		float Find(const std::string& path);
+		void LoadTexture(const std::string& name, void* data, float width, float height);
+		float Find(const std::string& path, Component::SpriteRenderer* sprite = nullptr);
 
 		uint32_t* GetTextureSlot() { return m_TextureSlot; }
 		std::vector<std::string>& GetTextureMap() { return m_TextureMap; }

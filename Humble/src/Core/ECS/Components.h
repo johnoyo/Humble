@@ -54,6 +54,7 @@ namespace HBL
 			glm::vec2 coords = { -1.0f, -1.0f };
 			glm::vec2 spriteSize = { -1.0f, -1.0f };
 			glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			void* pixelData = nullptr;
 			int bufferIndex = -1;
 			int layerIndex = -1;
 

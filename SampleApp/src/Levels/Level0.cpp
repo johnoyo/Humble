@@ -35,7 +35,7 @@ void HBL::Level0::OnAttach()
 	Registry::Get().AddComponent<Component::Animation>(player);
 	Registry::Get().AddComponent<Component::CollisionBox>(player);
 	Registry::Get().AddComponent<Component::Health>(player);
-	//Registry::Get().AddComponent<Component::Gravity>(player);
+	Registry::Get().AddComponent<Component::Gravity>(player);
 	Registry::Get().AddComponent<Component::Clickable>(player);
 
 	Registry::Get().AddComponent<Component::Script>(enemy);
@@ -86,8 +86,8 @@ void HBL::Level0::OnAttach()
 
 	Registry::Get().GetComponent<Component::Clickable>(player).OnClick = []() { std::cout << "Player Clicked!\n"; };
 
-	//Registry::Get().GetComponent<Component::Gravity>(player).force = 3500.0f;
-	//Registry::Get().GetComponent<Component::Gravity>(player).threshold = -300.0f;
+	Registry::Get().GetComponent<Component::Gravity>(player).force = 3500.0f;
+	Registry::Get().GetComponent<Component::Gravity>(player).threshold = -300.0f;
 
 	Registry::Get().GetComponent<Component::Camera>(camera).projection = glm::ortho(
 		0.0f, Systems::Window.GetWidth(),
@@ -279,7 +279,22 @@ void HBL::Level0::ILoadLevel(const std::string& level_path)
 			wallCollisionBox.Enabled = true;
 
 			wallMaterial.Enabled = true;
-			wallMaterial.texture = "res/textures/brick_3.png";
+
+			if (wall_index == 8)
+			{
+				wallMaterial.texture = "CustomImage";
+
+				wallMaterial.spriteSize = { 40.f, 40.f };
+				uint32_t* data = new uint32_t[40 * 40 * sizeof(uint32_t)];
+				for (int i = 0; i < 40 * 40; i++)
+					data[i] = 0xffff00ff;
+
+				wallMaterial.pixelData = data;
+			}
+			else
+			{
+				wallMaterial.texture = "res/textures/brick_3.png";
+			}
 
 			wall_index++;
 		}

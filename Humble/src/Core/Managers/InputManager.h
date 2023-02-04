@@ -15,7 +15,7 @@ namespace HBL
 			return instance;
 		}
 
-		static glm::vec2 GetMousePosition() { return Get().IGetMousePosition(); }
+		static glm::vec2& GetMousePosition() { return Get().IGetMousePosition(); }
 
 		// Returns true i.e. 1, as long as the specified key is released
 		static int GetKeyUp(int keyCode) { return Get().IGetKeyDown(keyCode, GLFW_RELEASE); }
@@ -31,12 +31,13 @@ namespace HBL
 		int IGetKeyPress(int keyCode);
 		int IGetKeyRelease(int keyCode);
 
-		glm::vec2 IGetMousePosition();
+		glm::vec2& IGetMousePosition();
 
 		InputManager() {}
 
 		int m_LastReleasedState[349] = { GLFW_RELEASE };
 		int m_LastPressedState[349] = { GLFW_PRESS };
+		glm::vec2 m_MousePosition = {};
 
 		int Check_State(int keyCode);
 	};

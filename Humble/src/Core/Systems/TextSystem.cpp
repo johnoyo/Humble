@@ -5,6 +5,8 @@ namespace HBL
 {
 	void TextSystem::Start()
 	{
+		FUNCTION_PROFILE();
+
 		// Import SDF data
 		SDF_Importer("res/textures/testFont.fnt");
 
@@ -13,9 +15,6 @@ namespace HBL
 
 		// Add another batch for text rendering (200 characters for each text component).
 		Renderer::Get().AddBatch("res/shaders/Basic.shader", 200 * (Registry::Get().GetArray<Component::Text>().size() * 4), SceneManager::Get().GetMainCamera());
-		
-		// Retrieve vertex buffer for text
-		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
 
 		Registry::Get().Group<Component::Text, Component::TextTransform>().ForEach([&](IEntity& entt)
 		{
@@ -69,10 +68,10 @@ namespace HBL
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.UpdateMaterialOnQuad(index, text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
+					Renderer::Get().UpdateQuad(1, index, text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
 
 					// Update position of current character
-					buffer.UpdatePositionOnQuad(index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
+					Renderer::Get().UpdateQuad(1, index, tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;
@@ -81,19 +80,10 @@ namespace HBL
 				}
 			}
 		}).Run();
-
-		Renderer::Get().Bind(1);
-		Renderer::Get().Invalidate(1);
-		Renderer::Get().UnBind();
 	}
 
 	void TextSystem::Run(float dt)
 	{
-		// Retrieve vertex buffer for text
-		VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(1);
-
-		bool invalidate = false;
-
 		Registry::Get().Group<Component::Text, Component::TextTransform>().ForEach([&] (IEntity& entt)
 		{
 			Component::Text& text = Registry::Get().GetComponent<Component::Text>(entt);
@@ -133,8 +123,6 @@ namespace HBL
 					// Register new quad if max numbers of currently available characters is exceeded.
 					if (i >= textTransform.bufferIndex.size())
 					{
-						invalidate = true;
-
 						// Draw the current letter as a new quad.
 						int index = Renderer::Get().RegisterQuad(1, tTr, sdfData[sdfIndex].width * tTr.scale.x, sdfData[sdfIndex].height * tTr.scale.y);
 
@@ -162,10 +150,11 @@ namespace HBL
 						for (uint32_t j = 0; j < (uint32_t)(textTransform.bufferIndex.size() - t.size()); j++)
 						{
 							// Update texture from font atlas info
-							buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
+							Renderer::Get().UpdateQuad(1, textTransform.bufferIndex[i + j + 1U], text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
+
 
 							// Update position of current character
-							buffer.UpdatePositionOnQuad(textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3( (float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f ));
+							Renderer::Get().UpdateQuad(1, textTransform.bufferIndex[i + j + 1U], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 						}
 					}
 
@@ -183,23 +172,16 @@ namespace HBL
 					glm::vec2 size = glm::vec2(sdfData[sdfIndex].width, sdfData[sdfIndex].height);
 
 					// Update texture from font atlas info
-					buffer.UpdateMaterialOnQuad(textTransform.bufferIndex[i], text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
+					Renderer::Get().UpdateQuad(1, textTransform.bufferIndex[i], text.color, id, coords, TextureManager::Get().GetTextureSize().at(id), size);
 
 					// Update position of current character
-					buffer.UpdatePositionOnQuad(textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
+					Renderer::Get().UpdateQuad(1, textTransform.bufferIndex[i], tTr.position, tTr.rotation, glm::vec3((float)sdfData[sdfIndex].width * tTr.scale.x, (float)sdfData[sdfIndex].height * tTr.scale.y, 1.0f));
 
 					// Store previous index
 					prevIndex = sdfIndex;
 				}
 			}
 		}).Run();
-
-		if (invalidate)
-		{
-			Renderer::Get().Bind(1);
-			Renderer::Get().Invalidate(1);
-			Renderer::Get().UnBind();
-		}
 	}
 
 	void TextSystem::Clear()

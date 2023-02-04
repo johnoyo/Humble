@@ -29,9 +29,11 @@ namespace HBL
 		float m_TileSize = 30.0f;
 
 		void TriggerSceneChange();
+		bool IsSceneChanging();
 		HBL::IEntity& GetMainCamera();
 		void SetMainCamera(HBL::IEntity& mainCamera);
 		uint32_t& GetCurrentLevel();
+
 
 	private:
 		SceneManager() { }

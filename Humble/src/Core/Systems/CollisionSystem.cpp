@@ -63,7 +63,7 @@ namespace HBL
 
 						// Collision check on x-axis.
 						bool xCollision = CheckForSectorCollisions(entt, index, buffer, X_AXIS);
-						/* bool xCollision = CheckForCollisions(entt, buffer, X_AXIS); */
+						//bool xCollision = CheckForCollisions(entt, buffer, X_AXIS);
 
 						// Update collision box on y-axis.
 						collisionBox.tl.y = tr.y + sc.y / 2.0f;
@@ -73,7 +73,7 @@ namespace HBL
 
 						// Collision check on y-axis.
 						bool yCollision = CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
-						/* bool yCollision = CheckForCollisions(entt, buffer, Y_AXIS); */
+						//bool yCollision = CheckForCollisions(entt, buffer, Y_AXIS);
 
 						if (Registry::Get().HasComponent<Component::Gravity>(entt))
 						{

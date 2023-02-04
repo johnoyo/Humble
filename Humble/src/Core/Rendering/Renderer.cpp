@@ -71,8 +71,6 @@ namespace HBL
 		glUseProgram(0);
 	}
 
-
-
 	uint32_t Renderer::RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
@@ -81,6 +79,10 @@ namespace HBL
 		rendererData[vindex]->vbuffer.FillBuffer(p1, color, glm::vec2(1.0f, 1.0f), 0);
 		rendererData[vindex]->vbuffer.FillBuffer(p2, color, glm::vec2(1.0f, 0.0f), 0);
 		rendererData[vindex]->vbuffer.FillBuffer(p3, color, glm::vec2(0.0f, 0.0f), 0);
+
+		Bind(vindex);
+		Invalidate(vindex);
+		UnBind();
 
 		return vertex_index;
 	}
@@ -94,6 +96,10 @@ namespace HBL
 		rendererData[vindex]->vbuffer.FillBuffer(p2, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 		rendererData[vindex]->vbuffer.FillBuffer(p3, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
+		Bind(vindex);
+		Invalidate(vindex);
+		UnBind();
+
 		return vertex_index;
 	}
 
@@ -106,6 +112,10 @@ namespace HBL
 		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - tr.scale.x / 2.0f, tr.position.y - tr.scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 
+		Bind(vindex);
+		Invalidate(vindex);
+		UnBind();
+
 		return vertex_index;
 	}
 
@@ -117,6 +127,10 @@ namespace HBL
 		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y + (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
 		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x + (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
 		rendererData[vindex]->vbuffer.FillBuffer({ tr.position.x - (tr.scale.x / 2.0f * width), tr.position.y - (tr.scale.y / 2.0f * height) }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+
+		Bind(vindex);
+		Invalidate(vindex);
+		UnBind();
 
 		return vertex_index;
 	}
@@ -159,8 +173,6 @@ namespace HBL
 
 	void Renderer::Invalidate(uint32_t vindex)
 	{
-		ENGINE_LOG("Vertex buffer size: %d", rendererData[vindex]->vbuffer.GetSize() / 4);
-
 		rendererData[vindex]->ibuffer.Clean();
 		rendererData[vindex]->ibuffer.MakeIndecies(rendererData[vindex]->vbuffer.GetSize());
 		UpdateIndexBuffer(rendererData[vindex]->vbuffer.GetSize(), vindex);

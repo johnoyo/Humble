@@ -9,6 +9,11 @@ namespace HBL
 		m_SceneChange = true;
 	}
 
+	bool SceneManager::IsSceneChanging()
+	{
+		return m_SceneChange;
+	}
+
 	HBL::IEntity& SceneManager::GetMainCamera()
 	{
 		return m_MainCamera;

@@ -37,7 +37,7 @@ namespace HBL
 
 	bool ClickableSystem::Clicked(glm::vec3& position, glm::vec3& scale)
 	{
-		glm::vec2 mousePosition = InputManager::GetMousePosition();
+		glm::vec2& mousePosition = InputManager::GetMousePosition();
 		glm::vec3& cameraPosition = Registry::Get().GetComponent<Component::Transform>(SceneManager::Get().GetMainCamera()).position;
 		glm::vec2 targetPosition = { position.x + (-cameraPosition.x), position.y + (-cameraPosition.y) };
 

@@ -65,7 +65,6 @@ namespace HBL
 
 		virtual void OnUpdate(float dt) override 
 		{
-
 			Component::Transform& transform_p = Registry::Get().GetComponent<Component::Transform>(player);
 			Component::Transform& transform_bg = Registry::Get().GetComponent<Component::Transform>(background);
 			Component::Transform& transform_cam = Registry::Get().GetComponent<Component::Transform>(camera);
@@ -150,11 +149,6 @@ namespace HBL
 					Renderer::Get().RegisterQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
 					Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
 				}
-
-				// Reset rendering buffers
-				Renderer::Get().Bind(0);
-				Renderer::Get().Invalidate(0);
-				Renderer::Get().UnBind();
 			}
 
 			// Remove shadow component at runtime.

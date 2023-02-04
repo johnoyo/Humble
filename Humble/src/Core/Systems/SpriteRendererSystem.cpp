@@ -30,10 +30,6 @@ void HBL::SpriteRendererSystem::Start()
 				TextureManager::Get().Find(sprite.texture);
 		}
 	}).Run();
-
-	Renderer::Get().Bind(0);
-	Renderer::Get().Invalidate(0);
-	Renderer::Get().UnBind();
 }
 
 void HBL::SpriteRendererSystem::Run(float dt)

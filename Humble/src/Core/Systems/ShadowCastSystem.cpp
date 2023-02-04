@@ -70,11 +70,6 @@ namespace HBL
 				Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
 			}
 		}).Run();
-
-		// Reset rendering buffers
-		Renderer::Get().Bind(0);
-		Renderer::Get().Invalidate(0);
-		Renderer::Get().UnBind();
 	}
 
 	void ShadowCastSystem::Run(float dt)

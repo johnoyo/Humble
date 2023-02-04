@@ -43,11 +43,13 @@ namespace HBL
 		return result;
 	}
 
-	glm::vec2 InputManager::IGetMousePosition()
+	glm::vec2& InputManager::IGetMousePosition()
 	{
 		double x, y;
 		glfwGetCursorPos(Systems::Window.GetWindow(), &x, &y);
-		return glm::vec2((float)x, (float)y);
+		m_MousePosition.x = x;
+		m_MousePosition.y = y;
+		return m_MousePosition;
 	}
 
 	int InputManager::Check_State(int keyCode)

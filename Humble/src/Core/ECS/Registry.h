@@ -139,6 +139,9 @@ namespace HBL
 				m_AllFilteredEntities[m_Index].end(),
 				[&](auto&& item)
 				{
+					if (m_AllFilteredEntities[m_Index].empty())
+						return;
+
 					m_FunctionFilter(item);
 				});
 		}

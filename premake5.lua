@@ -29,6 +29,12 @@ project "Humble"
         "%{prj.name}/src/**.cpp"
     }
 
+    defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
+	}
+
     -- Include directories.
     includedirs
     {
@@ -64,7 +70,9 @@ project "Humble"
 
         postbuildcommands
         {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SampleApp")
+            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SampleApp"),
+            ("{COPY} ../Dependencies/GLEW/bin/Release/x64/glew32.dll ../bin/" .. outputdir .. "/SampleApp"),
+            ("{COPY} ../Dependencies/Fmod/lib/x64/fmod.dll ../bin/" .. outputdir .. "/SampleApp")
         }
 
     filter "configurations:Debug"
@@ -77,9 +85,11 @@ project "Humble"
 
     filter { "system:windows", "configurations:Debug" }
         buildoptions "/MDd"
+        linkoptions { "/SUBSYSTEM:CONSOLE" }
 
     filter { "system:windows", "configurations:Release" }
         buildoptions "/MD"
+        linkoptions { "/SUBSYSTEM:WINDOWS" }
 
 -- Application project
 project "SampleApp"
@@ -117,7 +127,7 @@ project "SampleApp"
 
     filter "system:windows"
         systemversion "latest"
-
+    
         defines
         {
             "HBL_PLATFORM_WINDOWS"
@@ -133,6 +143,8 @@ project "SampleApp"
 
     filter { "system:windows", "configurations:Debug" }
         buildoptions "/MDd"
+        linkoptions { "/SUBSYSTEM:CONSOLE" }
 
     filter { "system:windows", "configurations:Release" }
         buildoptions "/MD"
+        linkoptions { "/SUBSYSTEM:WINDOWS" }

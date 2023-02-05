@@ -1,7 +1,7 @@
 #pragma once
 
 // Get rid of the console when the application is running on release mode
-#ifndef _DEBUG
+#ifndef DEBUG
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 

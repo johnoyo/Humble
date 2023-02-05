@@ -119,6 +119,7 @@ namespace HBL
 		{
 			IEntity* source = nullptr;
 			glm::vec4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
+			std::vector<glm::vec2> points;
 			float shadowDistance = 200000.0f;
 			int parentBufferIndex = -1;
 			int bufferIndex = -1;

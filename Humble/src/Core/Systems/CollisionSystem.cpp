@@ -92,6 +92,13 @@ namespace HBL
 	void CollisionSystem::Clear()
 	{
 		Registry::Get().ClearArray<Component::CollisionBox>();
+
+		for (uint32_t i = 0; i < sectors.size(); i++)
+		{
+			sectors[i].clear();
+		}
+
+		sectors.clear();
 	}
 
 	void CollisionSystem::CreateSectors(glm::vec2& dimension, glm::vec2& worldSize)

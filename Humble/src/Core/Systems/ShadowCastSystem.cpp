@@ -37,20 +37,10 @@ namespace HBL
 			{
 				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
-				std::vector<glm::vec2> vertices;
-
-				// Retrieve vertices of entity
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
-
-				std::vector<glm::vec2> shadow_points;
-
 				// Find all shadow points
 				for (int j = 0; j < 4; j++)
 				{
-					glm::vec2& E = vertices[j];
+					glm::vec2& E = buffer.GetBuffer()[shadow.parentBufferIndex + j].position;
 
 					float rdx, rdy;
 					rdx = E.x - O.x;
@@ -61,13 +51,27 @@ namespace HBL
 					rdx = shadow.shadowDistance * cosf(base_ang);
 					rdy = shadow.shadowDistance * sinf(base_ang);
 
-					shadow_points.push_back({ rdx, rdy });
+					shadow.points.push_back({ rdx, rdy });
 				}
 
 				// Set shadow quad positions
-				Renderer::Get().RegisterQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
-				Renderer::Get().RegisterQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
-				Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+				Renderer::Get().RegisterQuad(0,
+												buffer.GetBuffer()[shadow.parentBufferIndex + 3].position,
+												shadow.points[3], shadow.points[0],
+												buffer.GetBuffer()[shadow.parentBufferIndex + 0].position,
+												shadow.color);
+
+				Renderer::Get().RegisterQuad(0,
+												buffer.GetBuffer()[shadow.parentBufferIndex + 0].position,
+												shadow.points[0], shadow.points[1],
+												buffer.GetBuffer()[shadow.parentBufferIndex + 1].position,
+												shadow.color);
+
+				Renderer::Get().RegisterQuad(0,
+												buffer.GetBuffer()[shadow.parentBufferIndex + 1].position,
+												shadow.points[1],
+												shadow.points[2],
+												buffer.GetBuffer()[shadow.parentBufferIndex + 2].position, shadow.color);
 			}
 		}).Run();
 	}
@@ -84,18 +88,10 @@ namespace HBL
 			{
 				glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
-				std::vector<glm::vec2> vertices;
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
-				vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
-
-				std::vector<glm::vec2> shadow_points;
-
 				// Find all shadow points
 				for (int j = 0; j < 4; j++)
 				{
-					glm::vec2& E = vertices[j];
+					glm::vec2& E = buffer.GetBuffer()[shadow.parentBufferIndex + j].position;
 
 					float rdx, rdy;
 					rdx = E.x - O.x;
@@ -106,18 +102,44 @@ namespace HBL
 					rdx = (shadow.shadowDistance) * cosf(base_ang);
 					rdy = (shadow.shadowDistance) * sinf(base_ang);
 
-					shadow_points.push_back({ rdx, rdy });
+					shadow.points[j] = { rdx, rdy };
 				}
 
 				// Update shadow quad positions and colors.
-				buffer.UpdatePositionOnQuad(shadow.bufferIndex, vertices[3], shadow_points[3], shadow_points[0], vertices[0]);
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex,
+											buffer.GetBuffer()[shadow.parentBufferIndex + 3].position,
+											shadow.points[3],
+											shadow.points[0],
+											buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
+
 				buffer.UpdateMaterialOnQuad(shadow.bufferIndex, shadow.color, 0);
 
-				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4, vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 4,
+											buffer.GetBuffer()[shadow.parentBufferIndex + 0].position,
+											shadow.points[0],
+											shadow.points[1],
+											buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
+
 				buffer.UpdateMaterialOnQuad(shadow.bufferIndex + 4, shadow.color, 0);
 
-				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8, vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
+				buffer.UpdatePositionOnQuad(shadow.bufferIndex + 8,
+											buffer.GetBuffer()[shadow.parentBufferIndex + 1].position,
+											shadow.points[1],
+											shadow.points[2],
+											buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
+
 				buffer.UpdateMaterialOnQuad(shadow.bufferIndex + 8, shadow.color, 0);
+			}
+			else
+			{
+				if (shadow.bufferIndex != -1)
+				{
+					glm::vec4 transparentColor(1.f, 1.f, 1.f, 0.f);
+
+					buffer.UpdateMaterialOnQuad(shadow.bufferIndex, transparentColor, 0);
+					buffer.UpdateMaterialOnQuad(shadow.bufferIndex + 4, transparentColor, 0);
+					buffer.UpdateMaterialOnQuad(shadow.bufferIndex + 8, transparentColor, 0);
+				}
 			}
 		}).Run();
 	}

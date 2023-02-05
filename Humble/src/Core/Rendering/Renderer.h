@@ -57,7 +57,7 @@ namespace HBL
 		uint32_t RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3, glm::vec4& color);
 		uint32_t RegisterQuad(uint32_t vindex, glm::vec2& p0, glm::vec2& p1, glm::vec2& p2, glm::vec2& p3);
 		uint32_t RegisterQuad(uint32_t vindex, Component::Transform& tr);
-		uint32_t RegisterQuad(uint32_t vindex, Component::TextTransform& tr, float width, float height);
+		uint32_t RegisterQuad(uint32_t vindex, Component::Text& tr, float width, float height);
 
 		void UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec3& position, float rotation, glm::vec3& scale);
 		void UpdateQuad(uint32_t batchIndex, int vertexIndex, glm::vec4& color, uint32_t textureIndex);

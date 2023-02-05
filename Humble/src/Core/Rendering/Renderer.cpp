@@ -119,7 +119,7 @@ namespace HBL
 		return vertex_index;
 	}
 
-	uint32_t Renderer::RegisterQuad(uint32_t vindex, Component::TextTransform& tr, float width, float height)
+	uint32_t Renderer::RegisterQuad(uint32_t vindex, Component::Text& tr, float width, float height)
 	{
 		uint32_t vertex_index = rendererData[vindex]->vbuffer.GetSize();
 
@@ -173,6 +173,9 @@ namespace HBL
 
 	void Renderer::Invalidate(uint32_t vindex)
 	{
+		if (vindex == -1)
+			return;
+
 		rendererData[vindex]->ibuffer.Clean();
 		rendererData[vindex]->ibuffer.MakeIndecies(rendererData[vindex]->vbuffer.GetSize());
 		UpdateIndexBuffer(rendererData[vindex]->vbuffer.GetSize(), vindex);
@@ -190,6 +193,7 @@ namespace HBL
 			glDeleteVertexArrays(1, &data->vao);
 
 			data->vbuffer.Clean();
+			data->vbuffer.Reset();
 			data->ibuffer.Clean();
 
 			delete data;
@@ -203,6 +207,7 @@ namespace HBL
 	{
 		for (RendererData* data : rendererData)
 		{
+			data->vbuffer.Reset();
 			data->vbuffer.Clean();
 			data->ibuffer.Clean();
 

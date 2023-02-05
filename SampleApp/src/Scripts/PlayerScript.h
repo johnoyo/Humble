@@ -16,6 +16,7 @@ namespace HBL
 		IEntity camera;
 		IEntity clipCamera;
 		IEntity tile;
+		IEntity pinkTile;
 
 		virtual void OnCreate() override 
 		{
@@ -24,6 +25,7 @@ namespace HBL
 			background = (Registry::Get().FindEntityWithTag("Background"));
 			camera = (Registry::Get().FindEntityWithTag("Camera"));
 			tile = Registry::Get().FindEntityWithTag("Tile");
+			pinkTile = Registry::Get().FindEntityWithTag("PinkTile");
 
 			if (SceneManager::Get().GetCurrentLevel() == 0)
 				clipCamera = (Registry::Get().FindEntityWithTag("ClipCamera"));
@@ -95,6 +97,8 @@ namespace HBL
 			// Add shadow component at runtime.
 			if (InputManager::GetKeyPress(GLFW_KEY_P))
 			{
+				Registry::Get().GetComponent<Component::SpriteRenderer>(pinkTile).Enabled = false;
+
 				Registry::Get().AddComponent<Component::Shadow>(tile);
 
 				VertexBuffer& buffer = Renderer::Get().GetVertexBuffer(0);
@@ -117,20 +121,10 @@ namespace HBL
 				{
 					glm::vec3& O = Registry::Get().GetComponent<Component::Transform>(*shadow.source).position;
 
-					std::vector<glm::vec2> vertices;
-
-					// Retrieve vertices of entity
-					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 0].position);
-					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 1].position);
-					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 2].position);
-					vertices.push_back(buffer.GetBuffer()[shadow.parentBufferIndex + 3].position);
-
-					std::vector<glm::vec2> shadow_points;
-
 					// Find all shadow points
 					for (int j = 0; j < 4; j++)
 					{
-						glm::vec2& E = vertices[j];
+						glm::vec2& E = buffer.GetBuffer()[shadow.parentBufferIndex + j].position;
 
 						float rdx, rdy;
 						rdx = E.x - O.x;
@@ -141,20 +135,36 @@ namespace HBL
 						rdx = shadow.shadowDistance * cosf(base_ang);
 						rdy = shadow.shadowDistance * sinf(base_ang);
 
-						shadow_points.push_back({ rdx, rdy });
+						shadow.points.push_back({ rdx, rdy });
 					}
 
 					// Set shadow quad positions
-					Renderer::Get().RegisterQuad(0, vertices[3], shadow_points[3], shadow_points[0], vertices[0], shadow.color);
-					Renderer::Get().RegisterQuad(0, vertices[0], shadow_points[0], shadow_points[1], vertices[1], shadow.color);
-					Renderer::Get().RegisterQuad(0, vertices[1], shadow_points[1], shadow_points[2], vertices[2], shadow.color);
+					Renderer::Get().RegisterQuad(0, 
+													buffer.GetBuffer()[shadow.parentBufferIndex + 3].position,
+													shadow.points[3], shadow.points[0],
+													buffer.GetBuffer()[shadow.parentBufferIndex + 0].position,
+													shadow.color);
+
+					Renderer::Get().RegisterQuad(0,
+													buffer.GetBuffer()[shadow.parentBufferIndex + 0].position,
+													shadow.points[0], shadow.points[1],
+													buffer.GetBuffer()[shadow.parentBufferIndex + 1].position,
+													shadow.color);
+
+					Renderer::Get().RegisterQuad(0, 
+													buffer.GetBuffer()[shadow.parentBufferIndex + 1].position,
+													shadow.points[1],
+													shadow.points[2],
+													buffer.GetBuffer()[shadow.parentBufferIndex + 2].position, shadow.color);
 				}
 			}
 
 			// Remove shadow component at runtime.
 			if (InputManager::GetKeyRelease(GLFW_KEY_P))
 			{
+				Registry::Get().GetComponent<Component::Shadow>(tile).Enabled = false;
 				Registry::Get().RemoveComponent<Component::Shadow>(tile);
+				Registry::Get().GetComponent<Component::SpriteRenderer>(pinkTile).Enabled = true;
 			}
 
 			// Player movement

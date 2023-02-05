@@ -117,7 +117,6 @@ namespace HBL {
 		Registry::Get().AddArray<Component::Gravity>();
 		Registry::Get().AddArray<Component::Animation>();
 		Registry::Get().AddArray<Component::Text>();
-		Registry::Get().AddArray<Component::TextTransform>();
 		Registry::Get().AddArray<Component::Shadow>();
 		Registry::Get().AddArray<Component::Clickable>();
 	}

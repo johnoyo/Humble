@@ -48,10 +48,10 @@ namespace HBL
 
 				if (InputManager::GetKeyDown(GLFW_KEY_G))
 				{
-					Registry::Get().GetComponent<Component::TextTransform>(FPSCounter).position.x += 30.0f * dt;
+					Registry::Get().GetComponent<Component::Text>(FPSCounter).position.x += 30.0f * dt;
 				}
 
-				Registry::Get().GetComponent<Component::Text>(text).text = std::to_string((int)Registry::Get().GetComponent<Component::TextTransform>(FPSCounter).position.x) + " / " + std::to_string((int)Registry::Get().GetComponent<Component::TextTransform>(FPSCounter).position.y);
+				Registry::Get().GetComponent<Component::Text>(text).text = std::to_string((int)Registry::Get().GetComponent<Component::Text>(FPSCounter).position.x) + " / " + std::to_string((int)Registry::Get().GetComponent<Component::Text>(FPSCounter).position.y);
 			}
 		}
 

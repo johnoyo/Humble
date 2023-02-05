@@ -8,8 +8,6 @@ void HBL::SpriteRendererSystem::Start()
 	
 	TextureManager::Get().InitTransparentTexture();
 
-	Renderer::Get().GetVertexBuffer(0).Reset();
-
 	Registry::Get().Group<Component::Transform, Component::SpriteRenderer>().ForEach([&](IEntity& entt)
 	{
 		Component::Transform& transform = Registry::Get().GetComponent<Component::Transform>(entt);
@@ -54,6 +52,11 @@ void HBL::SpriteRendererSystem::Run(float dt)
 				glm::vec2& textureCoords = TextureManager::Get().GetTextureSize().at(id);
 				Renderer::Get().UpdateQuad(0, sprite.bufferIndex, sprite.color, id, sprite.coords, textureCoords, sprite.spriteSize);
 			}
+		}
+		else
+		{
+			glm::vec4 transparentColor(1.f, 1.f, 1.f, 0.f);
+			Renderer::Get().UpdateQuad(0, sprite.bufferIndex, transparentColor, TextureManager::Get().GetTextureSlot()[0]);
 		}
 	}).Run();
 

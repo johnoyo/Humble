@@ -53,35 +53,39 @@ namespace HBL
 					// Update sector category.
 					int index = Categorize(transfom, collisionBox, entt);
 
+					bool xCollision = false;
+					bool yCollision = false;
+
+					// Update collision box on x-axis.
+					collisionBox.tl.x = tr.x - sc.x / 2.0f;
+					collisionBox.tr.x = tr.x + sc.x / 2.0f;
+					collisionBox.br.x = tr.x + sc.x / 2.0f;
+					collisionBox.bl.x = tr.x - sc.x / 2.0f;
+
+					// Collision check on x-axis.
 					if (index != -1)
+						xCollision = CheckForSectorCollisions(entt, index, buffer, X_AXIS);
+					else
+						xCollision = CheckForCollisions(entt, buffer, X_AXIS);
+
+					// Update collision box on y-axis.
+					collisionBox.tl.y = tr.y + sc.y / 2.0f;
+					collisionBox.tr.y = tr.y + sc.y / 2.0f;
+					collisionBox.br.y = tr.y - sc.y / 2.0f;
+					collisionBox.bl.y = tr.y - sc.y / 2.0f;
+
+					// Collision check on y-axis.
+					if (index != -1)
+						yCollision = CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
+					else
+						yCollision = CheckForCollisions(entt, buffer, Y_AXIS);
+
+					if (Registry::Get().HasComponent<Component::Gravity>(entt))
 					{
-						// Update collision box on x-axis.
-						collisionBox.tl.x = tr.x - sc.x / 2.0f;
-						collisionBox.tr.x = tr.x + sc.x / 2.0f;
-						collisionBox.br.x = tr.x + sc.x / 2.0f;
-						collisionBox.bl.x = tr.x - sc.x / 2.0f;
-
-						// Collision check on x-axis.
-						bool xCollision = CheckForSectorCollisions(entt, index, buffer, X_AXIS);
-						//bool xCollision = CheckForCollisions(entt, buffer, X_AXIS);
-
-						// Update collision box on y-axis.
-						collisionBox.tl.y = tr.y + sc.y / 2.0f;
-						collisionBox.tr.y = tr.y + sc.y / 2.0f;
-						collisionBox.br.y = tr.y - sc.y / 2.0f;
-						collisionBox.bl.y = tr.y - sc.y / 2.0f;
-
-						// Collision check on y-axis.
-						bool yCollision = CheckForSectorCollisions(entt, index, buffer, Y_AXIS);
-						//bool yCollision = CheckForCollisions(entt, buffer, Y_AXIS);
-
-						if (Registry::Get().HasComponent<Component::Gravity>(entt))
+						if (!xCollision && !yCollision)
 						{
-							if (!xCollision && !yCollision)
-							{
-								Registry::Get().GetComponent<Component::Gravity>(entt).collides = false;
-								Registry::Get().GetComponent<Component::Gravity>(entt).isGrounded = false;
-							}
+							Registry::Get().GetComponent<Component::Gravity>(entt).collides = false;
+							Registry::Get().GetComponent<Component::Gravity>(entt).isGrounded = false;
 						}
 					}
 				}
@@ -118,7 +122,7 @@ namespace HBL
 	{
 		//FUNCTION_PROFILE();
 
-		uint32_t cachedIndex = 0;
+		uint32_t cachedIndex = -1;
 
 		if (transfom.Enabled)
 		{

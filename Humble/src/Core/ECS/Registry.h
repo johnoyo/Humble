@@ -326,11 +326,15 @@ namespace HBL
 			return instance;
 		}
 
+		static inline IEntity InvalidEntity;
+
 		void EnrollEntity(IEntity& Entity, const std::string& name = "");
 
 		void EnrollEntityWithUUID(IEntity& Entity, UUID& uuid);
 
-		IEntity FindEntityWithTag(const std::string& tag);
+		IEntity& FindEntityWithTag(const std::string& tag);
+
+		std::vector<IEntity> FindEntitiesWithTag(const std::string& tag);
 
 		template<typename T>
 		T& AddComponent(IEntity& Entity)

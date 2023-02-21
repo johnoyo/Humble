@@ -15,5 +15,10 @@ namespace HBL
 		{
 			return uuid == entt.uuid;
 		}
+
+		bool operator!=(const IEntity& entt) const
+		{
+			return uuid != entt.uuid;
+		}
 	};
 }

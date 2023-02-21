@@ -22,7 +22,7 @@ namespace HBL
 		m_Entities.emplace_back(Entity);
 	}
 
-	IEntity Registry::FindEntityWithTag(const std::string& tag)
+	IEntity& Registry::FindEntityWithTag(const std::string& tag)
 	{
 		for (IEntity& entt : m_Entities)
 		{
@@ -34,6 +34,24 @@ namespace HBL
 
 		ENGINE_LOG("Could not find entity with tag: %s", tag);
 
-		return { 0LU, false };
+		return InvalidEntity;
+	}
+
+	std::vector<IEntity> Registry::FindEntitiesWithTag(const std::string& tag)
+	{
+		std::vector<IEntity> entities;
+
+		for (IEntity& entt : m_Entities)
+		{
+			Component::Tag& tagComponent = GetComponent<Component::Tag>(entt);
+
+			if (tagComponent.tag == tag)
+				entities.emplace_back(entt);
+		}
+
+		if (entities.empty())
+			ENGINE_LOG("Could not find any entities with tag: %s", tag);
+
+		return entities;
 	}
 }

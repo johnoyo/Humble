@@ -53,6 +53,11 @@ namespace HBL
         return (sounds.find(soundName) != sounds.end());
     }
 
+    bool SoundManager::IChannelExists(const std::string& soundName)
+    {
+        return (channels.find(soundName) != channels.end());
+    }
+
 	void SoundManager::IPlay(const std::string& source, bool playLooped, bool startPaused)
 	{
         // Create the sound if it does not exist.
@@ -72,8 +77,20 @@ namespace HBL
         }
 
         // Play the sound.
-        result = system->playSound(sounds[source], nullptr, startPaused, &channel);
+        result = system->playSound(sounds[source], nullptr, startPaused, &channels[source]);
+
         if (!ISucceededOrWarn("FMOD: Failed to play sound", result))
             return;
 	}
+
+    void SoundManager::IStop(const std::string& source)
+    {
+        // Stop all sounds.
+        if (IChannelExists(source))
+        {
+            result = channels[source]->stop();
+            if (!ISucceededOrWarn("FMOD: Failed to stop sound", result))
+                return;
+        }
+    }
 }

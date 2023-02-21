@@ -48,10 +48,6 @@ namespace HBL
 
 							anim.time = current_time;
 						}
-
-						double new_time = glfwGetTime();
-						double frame_time = new_time - current_time;
-						current_time = new_time;
 					}
 				}
 			}

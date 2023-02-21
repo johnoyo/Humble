@@ -2,6 +2,10 @@
 
 namespace HBL 
 {
+	void WindowResizeCallback(GLFWwindow* window, int width, int height)
+	{
+		glViewport(0, 0, width, height);
+	}
 	void WindowSystem::Initialize(float w, float h, const std::string& name, bool fullScreen, bool VSync)
 	{
 		m_Width = w;
@@ -33,13 +37,17 @@ namespace HBL
 		m_RefreshRate = mode->refreshRate;
 		std::cout << mode->refreshRate << "\n";
 
-		if (m_FullScreen) {
+		if (m_FullScreen) 
+		{
 			m_Window = glfwCreateWindow(mode->width, mode->height, m_Title.c_str(), glfwGetPrimaryMonitor(), NULL);
 		}
-		else {
+		else 
+		{
 			m_Window = glfwCreateWindow((int)m_Width, (int)m_Height, m_Title.c_str(), NULL, NULL);
 		}
-		if (!m_Window) {
+
+		if (!m_Window) 
+		{
 			std::cout << "Error Creating window!!!\n";
 			Terminate();
 			exit(-1);
@@ -50,9 +58,12 @@ namespace HBL
 		else 
 			MakeContextCurrent(0);
 
-		if (glewInit() != GLEW_OK) {
+		if (glewInit() != GLEW_OK) 
+		{
 			std::cout << "Error initializing GLEW\n";
 		}
+
+		glfwSetWindowSizeCallback(m_Window, WindowResizeCallback);
 	}
 
 	void WindowSystem::MakeContextCurrent(int Vsync)
@@ -81,6 +92,11 @@ namespace HBL
 		glfwTerminate();
 	}
 
+	void WindowSystem::Close()
+	{
+		glfwSetWindowShouldClose(m_Window, GLFW_TRUE);
+	}
+
 	GLFWwindow* WindowSystem::GetWindow()
 	{
 		return m_Window;
@@ -104,5 +120,10 @@ namespace HBL
 	const std::string& WindowSystem::GetTitle()
 	{
 		return m_Title;
+	}
+
+	double WindowSystem::GetTime()
+	{
+		return glfwGetTime();
 	}
 }

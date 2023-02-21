@@ -17,12 +17,14 @@ namespace HBL
 		void SwapBuffers();
 		void PollForEvents();
 		void Terminate();
+		void Close();
 
 		GLFWwindow* GetWindow();
 		float GetWidth();
 		float GetHeight();
 		float GetRefreshRate();
 		const std::string& GetTitle();
+		double GetTime();
 
 	private:
 		void Init();

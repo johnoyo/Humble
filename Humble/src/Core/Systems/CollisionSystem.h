@@ -26,6 +26,7 @@ namespace HBL
 		int FindSector(Component::Transform& transfom);
 
 		bool CollisionBetween(IEntity& e0, IEntity& e1);
+		bool CollisionBetween(Component::CollisionBox& collisionBox0, Component::CollisionBox& collisionBox1);
 
 	private:
 		std::vector<std::list<IEntity>> sectors;

@@ -45,6 +45,8 @@ namespace HBL
 			glm::vec3 tl = { 0.0f, 0.0f, 0.0f };
 			glm::vec3 tr = { 0.0f, 0.0f, 0.0f };
 
+			bool Trigger = false;
+
 			bool Enabled = true;
 		};
 
@@ -58,12 +60,6 @@ namespace HBL
 			int bufferIndex = -1;
 			int layerIndex = -1;
 
-			bool Enabled = true;
-		};
-
-		struct HBL_API ParalaxScrolling
-		{
-			float weight = 1.0f;
 			bool Enabled = true;
 		};
 

@@ -6,7 +6,7 @@ namespace HBL
 	{
 		FUNCTION_PROFILE();
 
-		int current_level = SceneManager::Get().GetCurrentLevel();;
+		int current_level = SceneManager::Get().GetCurrentScene();;
 
 		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
 		{
@@ -25,7 +25,7 @@ namespace HBL
 	{
 		//FUNCTION_PROFILE();
 
-		int current_level = SceneManager::Get().GetCurrentLevel();
+		int current_level = SceneManager::Get().GetCurrentScene();
 
 		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
 		{
@@ -44,7 +44,7 @@ namespace HBL
 	{
 		FUNCTION_PROFILE();
 
-		int current_level = SceneManager::Get().GetCurrentLevel();
+		int current_level = SceneManager::Get().GetCurrentScene();
 
 		Registry::Get().View<Component::Script>().ForEach([&](Component::Script& script)
 		{

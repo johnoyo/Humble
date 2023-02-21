@@ -28,11 +28,12 @@ namespace HBL
 		glm::vec2 m_SectorSize = { 0.0f, 0.0f };
 		float m_TileSize = 30.0f;
 
-		void TriggerSceneChange();
+		void LoadScene(uint32_t index);
+		void LoadNextScene();
 		bool IsSceneChanging();
 		HBL::IEntity& GetMainCamera();
 		void SetMainCamera(HBL::IEntity& mainCamera);
-		uint32_t& GetCurrentLevel();
+		uint32_t& GetCurrentScene();
 
 
 	private:
@@ -42,6 +43,8 @@ namespace HBL
 
 		HBL::IEntity m_MainCamera;
 		bool m_SceneChange = false;
-		uint32_t m_CurrentLevel = 0;
+		bool m_ArbitrarySceneChange = false;
+		uint32_t m_CurrentScene = 0;
+		uint32_t m_NextScene = 0;
 	};
 }

@@ -17,7 +17,7 @@ namespace HBL
 
 		virtual void OnCreate() override 
 		{
-			if (SceneManager::Get().GetCurrentLevel() == 0)
+			if (SceneManager::Get().GetCurrentScene() == 0)
 			{
 				FPSCounter = (Registry::Get().FindEntityWithTag("FPSCounter"));
 				text = (Registry::Get().FindEntityWithTag("Text"));
@@ -35,7 +35,7 @@ namespace HBL
 			//Registry::Get().GetComponent<Component::Transform>(enemy).rotation++;
 			//Registry::Get().GetComponent<Component::Gravity>(enemy).Enabled = false;
 
-			if (SceneManager::Get().GetCurrentLevel() == 0)
+			if (SceneManager::Get().GetCurrentScene() == 0)
 			{
 				if (InputManager::GetKeyDown(GLFW_KEY_H))
 				{

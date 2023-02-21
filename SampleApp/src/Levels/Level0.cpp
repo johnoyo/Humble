@@ -135,11 +135,12 @@ void HBL::Level0::OnAttach()
 
 	Registry::Get().GetComponent<Component::Health>(player).health = 99;
 	Registry::Get().GetComponent<Component::Health>(player).health = 88;
+
+	ILoadLevel("res/levels/test1.txt");
 }
 
 void HBL::Level0::OnCreate()
 {
-	ILoadLevel("res/levels/test1.txt");
 }
 
 void HBL::Level0::OnDetach()

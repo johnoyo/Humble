@@ -16,7 +16,7 @@ namespace HBL
 		virtual void OnUpdate(float dt) override 
 		{
 			if (InputManager::GetKeyPress(GLFW_KEY_K))
-				SceneManager::Get().TriggerSceneChange();
+				SceneManager::Get().LoadNextScene();
 		}
 
 	};

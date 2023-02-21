@@ -27,7 +27,7 @@ namespace HBL
 			tile = Registry::Get().FindEntityWithTag("Tile");
 			pinkTile = Registry::Get().FindEntityWithTag("PinkTile");
 
-			if (SceneManager::Get().GetCurrentLevel() == 0)
+			if (SceneManager::Get().GetCurrentScene() == 0)
 				clipCamera = (Registry::Get().FindEntityWithTag("ClipCamera"));
 
 			Component::SpriteRenderer& sprite = Registry::Get().GetComponent<Component::SpriteRenderer>(player);
@@ -72,7 +72,7 @@ namespace HBL
 			Component::Transform& transform_cam = Registry::Get().GetComponent<Component::Transform>(camera);
 			Component::Animation& animation_p = Registry::Get().GetComponent<Component::Animation>(player);
 
-			if (SceneManager::Get().GetCurrentLevel() == 0)
+			if (SceneManager::Get().GetCurrentScene() == 0)
 			{
 				if (InputManager::GetKeyDown(GLFW_KEY_C))
 				{
@@ -187,12 +187,12 @@ namespace HBL
 				transform_p.position.x -= 210.0f * dt;
 			}
 
-			if (InputManager::GetKeyDown(GLFW_KEY_S) && SceneManager::Get().GetCurrentLevel() == 1)
+			if (InputManager::GetKeyDown(GLFW_KEY_S) && SceneManager::Get().GetCurrentScene() == 1)
 				transform_p.position.y -= 210.0f * dt;
 
 			if (InputManager::GetKeyDown(GLFW_KEY_W))
 			{
-				if (SceneManager::Get().GetCurrentLevel() == 1)
+				if (SceneManager::Get().GetCurrentScene() == 1)
 					transform_p.position.y += 210.0f * dt;
 				else
 					if (Registry::Get().GetComponent<Component::Gravity>(player).isGrounded)

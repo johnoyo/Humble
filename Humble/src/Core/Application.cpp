@@ -10,43 +10,53 @@ namespace HBL {
 		Systems::Window.Initialize(width, height, name, full_screen, vSync);
 
 		if (m_Scenes.size() != 0)
-			SceneManager::Get().m_ActiveScene = m_Scenes[m_Current];
+			SceneManager::Get().m_ActiveScene = m_Scenes[SceneManager::Get().m_CurrentScene];
 	}
 
 	void Application::ManageScenes()
 	{
 		if (SceneManager::Get().m_SceneChange)
 		{
-			if (m_Current < m_Scenes.size() - 1)
+			if (SceneManager::Get().m_CurrentScene < m_Scenes.size() - 1 || SceneManager::Get().m_ArbitrarySceneChange)
 			{
-				m_Scenes[m_Current]->OnDetach();
+				m_Scenes[SceneManager::Get().m_CurrentScene]->OnDetach();
 
 				SceneManager::Get().m_SceneChange = false;
-				SceneManager::Get().m_CurrentLevel++;
-				m_Current++;
 
-				SceneManager::Get().m_ActiveScene = m_Scenes[m_Current];
+				if (SceneManager::Get().m_ArbitrarySceneChange)
+				{
+					assert(SceneManager::Get().m_NextScene < m_Scenes.size());
+
+					SceneManager::Get().m_ArbitrarySceneChange = false;
+					SceneManager::Get().m_CurrentScene = SceneManager::Get().m_NextScene;
+				}
+				else
+				{
+					SceneManager::Get().m_CurrentScene++;
+				}
+
+				SceneManager::Get().m_ActiveScene = m_Scenes[SceneManager::Get().m_CurrentScene];
 
 				// Clear Systems and ECS
 				Clear();
 
-				m_Scenes[m_Current]->OnAttach();
-
-				m_Scenes[m_Current]->OnCreate();
+				m_Scenes[SceneManager::Get().m_CurrentScene]->OnAttach();
 
 				// Initialize Systems
 				RestartSystems();
+
+				m_Scenes[SceneManager::Get().m_CurrentScene]->OnCreate();
 			}
 		}
 	}
 
 	void Application::Start()
 	{
-		m_Scenes[m_Current]->OnAttach();
-
-		m_Scenes[m_Current]->OnCreate();
+		m_Scenes[SceneManager::Get().m_CurrentScene]->OnAttach();
 
 		InitializeSystems();
+
+		m_Scenes[SceneManager::Get().m_CurrentScene]->OnCreate();
 
 		while (!Systems::Window.WindowShouldClose())
 		{

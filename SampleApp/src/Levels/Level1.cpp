@@ -82,11 +82,12 @@ void HBL::Level1::OnAttach()
 		Registry::Get().GetComponent<Component::CollisionBox>(level[i]).Enabled = false;
 		Registry::Get().GetComponent<Component::SpriteRenderer>(level[i]).Enabled = false;
 	}
+
+	ILoadLevel("res/levels/test2.txt");
 }
 
 void HBL::Level1::OnCreate()
 {
-	ILoadLevel("res/levels/test2.txt");
 }
 
 void HBL::Level1::OnDetach()

@@ -23,7 +23,6 @@ namespace HBL
 
 	private:
 		std::vector<IScene*> m_Scenes;
-		uint32_t m_Current = 0;
 		bool m_FixedTimeStep = false;
 
 		void RegisterSystems();

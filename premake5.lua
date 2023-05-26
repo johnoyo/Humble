@@ -8,6 +8,8 @@ workspace "HumbleGameEngine"
         "Release" 
     }
 
+    startproject "SampleApp"
+
 -- Variable to hold output directory.
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 
